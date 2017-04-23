@@ -25,5 +25,5 @@
 
 namespace Spart.Parsers.NonTerminal
 {
-    public delegate void PostParseEventHandler(object sender, PostParseEventArgs args);
+    public delegate void PostParseEventHandler(Parser parser, PostParseEventArgs args);
 }
