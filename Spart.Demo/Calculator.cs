@@ -26,6 +26,7 @@ namespace Spart.Demo
         protected Parser sub = null;
         protected Parser mul = null;
         protected Parser div = null;
+        protected Parser digits = null;
 
         protected Stack<double> Stack = new Stack<double>();
 
@@ -34,55 +35,59 @@ namespace Spart.Demo
         /// </summary>
         public Calculator()
         {
-            // creating sub parsers
-            add = '+' + term;
-            // attaching semantic action
-            add.Action += new ActionHandler(
+            (this.add = '+' + term).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    double y = this.Stack.Pop();
-                    double x = this.Stack.Pop();
-                    double z = x + y;
-                    this.Stack.Push(z);
+                    if (this.Stack.Count >= 2)
+                    {
+                        double y = this.Stack.Pop();
+                        double x = this.Stack.Pop();
+                        double z = x + y;
+                        this.Stack.Push(z);
+                    }
                 }
             );
 
-            sub = '-' + term;
-            sub.Action += new ActionHandler(
+            (this.sub = '-' + term).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    double y = this.Stack.Pop();
-                    double x = this.Stack.Pop();
-                    double z = x - y;
-                    this.Stack.Push(z);
+                    if (this.Stack.Count >= 2)
+                    {
+                        double y = this.Stack.Pop();
+                        double x = this.Stack.Pop();
+                        double z = x - y;
+                        this.Stack.Push(z);
+                    }
                 }
             );
 
-            mul = '*' + factor;
-            mul.Action += new ActionHandler(
+            (this.mul = '*' + factor).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    double y = this.Stack.Pop();
-                    double x = this.Stack.Pop();
-                    double z = x * y;
-                    this.Stack.Push(z);
+                    if (this.Stack.Count >= 2)
+                    {
+                        double y = this.Stack.Pop();
+                        double x = this.Stack.Pop();
+                        double z = x * y;
+                        this.Stack.Push(z);
+                    }
                 }
             );
 
-            div = '/' + factor;
-            div.Action += new ActionHandler(
+            (this.div = '/' + factor).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    double y = this.Stack.Pop();
-                    double x = this.Stack.Pop();
-                    double z = x / y;
-                    this.Stack.Push(z);
+                    if (this.Stack.Count >= 2)
+                    {
+                        double y = this.Stack.Pop();
+                        double x = this.Stack.Pop();
+                        double z = x / y;
+                        this.Stack.Push(z);
+                    }
                 }
             );
 
-            // assigning parsers to rules
-            this.integer.Parser = +Prims.Digit;
-            this.integer.Action += new ActionHandler(
+            (this.digits = +Prims.Digit).Action += new ActionHandler(
                 (parser, args) =>
                 {
                     if(double.TryParse(args.Value, out double v))
@@ -92,35 +97,11 @@ namespace Spart.Demo
                 }
             );
 
-            this.group.Parser = '(' + expression + ')';
-            this.group.Action += new ActionHandler(
-                (parser, args) =>
-                {
-
-                }
-            );
-
-            this.factor.Parser = group | integer;
-            this.factor.Action += new ActionHandler(
-                (parser, args) =>
-                {
-
-                }
-            );
-
-            this.term.Parser = factor + ~(mul | div);
-            this.term.Action += new ActionHandler(
-                (parser, args) =>
-                {
-
-                }
-            );
-            this.expression.Parser = term + ~(add | mul);
-            this.expression.Action += new ActionHandler(
-                (parser, args) =>
-                {
-                }
-            );
+            this.integer.Parser = digits;
+            this.group.Parser = '(' + this.expression + ')';
+            this.factor.Parser = this.group | this.integer;
+            this.term.Parser = this.factor + ~(this.mul | this.div);
+            this.expression.Parser = this.term + ~(this.add | this.mul);
         }
 
         /// <summary>
@@ -128,17 +109,24 @@ namespace Spart.Demo
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public virtual ParserMatch Parse(string s)
+        protected virtual ParserMatch Parse(string e)
         {
-            ParserMatch m = this.expression.Parse(new StringScanner(s));
+            return this.expression.Parse(new StringScanner(e));
+        }
+        public virtual double Calculate(string e)
+        {
+            double result = double.NaN;
+
+            ParserMatch m = this.Parse(e);
 
             if (m.Success)
             {
-                double z = this.Stack.Pop();
-
-                Console.WriteLine(z);
+                if (this.Stack.Count >= 1)
+                {
+                    result = this.Stack.Pop();
+                }
             }
-            return m;
+            return result;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Spart.Scanners
         /// Current character
         /// </summary>
         /// <returns></returns>
-        char Peek();
+        int Peek();
         /// <summary>
         /// Scanner cursor position
         /// </summary>

@@ -44,7 +44,14 @@ namespace Spart.Parsers.Primitives
 
             long offset = scanner.Offset;
 
-            bool test = this.Tester.Test(scanner.Peek());
+            int x = scanner.Peek();
+
+            if (x < 0)
+            {
+                return scanner.NoMatch;
+            }
+
+            bool test = this.Tester.Test((char)x);
 
             if (test && Negate || !test && !Negate)
             {
@@ -52,8 +59,6 @@ namespace Spart.Parsers.Primitives
             }
 
             // match character
-            char c = scanner.Peek();
-
             // if we arrive at this point, we have a match
             ParserMatch m = scanner.CreateMatch(offset, 1);
 

@@ -41,8 +41,24 @@ namespace Spart.Demo
         {
             try
             {
-                Calculator calc = new Calculator();
-                calc.Parse("(53+29)*(41/20)");
+                Calculator calculator = new Calculator();
+
+                string line = null;
+
+                while ((line = Console.ReadLine()) != null)
+                {
+                    if (line.Length == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        double result = calculator.Calculate(line);
+
+                        Console.WriteLine($"= {result}");
+                    }
+                }
+                //calc.Parse("(53+29)*(41/20)");
             }
             catch (Exception ex)
             {

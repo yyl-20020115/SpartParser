@@ -141,11 +141,13 @@ namespace Spart.Scanners
         /// Current character
         /// </summary>
         /// <returns>character at cursor position</returns>
-        public virtual char Peek()
+        public virtual int Peek()
         {
-            return (this.Filter == null)
-                ? this.InputString[(int)Offset]
-                : this.Filter.DoFilter(this.InputString[(int)Offset]);
+            return this.AtEnd 
+                ? -1 
+                : (this.Filter == null)
+                    ? this.InputString[(int)Offset]
+                    : this.Filter.DoFilter(this.InputString[(int)Offset]);
         }
 
         /// <summary>
