@@ -6,6 +6,7 @@ namespace Spart.Demo
     using Spart.Parsers;
     using Spart.Scanners;
     using Spart.Actions;
+    using System.Collections.Generic;
 
     /// <summary>
     /// group       ::= '(' expression ')'
@@ -21,42 +22,61 @@ namespace Spart.Demo
         protected Rule expression = new Rule(nameof(expression));
         protected Rule integer = new Rule(nameof(integer));
 
+        protected Parser add = null;
+        protected Parser sub = null;
+        protected Parser mul = null;
+        protected Parser div = null;
+
+        protected Stack<double> Stack = new Stack<double>();
+
         /// <summary>
         /// A very simple calculator parser
         /// </summary>
         public Calculator()
         {
             // creating sub parsers
-            Parser add = '+' + term;
+            add = '+' + term;
             // attaching semantic action
             add.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine("+");
+                    double y = this.Stack.Pop();
+                    double x = this.Stack.Pop();
+                    double z = x + y;
+                    this.Stack.Push(z);
                 }
             );
 
-            Parser sub = '-' + term;
+            sub = '-' + term;
             sub.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine("-");
+                    double y = this.Stack.Pop();
+                    double x = this.Stack.Pop();
+                    double z = x - y;
+                    this.Stack.Push(z);
                 }
             );
 
-            Parser mul = '*' + factor;
+            mul = '*' + factor;
             mul.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine("*");
+                    double y = this.Stack.Pop();
+                    double x = this.Stack.Pop();
+                    double z = x * y;
+                    this.Stack.Push(z);
                 }
             );
 
-            Parser div = '/' + factor;
+            div = '/' + factor;
             div.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine("/");
+                    double y = this.Stack.Pop();
+                    double x = this.Stack.Pop();
+                    double z = x / y;
+                    this.Stack.Push(z);
                 }
             );
 
@@ -65,7 +85,10 @@ namespace Spart.Demo
             this.integer.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine($"integer: {args.Value}");
+                    if(double.TryParse(args.Value, out double v))
+                    {
+                        this.Stack.Push(v);
+                    }
                 }
             );
 
@@ -73,7 +96,7 @@ namespace Spart.Demo
             this.group.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine($"group: {args.Value}");
+
                 }
             );
 
@@ -81,7 +104,7 @@ namespace Spart.Demo
             this.factor.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine($"factor: {args.Value}");
+
                 }
             );
 
@@ -89,14 +112,13 @@ namespace Spart.Demo
             this.term.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine($"term: {args.Value}");
+
                 }
             );
             this.expression.Parser = term + ~(add | mul);
             this.expression.Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    Console.WriteLine($"expression: {args.Value}");
                 }
             );
         }
@@ -108,7 +130,15 @@ namespace Spart.Demo
         /// <returns></returns>
         public virtual ParserMatch Parse(string s)
         {
-            return this.expression.Parse(new StringScanner(s));
+            ParserMatch m = this.expression.Parse(new StringScanner(s));
+
+            if (m.Success)
+            {
+                double z = this.Stack.Pop();
+
+                Console.WriteLine(z);
+            }
+            return m;
         }
     }
 }
