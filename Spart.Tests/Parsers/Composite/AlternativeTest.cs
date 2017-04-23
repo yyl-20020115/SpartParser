@@ -24,74 +24,71 @@
 /// Author: Jonathan de Halleux
 /// 
 
-using System;
-
 namespace Spart.Tests.Parsers.Composite
 {
-	using NUnit.Framework;
-	using Spart.Parsers;
-	using Spart.Parsers.Composite;
-	using Spart.Parsers.Primitives;
-	using Spart.Scanners;
-	using Spart.Parsers.NonTerminal;
+    using NUnit.Framework;
+    using Spart.Parsers;
+    using Spart.Parsers.Composite;
+    using Spart.Parsers.NonTerminal;
+    using Spart.Scanners;
 
-	[TestFixture]
-	public class AlternativeTest
-	{
-		[Test]
-		public void FirstMatch()
-		{
-			Rule d = new Rule();
-			Rule l = new Rule();
-			d.Parser = Prims.Digit;
-			l.Parser = Prims.Letter;
-			AlternativeParser rp = l|d;			
-			IScanner scan = Provider.Scanner;
-			ParserMatch m = rp.Parse(scan);
+    [TestFixture]
+    public class AlternativeTest
+    {
+        [Test]
+        public void FirstMatch()
+        {
+            Rule d = new Rule();
+            Rule l = new Rule();
+            d.Parser = Prims.Digit;
+            l.Parser = Prims.Letter;
+            AlternativeParser rp = l | d;
+            IScanner scan = Provider.Scanner;
+            ParserMatch m = rp.Parse(scan);
 
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,1);
-			Assert.AreEqual(scan.Offset,1);
-		}
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 1);
+            Assert.AreEqual(scan.Offset, 1);
+        }
 
-		[Test]
-		public void SecondMatch()
-		{
-			Rule d = Rule.AssignParser(null,Prims.Digit);
-			Rule l = Rule.AssignParser(null,Prims.Letter);
-			AlternativeParser rp = d|l;			
-			IScanner scan = Provider.Scanner;
-			ParserMatch m = rp.Parse(scan);
+        [Test]
+        public void SecondMatch()
+        {
+            Rule d = Rule.AssignParser(null, Prims.Digit);
+            Rule l = Rule.AssignParser(null, Prims.Letter);
+            AlternativeParser rp = d | l;
+            IScanner scan = Provider.Scanner;
+            ParserMatch m = rp.Parse(scan);
 
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,1);
-			Assert.AreEqual(scan.Offset,1);
-		}
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 1);
+            Assert.AreEqual(scan.Offset, 1);
+        }
 
-		[Test]
-		public void ThirdMatch()
-		{
-			Rule d = Rule.AssignParser(null,Prims.Digit);
-			Rule l = Rule.AssignParser(null,Prims.Letter);
-			AlternativeParser rp = d|d|l;			
-			IScanner scan = Provider.Scanner;
-			ParserMatch m = rp.Parse(scan);
+        [Test]
+        public void ThirdMatch()
+        {
+            Rule d = Rule.AssignParser(null, Prims.Digit);
+            Rule l = Rule.AssignParser(null, Prims.Letter);
+            AlternativeParser rp = d | d | l;
+            IScanner scan = Provider.Scanner;
+            ParserMatch m = rp.Parse(scan);
 
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,1);
-			Assert.AreEqual(scan.Offset,1);
-		}
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 1);
+            Assert.AreEqual(scan.Offset, 1);
+        }
 
-		[Test]
-		public void NoMatchMatch()
-		{
-			Rule d = Rule.AssignParser(null,Prims.Digit);
-			AlternativeParser rp = d|d|d;			
-			IScanner scan = Provider.Scanner;
-			ParserMatch m = rp.Parse(scan);
+        [Test]
+        public void NoMatchMatch()
+        {
+            Rule d = Rule.AssignParser(null, Prims.Digit);
+            AlternativeParser rp = d | d | d;
+            IScanner scan = Provider.Scanner;
+            ParserMatch m = rp.Parse(scan);
 
-			Assert.IsTrue(!m.Success);
-			Assert.AreEqual(scan.Offset,0);
-		}
-	}
+            Assert.IsTrue(!m.Success);
+            Assert.AreEqual(scan.Offset, 0);
+        }
+    }
 }

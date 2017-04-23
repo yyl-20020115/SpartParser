@@ -25,6 +25,5 @@
 
 namespace Spart.Parsers.NonTerminal
 {
-	using System;
-	public delegate void PreParseEventHandler(Object sender, PreParseEventArgs args);
+    public delegate void PreParseEventHandler(object sender, PreParseEventArgs args);
 }

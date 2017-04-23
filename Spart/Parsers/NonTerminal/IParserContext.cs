@@ -25,10 +25,9 @@
 
 namespace Spart.Parsers.NonTerminal
 {
-	using System;
-	public interface IParserContext
+    public interface IParserContext
 	{
-		void PreParse(Object sender, PreParseEventArgs args);
-		void PostParse(Object sender, PostParseEventArgs args);
+		void PreParse(object sender, PreParseEventArgs args);
+		void PostParse(object sender, PostParseEventArgs args);
 	}
 }

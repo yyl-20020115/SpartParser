@@ -25,34 +25,23 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Spart.Actions.Actors
 {
-	/// <summary>
-	/// Actor that appends parse result to <see cref="IList"/>.
-	/// </summary>
+    /// <summary>
+    /// Actor that appends parse result to <see cref="IList"/>.
+    /// </summary>
     public class AppendActor
     {
-        private IList m_List;
-
-        public AppendActor(IList list)
+        public virtual IList<string> List { get; protected set; } = null;
+        public AppendActor(IList<string> list)
         {
-            if (list == null)
-               throw new ArgumentNullException("list");
-            m_List = list;
+            this.List = list ?? throw new ArgumentNullException(nameof(list));
         }
-
-        public IList List
+        public virtual void DoAction(object sender, ActionEventArgs args)
         {
-            get
-            {
-                return m_List;
-            }
-        } 
-
-        public void DoAction(Object sender, ActionEventArgs args)
-        {
-            List.Add(args.Value);
+            this.List.Add(args?.Value);
         }
     }
 }

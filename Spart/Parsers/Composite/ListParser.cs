@@ -25,49 +25,57 @@
 
 namespace Spart.Parsers.Composite
 {
-	using Spart.Scanners;
+    using Scanners;
+    using System;
 
-	public class ListParser : BinaryTerminalParser
-	{
-		public ListParser(Parser first, Parser second)
-			:base(first, second)
-		{}
+    public class ListParser : BinaryTerminalParser
+    {
+        public ListParser(Parser first, Parser second) : base(first, second) { }
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public override ParserMatch ParseMain(Spart.Scanners.IScanner scan)
-		{
-			long offset = scan.Offset;
-			ParserMatch a = null;
-			ParserMatch b = null;
+            long offset = scanner.Offset;
 
-			ParserMatch m = FirstParser.Parse(scan);
-			if (!m.Success)
-			{
-				scan.Seek(offset);
-				return scan.NoMatch;
-			}
+            ParserMatch a = null, b = null;
 
-			while (!scan.AtEnd)
-			{
-				offset = scan.Offset;
+            ParserMatch m = this.FirstParser.Parse(scanner);
 
-				b = SecondParser.Parse(scan);
-				if (!b.Success)
-				{
-					scan.Seek(offset);
-					return m;
-				}
-				a = FirstParser.Parse(scan);
-				if (!a.Success)
-				{
-					scan.Seek(offset);
-					return m;
-				}
+            if (!m.Success)
+            {
+                scanner.Seek(offset);
 
-				m.Concat(b);
-				m.Concat(a);
-			}
+                return scanner.NoMatch;
+            }
 
-			return m;
-		}
-	}
+            while (!scanner.AtEnd)
+            {
+                offset = scanner.Offset;
+
+                b = this.SecondParser.Parse(scanner);
+
+                if (!b.Success)
+                {
+                    scanner.Seek(offset);
+
+                    return m;
+                }
+
+                a = this.FirstParser.Parse(scanner);
+
+                if (!a.Success)
+                {
+                    scanner.Seek(offset);
+
+                    return m;
+                }
+
+                m.Concat(b);
+
+                m.Concat(a);
+            }
+
+            return m;
+        }
+    }
 }

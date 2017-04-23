@@ -25,38 +25,41 @@
 
 namespace Spart.Parsers.Composite
 {
-	using System;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
+    using Spart.Scanners;
+    using System;
 
-	public class AlternativeParser : BinaryTerminalParser
-	{
-		public AlternativeParser(Parser first, Parser second)
-			:base(first,second)
-		{}
+    public class AlternativeParser : BinaryTerminalParser
+    {
+        public AlternativeParser(Parser first, Parser second) : base(first, second) { }
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public override ParserMatch ParseMain(IScanner scan)
-		{
-			// save scanner state
-			long offset = scan.Offset;
+            // save scanner state
+            long offset = scanner.Offset;
 
-			// apply the first parser
-			ParserMatch m = FirstParser.Parse( scan );
-			// if m1 successful, do m2
-			if (m.Success)
-				return m;
+            // apply the first parser
+            ParserMatch m = this.FirstParser.Parse(scanner);
 
-			// not found
-			scan.Seek(offset);
+            // if m1 successful, do m2
+            if (m.Success)
+            {
+                return m;
+            }
+            // not found
+            scanner.Seek(offset);
 
-			// apply the second parser
-			m = SecondParser.Parse( scan );
-			if (m.Success)
-				return m;
+            // apply the second parser
+            m = this.SecondParser.Parse(scanner);
 
-			scan.Seek(offset);
-			return scan.NoMatch;
-		}
-	}
+            if (m.Success)
+            {
+                return m;
+            }
+
+            scanner.Seek(offset);
+
+            return scanner.NoMatch;
+        }
+    }
 }

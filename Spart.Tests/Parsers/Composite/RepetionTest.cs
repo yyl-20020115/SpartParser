@@ -28,160 +28,159 @@ using System;
 
 namespace Spart.Tests.Parsers.Composite
 {
-	using NUnit.Framework;
-	using Spart.Parsers;
-	using Spart.Parsers.Composite;
-	using Spart.Parsers.Primitives;
-	using Spart.Scanners;
+    using NUnit.Framework;
+    using Spart.Parsers;
+    using Spart.Parsers.Composite;
+    using Spart.Scanners;
 
-	[TestFixture]
-	public class RepetionTest
-	{
-		public Parser Parser
-		{
-			get
-			{
-				return Prims.Ch('a');
-			}
-		}
+    [TestFixture]
+    public class RepetionTest
+    {
+        public Parser Parser
+        {
+            get
+            {
+                return Prims.Ch('a');
+            }
+        }
 
-		[Test]
-		public void Constructor()
-		{
-			Parser p = Parser;
-			RepetitionParser rp = new RepetitionParser(p,10,20);			
-			Assert.AreEqual(rp.LowerBound,10);
-			Assert.AreEqual(rp.UpperBound,20);
-			Assert.AreEqual(rp.Parser, p);
-		}
+        [Test]
+        public void Constructor()
+        {
+            Parser p = Parser;
+            RepetitionParser rp = new RepetitionParser(p, 10, 20);
+            Assert.AreEqual(rp.LowerBound, 10);
+            Assert.AreEqual(rp.UpperBound, 20);
+            Assert.AreEqual(rp.Parser, p);
+        }
 
-		[Test]
-		public void Constructor2()
-		{
-			RepetitionParser rp = new RepetitionParser(null,0,1);			
-		}
+        [Test]
+        public void Constructor2()
+        {
+            RepetitionParser rp = new RepetitionParser(null, 0, 1);
+        }
 
-		[Test]
-		public void Constructor3()
-		{
-			RepetitionParser rp = new RepetitionParser(Parser,1,0);			
-		}
+        [Test]
+        public void Constructor3()
+        {
+            RepetitionParser rp = new RepetitionParser(Parser, 1, 0);
+        }
 
-		[Test]
-		public void PositiveSuccess1AtEnd()
-		{
-			RepetitionParser rp = +Parser;			
-			String s = "a";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,1);
-			Assert.IsTrue(scan.AtEnd);
-		}
+        [Test]
+        public void PositiveSuccess1AtEnd()
+        {
+            RepetitionParser rp = +Parser;
+            String s = "a";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 1);
+            Assert.IsTrue(scan.AtEnd);
+        }
 
-		[Test]
-		public void PositiveSuccess2AtEnd()
-		{
-			RepetitionParser rp = +Parser;			
-			String s = "aa";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,2);
-			Assert.IsTrue(scan.AtEnd);
-		}
+        [Test]
+        public void PositiveSuccess2AtEnd()
+        {
+            RepetitionParser rp = +Parser;
+            String s = "aa";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 2);
+            Assert.IsTrue(scan.AtEnd);
+        }
 
-		[Test]
-		public void PositiveSuccessNotAtEnd()
-		{
-			RepetitionParser rp = +Parser;			
-			String s = "aaa ";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,3);
-			Assert.IsTrue(!scan.AtEnd);
-		}
+        [Test]
+        public void PositiveSuccessNotAtEnd()
+        {
+            RepetitionParser rp = +Parser;
+            String s = "aaa ";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 3);
+            Assert.IsTrue(!scan.AtEnd);
+        }
 
-		[Test]
-		public void PositiveFailure()
-		{
-			RepetitionParser rp = +Parser;			
-			String s = "b";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(!m.Success);
-		}	
+        [Test]
+        public void PositiveFailure()
+        {
+            RepetitionParser rp = +Parser;
+            String s = "b";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(!m.Success);
+        }
 
-		[Test]
-		public void KleneeSuccess1AtEnd()
-		{
-			RepetitionParser rp = Ops.Klenee(Parser);			
-			String s = "a";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,1);
-			Assert.IsTrue(scan.AtEnd);
-		}
+        [Test]
+        public void KleneeSuccess1AtEnd()
+        {
+            RepetitionParser rp = Ops.Klenee(Parser);
+            String s = "a";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 1);
+            Assert.IsTrue(scan.AtEnd);
+        }
 
-		[Test]
-		public void KleneeSuccess2AtEnd()
-		{
-			RepetitionParser rp = Ops.Klenee(Parser);			
-			String s = "aa";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,2);
-			Assert.IsTrue(scan.AtEnd);
-		}
+        [Test]
+        public void KleneeSuccess2AtEnd()
+        {
+            RepetitionParser rp = Ops.Klenee(Parser);
+            String s = "aa";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 2);
+            Assert.IsTrue(scan.AtEnd);
+        }
 
-		[Test]
-		public void KleneeSuccessNotAtEnd()
-		{
-			RepetitionParser rp = Ops.Klenee(Parser);			
-			String s = "aaa ";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,3);
-			Assert.IsTrue(!scan.AtEnd);
-		}
+        [Test]
+        public void KleneeSuccessNotAtEnd()
+        {
+            RepetitionParser rp = Ops.Klenee(Parser);
+            String s = "aaa ";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 3);
+            Assert.IsTrue(!scan.AtEnd);
+        }
 
-		[Test]
-		public void KleneeSuccess0()
-		{
-			RepetitionParser rp = Ops.Klenee(Parser);			
-			String s = "b";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.IsTrue(m.Empty);
-			Assert.IsTrue(!scan.AtEnd);
-		}	
+        [Test]
+        public void KleneeSuccess0()
+        {
+            RepetitionParser rp = Ops.Klenee(Parser);
+            String s = "b";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.IsTrue(m.Empty);
+            Assert.IsTrue(!scan.AtEnd);
+        }
 
-		[Test]
-		public void OptionalSuccess()
-		{
-			RepetitionParser rp = !Parser;			
-			String s = "aa";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Length,1);
-			Assert.AreEqual(scan.Offset,1);
-		}	
+        [Test]
+        public void OptionalSuccess()
+        {
+            RepetitionParser rp = !Parser;
+            String s = "aa";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Length, 1);
+            Assert.AreEqual(scan.Offset, 1);
+        }
 
-		[Test]
-		public void OptionalSuccess0()
-		{
-			RepetitionParser rp = !Parser;			
-			String s = "";
-			StringScanner scan = new StringScanner(s);
-			ParserMatch m = rp.Parse(scan);
-			Assert.IsTrue(m.Success);
-			Assert.IsTrue(m.Empty);
-		}	
-	}
+        [Test]
+        public void OptionalSuccess0()
+        {
+            RepetitionParser rp = !Parser;
+            String s = "";
+            StringScanner scan = new StringScanner(s);
+            ParserMatch m = rp.Parse(scan);
+            Assert.IsTrue(m.Success);
+            Assert.IsTrue(m.Empty);
+        }
+    }
 }

@@ -110,7 +110,7 @@
     <Compile Include="Calculator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Main.cs">
+    <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Content Include="App.ico" />

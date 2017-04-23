@@ -26,25 +26,23 @@
 
 namespace Spart.Scanners
 {
-    using System;
-
-	/// <summary>
-	/// Input filter interface
-	/// </summary>
+    /// <summary>
+    /// Input filter interface
+    /// </summary>
     public interface IFilter
     {
-		/// <summary>
-		/// Converts s to lower string
-		/// </summary>
-		/// <param name="s"></param>
-		/// <returns></returns>
-		String Filter(String s);
+        /// <summary>
+        /// Converts s to lower string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        string Filter(string s);
 
-		/// <summary>
-		/// Converts c to lower char
-		/// </summary>
-		/// <param name="c"></param>
-		/// <returns></returns>
-		Char Filter(Char c);
+        /// <summary>
+        /// Converts c to lower char
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        char Filter(char c);
     }
 }

@@ -25,39 +25,43 @@
 
 namespace Spart.Parsers.Composite
 {
-	using System;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
+    using Spart.Scanners;
+    using System;
 
-	public class SequenceParser : BinaryTerminalParser
-	{
-		public SequenceParser(Parser first, Parser second)
-			:base(first,second)
-		{}
+    public class SequenceParser : BinaryTerminalParser
+    {
+        public SequenceParser(Parser first, Parser second) : base(first, second) { }
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public override ParserMatch ParseMain(IScanner scanner)
-		{
-			// save scanner state
-			long offset = scanner.Offset;
+            // save scanner state
+            long offset = scanner.Offset;
 
-			// apply the first parser
-			ParserMatch m = FirstParser.Parse( scanner );
-			// if m1 successful, do m2
-			if (m.Success)
-			{
-				ParserMatch m2 = SecondParser.Parse( scanner );
-				if (m2.Success)
-					m.Concat(m2);
-				else
-					m = scanner.NoMatch;
-			}
+            // apply the first parser
+            ParserMatch m = this.FirstParser.Parse(scanner);
 
-			// restoring parser failed, rewind scanner
-			if (!m.Success)
-				scanner.Seek(offset);
+            // if m1 successful, do m2
+            if (m.Success)
+            {
+                ParserMatch m2 = this.SecondParser.Parse(scanner);
 
-			return m;
-		}
-	}
+                if (m2.Success)
+                {
+                    m.Concat(m2);
+                }
+                else
+                {
+                    m = scanner.NoMatch;
+                }
+            }
+
+            // restoring parser failed, rewind scanner
+            if (!m.Success)
+            {
+                scanner.Seek(offset);
+            }
+            return m;
+        }
+    }
 }

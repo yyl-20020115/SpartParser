@@ -24,86 +24,84 @@
 /// Author: Jonathan de Halleux
 /// 
 
-using System;
-
 namespace Spart.Tests.Parsers.Composite
 {
-	using NUnit.Framework;
-	using Spart.Parsers;
-	using Spart.Parsers.Composite;
-	using Spart.Parsers.Primitives;
-	using Spart.Scanners;
+    using NUnit.Framework;
+    using Spart.Parsers;
+    using Spart.Parsers.Composite;
+    using Spart.Parsers.Primitives;
+    using Spart.Scanners;
 
-	[TestFixture]
-	public class SequenceTest
-	{
-		public StringParser First
-		{
-			get
-			{
-				return new StringParser( Provider.Text.Substring(0,3));
-			}
-		}
-		public StringParser Second
-		{
-			get
-			{
-				return new StringParser( Provider.Text.Substring(3,4));
-			}
-		}
-		public StringParser Second2
-		{
-			get
-			{
-				return new StringParser( Provider.Text.Substring(5,2));
-			}
-		}
+    [TestFixture]
+    public class SequenceTest
+    {
+        public StringParser First
+        {
+            get
+            {
+                return new StringParser(Provider.Text.Substring(0, 3));
+            }
+        }
+        public StringParser Second
+        {
+            get
+            {
+                return new StringParser(Provider.Text.Substring(3, 4));
+            }
+        }
+        public StringParser Second2
+        {
+            get
+            {
+                return new StringParser(Provider.Text.Substring(5, 2));
+            }
+        }
 
-		[Test]
-		public void Constructor()
-		{
-			IScanner scanner = Provider.Scanner;
-			Parser f  = First;
-			Parser s = Second;
-			SequenceParser parser = new SequenceParser(f,s);
-			Assert.AreEqual(parser.FirstParser,f);
-			Assert.AreEqual(parser.SecondParser,s);
-		}
+        [Test]
+        public void Constructor()
+        {
+            IScanner scanner = Provider.Scanner;
+            Parser f = First;
+            Parser s = Second;
+            SequenceParser parser = new SequenceParser(f, s);
+            Assert.AreEqual(parser.FirstParser, f);
+            Assert.AreEqual(parser.SecondParser, s);
+        }
 
-		[Test]
-		public void Success()
-		{
-			IScanner scanner = Provider.Scanner;
-			SequenceParser parser = new SequenceParser(First,Second);
+        [Test]
+        public void Success()
+        {
+            IScanner scanner = Provider.Scanner;
+            SequenceParser parser = new SequenceParser(First, Second);
 
-			ParserMatch m = parser.Parse(scanner);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Offset,0);
-			Assert.AreEqual(scanner.Offset,m.Offset+m.Length);
-			Assert.AreEqual(m.Value,First.MatchedString+Second.MatchedString);
-		}
+            ParserMatch m = parser.Parse(scanner);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Offset, 0);
+            Assert.AreEqual(scanner.Offset, m.Offset + m.Length);
+            Assert.AreEqual(m.Value, First.MatchedString + Second.MatchedString);
+        }
 
 
-		[Test]
-		public void FailureFirst()
-		{
-			IScanner scanner = Provider.Scanner;
-			SequenceParser parser = new SequenceParser(Second,Second2);
+        [Test]
+        public void FailureFirst()
+        {
+            IScanner scanner = Provider.Scanner;
+            SequenceParser parser = new SequenceParser(Second, Second2);
 
-			ParserMatch m = parser.Parse(scanner);
-			Assert.IsTrue(!m.Success);
-			Assert.AreEqual(scanner.Offset,0);
-		}
+            ParserMatch m = parser.Parse(scanner);
+            Assert.IsTrue(!m.Success);
+            Assert.AreEqual(scanner.Offset, 0);
+        }
 
-		[Test]
-		public void FailureSecond()
-		{
-			IScanner scanner = Provider.Scanner;
-			SequenceParser parser = new SequenceParser(First,Second2);
+        [Test]
+        public void FailureSecond()
+        {
+            IScanner scanner = Provider.Scanner;
+            SequenceParser parser = new SequenceParser(First, Second2);
 
-			ParserMatch m = parser.Parse(scanner);
-			Assert.IsTrue(!m.Success);
-			Assert.AreEqual(scanner.Offset,0);
-		}
-	}
+            ParserMatch m = parser.Parse(scanner);
+            Assert.IsTrue(!m.Success);
+            Assert.AreEqual(scanner.Offset, 0);
+        }
+    }
 }

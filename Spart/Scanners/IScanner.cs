@@ -24,72 +24,62 @@
 /// Author: Jonathan de Halleux
 namespace Spart.Scanners
 {
-	using System;
-	using Spart.Parsers;
+    using System;
+    using Spart.Parsers;
 
-
-	/// <summary>
-	/// Input scanner interface
-	/// </summary>
-	public interface IScanner
-	{
-		/// <summary>
-		/// Return true if all input is consummed
-		/// </summary>
-		bool AtEnd {get;}
-
-		/// <summary>
-		/// Reads one character of the input
-		/// </summary>
-		/// <returns>true if not at end</returns>
-		bool Read();
-
-		/// <summary>
-		/// Current character
-		/// </summary>
-		/// <returns></returns>
-		char Peek();
-
-		/// <summary>
-		/// Scanner cursor position
-		/// </summary>
-		long Offset{get;set;}
-
-		/// <summary>
-		/// Move cursor position to the offset
-		/// </summary>
-		/// <param name="offset"></param>
-		void Seek(long offset);
-
-		/// <summary>
-		/// Extracts a substring of the input
-		/// </summary>
-		/// <param name="offset"></param>
-		/// <param name="length"></param>
-		/// <returns></returns>
-		String Substring(long offset, int length);
-
-		/// <summary>
-		/// Sets the input filter
-		/// </summary>
-		IFilter Filter{get;set;}
-
-		/// <summary>
-		/// Create a failure match
-		/// </summary>
-		ParserMatch NoMatch      {get;}
-
-		/// <summary>
-		/// Create an empty match
-		/// </summary>
-		ParserMatch EmptyMatch   {get;}
-
-		/// <summary>
-		/// Create a match out of the intput
-		/// </summary>
-		/// <param name="offset"></param>
-		/// <param name="length"></param>
-		/// <returns></returns>
-		ParserMatch CreateMatch(long offset, int length);
-	}
+    /// <summary>
+    /// Input scanner interface
+    /// </summary>
+    public interface IScanner
+    {
+        /// <summary>
+        /// Return true if all input is consummed
+        /// </summary>
+        bool AtEnd { get; }
+        /// <summary>
+        /// Reads one character of the input
+        /// </summary>
+        /// <returns>true if not at end</returns>
+        bool Read();
+        /// <summary>
+        /// Current character
+        /// </summary>
+        /// <returns></returns>
+        char Peek();
+        /// <summary>
+        /// Scanner cursor position
+        /// </summary>
+        long Offset { get; set; }
+        /// <summary>
+        /// Move cursor position to the offset
+        /// </summary>
+        /// <param name="offset"></param>
+        void Seek(long offset);
+        /// <summary>
+        /// Extracts a substring of the input
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        String Substring(long offset, int length);
+        /// <summary>
+        /// Sets the input filter
+        /// </summary>
+        IFilter Filter { get; set; }
+        /// <summary>
+        /// Create a failure match
+        /// </summary>
+        ParserMatch NoMatch { get; }
+        /// <summary>
+        /// Create an empty match
+        /// </summary>
+        ParserMatch EmptyMatch { get; }
+        /// <summary>
+        /// Create a match out of the intput
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        ParserMatch CreateMatch(long offset, int length);
+    }
 }

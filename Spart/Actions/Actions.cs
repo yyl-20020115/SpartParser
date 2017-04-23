@@ -26,45 +26,49 @@
 using System;
 using System.Collections;
 using Spart.Actions.Actors;
+using System.Collections.Generic;
 
 namespace Spart.Actions
 {
-	/// <summary>
-	/// Static helper class that creates actors
-	/// </summary>
-    public class Actor
+    /// <summary>
+    /// Static helper class that creates actors
+    /// </summary>
+    public static class Actor
     {
-		/// <summary>
-		/// Create an actor that append the parse result to a <see cref="IList"/>.
-		/// </summary>
-		/// <param name="list"></param>
-		/// <returns></returns>
-        public static ActionHandler Append(IList list)
-        { 
-            AppendActor a =  new AppendActor(list);
-            return new ActionHandler( a.DoAction );
+        /// <summary>
+        /// Create an actor that append the parse result to a <see cref="IList"/>.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static ActionHandler Append(IList<string> list)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            return new ActionHandler(new AppendActor(list).DoAction);
         }
 
-		/// <summary>
-		/// Create an actor that assign the parse result to an object
-		/// </summary>
-		/// <param name="o"></param>
-		/// <returns></returns>
-		public static ActionHandler Assign(Object o)
-		{ 
-			AssignActor a =  new AssignActor(o);
-			return new ActionHandler( a.DoAction );
-		}
+        /// <summary>
+        /// Create an actor that assign the parse result to an object
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ActionHandler Assign(string value)
+        {
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
-		/// <summary>
-		/// Creates an actor that throws an exception
-		/// </summary>
-		/// <param name="ex"></param>
-		/// <returns></returns>
-		public static ActionHandler Throw(Exception ex)
-		{
-			ThrowActor a = new ThrowActor(ex);
-			return new ActionHandler( a.DoAction );
-		}
+            return new ActionHandler(new AssignActor(value).DoAction);
+        }
+
+        /// <summary>
+        /// Creates an actor that throws an exception
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static ActionHandler Throw(Exception ex)
+        {
+            if (ex == null) throw new ArgumentNullException(nameof(ex));
+
+            return new ActionHandler(new ThrowActor(ex).DoAction);
+        }
     }
 }

@@ -25,22 +25,17 @@
 
 namespace Spart.Actions.Actors
 {
-	using System;
-	public class ThrowActor : IActor
-	{
-		private Exception m_Ex;
-
-		public ThrowActor(Exception ex)
-		{
-			if (ex == null)
-				throw new ArgumentNullException("ex");
-
-			m_Ex = ex;
-		}
-
-		public void DoAction(Object sender, ActionEventArgs args)
-		{
-			throw m_Ex;
-		}
-	}
+    using System;
+    public class ThrowActor : IActor
+    {
+        public virtual Exception Exception { get; protected set; } = null;
+        public ThrowActor(Exception ex)
+        {
+            this.Exception = ex ?? throw new ArgumentNullException(nameof(ex));
+        }
+        public virtual void DoAction(object sender, ActionEventArgs args)
+        {
+            throw Exception;
+        }
+    }
 }

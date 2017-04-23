@@ -26,29 +26,29 @@ using System;
 
 namespace Spart.Scanners
 {
-	/// <summary>
-	/// A to lower input filter
-	/// </summary>
-	public class ToLowerFilter : IFilter
-	{
-		/// <summary>
-		/// Converts s to lower string
-		/// </summary>
-		/// <param name="s"></param>
-		/// <returns></returns>
-		public String Filter(String s)
-		{
-			return s.ToLower();
-		}
+    /// <summary>
+    /// A to lower input filter
+    /// </summary>
+    public class ToLowerFilter : IFilter
+    {
+        /// <summary>
+        /// Converts s to lower string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public String Filter(String s)
+        {
+            return s.ToLower();
+        }
 
-		/// <summary>
-		/// Converts i to lower i
-		/// </summary>
-		/// <param name="i"></param>
-		/// <returns></returns>
-		public Char Filter(Char i)
-		{
-			return (Convert.ToString(i).ToLower())[0];
-		}
-	}
+        /// <summary>
+        /// Converts i to lower i
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public Char Filter(Char i)
+        {
+            return (Convert.ToString(i).ToLower())[0];
+        }
+    }
 }

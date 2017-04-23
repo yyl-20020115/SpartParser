@@ -27,13 +27,11 @@ namespace Spart.Parsers
 {
 	using Spart.Parsers.NonTerminal;
 
-	public abstract class TerminalParser : Parser
-	{
-/*
- 	public static implicit operator Rule(TerminalParser p)
-		{
-			return new Rule(p);
-		}	
-*/
-	}
+    public abstract class TerminalParser : Parser
+    {
+        public static implicit operator Rule(TerminalParser p)
+        {
+            return new Rule(p);
+        }
+    }
 }

@@ -28,34 +28,26 @@ using System;
 
 namespace Spart.Demo
 {
-	using Spart.Parsers;
-	using Spart.Actions;
-	using Spart.Scanners;
-	//using Spart.Debug;
-	using Spart.Parsers.Primitives;
-	using Spart.Parsers.Composite;
-	using Spart.Parsers.NonTerminal;
-
-	/// <summary>
-	/// Summary description for Class1.
-	/// </summary>
-	class MainClass
-	{
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main(string[] args)
-		{
-			try
-			{
-				Calculator calc = new Calculator();
-				calc.Parse("(5+2)*(4*2)");			
-			}
-			catch(Exception ex)
-			{
-				Console.WriteLine(ex.ToString());
-			}
-		}
-	}
+    /// <summary>
+    /// Summary description for Program.
+    /// </summary>
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main(string[] args)
+        {
+            try
+            {
+                Calculator calc = new Calculator();
+                calc.Parse("(5+2)*(4*2)");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+    }
 }

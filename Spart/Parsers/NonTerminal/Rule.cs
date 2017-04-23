@@ -25,104 +25,102 @@
 
 namespace Spart.Parsers.NonTerminal
 {
-	using System;
-	using Spart.Actions;
-	using Spart.Scanners;
+    using System;
+    using Spart.Scanners;
 
-	/// <summary>
-	/// A rule is a parser holder.
-	/// </summary>
-	public class Rule : NonTerminalParser
-	{
-		private Parser m_Parser;
+    /// <summary>
+    /// A rule is a parser holder.
+    /// </summary>
+    public class Rule : NonTerminalParser
+    {
+        private Parser m_Parser;
 
-		/// <summary>
-		/// Empty rule creator
-		/// </summary>
-		public Rule()
-			: base()
-		{
-			Parser = null;
-		}
+        /// <summary>
+        /// Empty rule creator
+        /// </summary>
+        public Rule()
+            : this(null)
+        {
+        }
 
-		/// <summary>
-		/// Creates a rule and assign parser
-		/// </summary>
-		/// <param name="p"></param>
-		public Rule(Parser p)
-			: base()
-		{
-			Parser = p;
-		}
+        /// <summary>
+        /// Creates a rule and assign parser
+        /// </summary>
+        /// <param name="p"></param>
+        public Rule(Parser p)
+            : base()
+        {
+            Parser = p;
+        }
 
-		/// <summary>
-		/// Rule parser
-		/// </summary>
-		public Parser Parser
-		{
-			get
-			{
-				return m_Parser;
-			}
-			set
-			{
-				if( m_Parser != value )
-					m_Parser = value;
-			}
-		}
+        /// <summary>
+        /// Rule parser
+        /// </summary>
+        public Parser Parser
+        {
+            get
+            {
+                return m_Parser;
+            }
+            set
+            {
+                if (m_Parser != value)
+                    m_Parser = value;
+            }
+        }
 
-		/// <summary>
-		/// Assign a parser to a rule, if r is null, a new rule is created
-		/// </summary>
-		/// <param name="r"></param>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		public static Rule AssignParser(Rule r, Parser p)
-		{
-			if (r==null)
-			{
-				r = new Rule(p);
-				return r; 
-			}
-			r.Parser = p;
-			return r;
-		}
+        /// <summary>
+        /// Assign a parser to a rule, if r is null, a new rule is created
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static Rule AssignParser(Rule r, Parser p)
+        {
+            if (r == null)
+            {
+                r = new Rule(p);
+                return r;
+            }
+            r.Parser = p;
+            return r;
+        }
 
-		/// <summary>
-		/// Parse the input
-		/// </summary>
-		/// <param name="scanner"></param>
-		/// <returns></returns>
-		public override ParserMatch Parse(IScanner scanner)
-		{
-			if (scanner == null)
-				throw new ArgumentNullException("scanner");
+        /// <summary>
+        /// Parse the input
+        /// </summary>
+        /// <param name="scanner"></param>
+        /// <returns></returns>
+        public override ParserMatch Parse(IScanner scanner)
+        {
+            if (scanner == null)
+                throw new ArgumentNullException("scanner");
 
-			OnPreParse(scanner);
-			ParserMatch match = ParseMain(scanner);
-			OnPostParse(match,scanner);
+            OnPreParse(scanner);
+            ParserMatch match = ParseMain(scanner);
+            OnPostParse(match, scanner);
 
-			if (!match.Success)
-				return match;
+            if (!match.Success)
+                return match;
 
-			OnAction(match);
-			return match;
-		}
+            OnAction(match);
+            return match;
+        }
 
-		/// <summary>
-		/// Inner parse method
-		/// </summary>
-		/// <param name="scanner"></param>
-		/// <returns></returns>
-		public override ParserMatch ParseMain(IScanner scanner)
-		{
-			if (scanner == null)
-				throw new ArgumentNullException("scanner");
+        /// <summary>
+        /// Inner parse method
+        /// </summary>
+        /// <param name="scanner"></param>
+        /// <returns></returns>
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null)
+                throw new ArgumentNullException("scanner");
 
-			if (Parser != null)
-				return Parser.Parse(scanner);
-			else
-				return scanner.NoMatch;
-		}
-	}
+            if (Parser != null)
+                return Parser.Parse(scanner);
+            else
+                return scanner.NoMatch;
+        }
+    }
 }

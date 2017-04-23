@@ -24,10 +24,8 @@
 /// Author: Jonathan de Halleuxnamespace Spart.Actions
 namespace Spart.Actions
 {
-    using System;
-
-	/// <summary>
-	/// Action handler delegate
-	/// </summary>
-    public delegate void ActionHandler(Object sender, ActionEventArgs args);
+    /// <summary>
+    /// Action handler delegate
+    /// </summary>
+    public delegate void ActionHandler(object sender, ActionEventArgs args);
 }

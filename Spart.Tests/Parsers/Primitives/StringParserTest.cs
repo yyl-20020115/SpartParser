@@ -28,60 +28,60 @@ using System;
 
 namespace Spart.Tests.Parsers.Primitives
 {
-	using NUnit.Framework;
-	using Spart.Parsers;
-	using Spart.Parsers.Primitives;
-	using Spart.Scanners;
+    using NUnit.Framework;
+    using Spart.Parsers;
+    using Spart.Parsers.Primitives;
+    using Spart.Scanners;
 
-	[TestFixture]
-	public class StringParserTest
-	{
-		public String MatchedString
-		{
-			get
-			{
-				return Provider.Text.Substring(0,3);
-			}
-		}
+    [TestFixture]
+    public class StringParserTest
+    {
+        public String MatchedString
+        {
+            get
+            {
+                return Provider.Text.Substring(0, 3);
+            }
+        }
 
-		public String NonMatchedString
-		{
-			get
-			{
-				return Provider.Text.Substring(3,4);
-			}
-		}
+        public String NonMatchedString
+        {
+            get
+            {
+                return Provider.Text.Substring(3, 4);
+            }
+        }
 
-		[Test]
-		public void Constructor()
-		{
-			IScanner scanner = Provider.Scanner;
-			StringParser parser = Prims.Str(MatchedString);
-			Assert.AreEqual( parser.MatchedString, MatchedString);
-		}
+        [Test]
+        public void Constructor()
+        {
+            IScanner scanner = Provider.Scanner;
+            StringParser parser = Prims.Str(MatchedString);
+            Assert.AreEqual(parser.MatchedString, MatchedString);
+        }
 
-		[Test]
-		public void SuccessParse()
-		{
-			IScanner scanner = Provider.Scanner;
-			StringParser parser = Prims.Str(MatchedString);
+        [Test]
+        public void SuccessParse()
+        {
+            IScanner scanner = Provider.Scanner;
+            StringParser parser = Prims.Str(MatchedString);
 
-			ParserMatch m = parser.Parse(scanner);
-			Assert.IsTrue(m.Success);
-			Assert.AreEqual(m.Offset,0);
-			Assert.AreEqual(m.Length,3);
-			Assert.AreEqual(scanner.Offset,4);
-		}
+            ParserMatch m = parser.Parse(scanner);
+            Assert.IsTrue(m.Success);
+            Assert.AreEqual(m.Offset, 0);
+            Assert.AreEqual(m.Length, 3);
+            Assert.AreEqual(scanner.Offset, 4);
+        }
 
-		[Test]
-		public void FailParse()
-		{
-			IScanner scanner = Provider.Scanner;
-			StringParser parser = Prims.Str(NonMatchedString);
+        [Test]
+        public void FailParse()
+        {
+            IScanner scanner = Provider.Scanner;
+            StringParser parser = Prims.Str(NonMatchedString);
 
-			ParserMatch m = parser.Parse(scanner);
-			Assert.IsTrue(!m.Success);
-			Assert.AreEqual(scanner.Offset,0);
-		}
-	}
+            ParserMatch m = parser.Parse(scanner);
+            Assert.IsTrue(!m.Success);
+            Assert.AreEqual(scanner.Offset, 0);
+        }
+    }
 }

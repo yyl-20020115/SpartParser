@@ -25,44 +25,53 @@
 
 namespace Spart.Parsers.Composite
 {
-	using Spart.Scanners;
+    using Scanners;
+    using System;
 
-	public class IntersectionParser : BinaryTerminalParser
-	{
-		public IntersectionParser(Parser first, Parser second)
-			:base(first,second)
-		{}
+    public class IntersectionParser : BinaryTerminalParser
+    {
+        public IntersectionParser(Parser first, Parser second) : base(first, second) { }
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public override ParserMatch ParseMain(IScanner scan)
-		{
-			long offset = scan.Offset;
-			ParserMatch m = FirstParser.Parse(scan);
-			if (m.Success)
-			{
-				ParserMatch m2 = SecondParser.Parse(scan);
-				if (m2.Success)
-				{
-					m.Concat(m2);
-					return m;
-				}
-			}
-			else
-			{
-				scan.Seek(offset);
-				m=SecondParser.Parse(scan);
-				if (m.Success)
-				{
-					ParserMatch m2=FirstParser.Parse(scan);
-					if (m2.Success)
-					{
-						m.Concat(m2);
-						return m;
-					}
-				}
-			}
+            long offset = scanner.Offset;
 
-			scan.Seek(offset);
-			return scan.NoMatch;
-		}
-	}
+            ParserMatch m = this.FirstParser.Parse(scanner);
+
+            if (m.Success)
+            {
+                ParserMatch m2 = this.SecondParser.Parse(scanner);
+
+                if (m2.Success)
+                {
+                    m.Concat(m2);
+
+                    return m;
+                }
+            }
+            else
+            {
+                scanner.Seek(offset);
+
+                m = this.SecondParser.Parse(scanner);
+
+                if (m.Success)
+                {
+                    ParserMatch m2 = this.FirstParser.Parse(scanner);
+
+                    if (m2.Success)
+                    {
+                        m.Concat(m2);
+
+                        return m;
+                    }
+                }
+            }
+
+            scanner.Seek(offset);
+
+            return scanner.NoMatch;
+        }
+    }
 }

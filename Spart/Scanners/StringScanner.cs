@@ -25,41 +25,40 @@
 namespace Spart.Scanners
 {
     using System;
-	using System.IO;
-	using Spart.Parsers;
+    using Spart.Parsers;
 
-	/// <summary>
-	/// Scanner acting on a string.
-	/// <seealso cref="IScanner"/>
-	/// </summary>
+    /// <summary>
+    /// Scanner acting on a string.
+    /// <seealso cref="IScanner"/>
+    /// </summary>
     public class StringScanner : IScanner
     {
         private String m_InputString;
         private long m_Offset;
         private IFilter m_Filter;
 
-		/// <summary>
-		/// Creates a scanner on the string.
-		/// </summary>
-		/// <param name="inputString">Input string</param>
-		/// <exception cref="ArgumentNullException">input string is null</exception>
-		public StringScanner(String inputString)
+        /// <summary>
+        /// Creates a scanner on the string.
+        /// </summary>
+        /// <param name="inputString">Input string</param>
+        /// <exception cref="ArgumentNullException">input string is null</exception>
+        public StringScanner(String inputString)
         {
             if (inputString == null)
                 throw new ArgumentNullException("inputString is null");
             m_InputString = inputString;
             Offset = 0;
             Filter = null;
-        }               
+        }
 
-		/// <summary>
-		/// Creates a scanner on the string at a specified offset
-		/// </summary>
-		/// <param name="inputString">Input string</param>
+        /// <summary>
+        /// Creates a scanner on the string at a specified offset
+        /// </summary>
+        /// <param name="inputString">Input string</param>
         /// <param name="offset">Offset</param>
-		/// <exception cref="ArgumentNullException">input string is null</exception>
-		/// <exception cref="ArgumentException">offset if out of range</exception>
-		public StringScanner(String inputString, long offset)
+        /// <exception cref="ArgumentNullException">input string is null</exception>
+        /// <exception cref="ArgumentException">offset if out of range</exception>
+        public StringScanner(String inputString, long offset)
         {
             if (inputString == null)
                 throw new ArgumentNullException("inputString is null");
@@ -68,23 +67,23 @@ namespace Spart.Scanners
             m_InputString = inputString;
             Offset = offset;
             Filter = null;
-        }               
- 
-		/// <summary>
-		/// the input string
-		/// </summary>
-        public String InputString  
+        }
+
+        /// <summary>
+        /// the input string
+        /// </summary>
+        public String InputString
         {
             get
             {
                 return m_InputString;
             }
         }
- 
-		/// <summary>
-		/// Current offset
-		/// </summary>
-        public long Offset  
+
+        /// <summary>
+        /// Current offset
+        /// </summary>
+        public long Offset
         {
             get
             {
@@ -98,22 +97,22 @@ namespace Spart.Scanners
             }
         }
 
-		/// <summary>
-		/// true if at the end of the string
-		/// </summary>
-        public bool AtEnd   
+        /// <summary>
+        /// true if at the end of the string
+        /// </summary>
+        public bool AtEnd
         {
             get
-            { 
+            {
                 return m_Offset == InputString.Length;
             }
         }
 
-		/// <summary>
-		/// Advance the cursor once
-		/// </summary>
-		/// <returns>true if not at end</returns>
-		/// <exception cref="Exception">If called while AtEnd is true</exception>
+        /// <summary>
+        /// Advance the cursor once
+        /// </summary>
+        /// <returns>true if not at end</returns>
+        /// <exception cref="Exception">If called while AtEnd is true</exception>
         public bool Read()
         {
             if (AtEnd)
@@ -122,93 +121,93 @@ namespace Spart.Scanners
 
             return !AtEnd;
         }
-          
-		/// <summary>
-		/// Current character
-		/// </summary>
-		/// <returns>character at cursor position</returns>
+
+        /// <summary>
+        /// Current character
+        /// </summary>
+        /// <returns>character at cursor position</returns>
         public char Peek()
         {
-            if (Filter==null)
+            if (Filter == null)
                 return InputString[(int)Offset];
             else
                 return Filter.Filter(InputString[(int)Offset]);
         }
 
-		/// <summary>
-		/// Extracts a substring 
-		/// </summary>
-		/// <param name="offset"></param>
-		/// <param name="length"></param>
-		/// <returns></returns>
-		public String Substring(long offset, int length)
-		{
-			String s=InputString.Substring((int)offset,Math.Min(length, InputString.Length-(int)offset));
-			
-			if (Filter != null)
-				s=Filter.Filter(s);
+        /// <summary>
+        /// Extracts a substring 
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public String Substring(long offset, int length)
+        {
+            String s = InputString.Substring((int)offset, Math.Min(length, InputString.Length - (int)offset));
 
-			return s;
-		}
+            if (Filter != null)
+                s = Filter.Filter(s);
 
-		/// <summary>
-		/// Moves the cursor to the offset position
-		/// </summary>
-		/// <param name="offset"></param>
+            return s;
+        }
+
+        /// <summary>
+        /// Moves the cursor to the offset position
+        /// </summary>
+        /// <param name="offset"></param>
         public void Seek(long offset)
         {
-			if (offset < 0 || offset > InputString.Length)
-				throw new ArgumentOutOfRangeException("offset");
+            if (offset < 0 || offset > InputString.Length)
+                throw new ArgumentOutOfRangeException("offset");
 
             Offset = offset;
         }
-        
-		/// <summary>
-		/// Current filter
-		/// </summary>
-        public IFilter Filter 
+
+        /// <summary>
+        /// Current filter
+        /// </summary>
+        public IFilter Filter
         {
             get
             {
                 return m_Filter;
             }
-            set 
-            { 
+            set
+            {
                 m_Filter = value;
             }
-        } 
+        }
 
-		/// <summary>
-		/// Failure match
-		/// </summary>
+        /// <summary>
+        /// Failure match
+        /// </summary>
         public ParserMatch NoMatch
         {
             get
             {
-                return new ParserMatch(this,0,-1);
+                return new ParserMatch(this, 0, -1);
             }
         }
 
-		/// <summary>
-		/// Empty match
-		/// </summary>
+        /// <summary>
+        /// Empty match
+        /// </summary>
         public ParserMatch EmptyMatch
         {
             get
             {
-                return new ParserMatch(this,0,0);
+                return new ParserMatch(this, 0, 0);
             }
         }
 
-		/// <summary>
-		/// Creates a successful match
-		/// </summary>
-		/// <param name="offset"></param>
-		/// <param name="length"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Creates a successful match
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public ParserMatch CreateMatch(long offset, int length)
         {
-            return new ParserMatch(this,offset,length);
+            return new ParserMatch(this, offset, length);
         }
     }
 }

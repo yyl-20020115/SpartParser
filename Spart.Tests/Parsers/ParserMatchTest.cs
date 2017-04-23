@@ -28,11 +28,10 @@ using System;
 
 namespace Spart.Tests.Parsers
 {
-	using NUnit.Framework;
-	using Spart.Scanners;
-	using Spart.Parsers;
+    using NUnit.Framework;
+    using Spart.Parsers;
 
-	[TestFixture]
+    [TestFixture]
 	public class ParserMatchTest
 	{
 		public ParserMatch NoMatch

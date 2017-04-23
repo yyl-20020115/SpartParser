@@ -24,39 +24,36 @@
 /// Author: Jonathan de Halleux
 /// 
 
-using System;
-
 namespace Spart.Tests.Actions.Actors
 {
-	using System.Collections;
-	using Spart.Scanners;
-	using Spart.Parsers;
-	using Spart.Parsers.Primitives;
-	using Spart.Actions;
+    using NUnit.Framework;
+    using Spart.Actions;
+    using Spart.Parsers.Primitives;
+    using Spart.Scanners;
+    using System.Collections;
+    using System.Collections.Generic;
 
-	using NUnit.Framework;
+    [TestFixture]
+    public class AppendActorTest
+    {
+        public List<string> List
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
+        [Test]
+        public void AppendString()
+        {
+            IScanner scanner = Provider.Scanner;
+            StringParser parser = new StringParser(Provider.Text);
+            IList<string> list = List;
+            parser.Act += Actor.Append(list);
+            parser.Parse(scanner);
 
-	[TestFixture]
-	public class AppendActorTest
-	{
-		public ArrayList List
-		{
-			get
-			{
-				return new ArrayList();
-			}
-		}
-		[Test]
-		public void AppendString()
-		{
-			IScanner scanner = Provider.Scanner;
-			StringParser parser = new StringParser(Provider.Text);
-			IList list = List;
-			parser.Act += Actor.Append(list);
-			parser.Parse(scanner);
-
-			Assert.AreEqual(list.Count, 1);
-			Assert.AreEqual(list[0], Provider.Text);
-		}
-	}
+            Assert.AreEqual(list.Count, 1);
+            Assert.AreEqual(list[0], Provider.Text);
+        }
+    }
 }

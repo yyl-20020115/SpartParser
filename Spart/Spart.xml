@@ -9,19 +9,6 @@
             Action event argument class
             </summary>
         </member>
-        <member name="M:Spart.Actions.ActionEventArgs.#ctor(Spart.Parsers.ParserMatch)">
-            <summary>
-            Construct a new event argument instance
-            </summary>
-            <param name="match"></param>
-        </member>
-        <member name="M:Spart.Actions.ActionEventArgs.#ctor(Spart.Parsers.ParserMatch,System.Object)">
-            <summary>
-            Construct a new event argument instance
-            </summary>
-            <param name="match"></param>
-            <param name="typedValue"></param>
-        </member>
         <member name="P:Spart.Actions.ActionEventArgs.Match">
             <summary>
             The parser match
@@ -37,6 +24,19 @@
             The typed parse result
             </summary>
         </member>
+        <member name="M:Spart.Actions.ActionEventArgs.#ctor(Spart.Parsers.ParserMatch)">
+            <summary>
+            Construct a new event argument instance
+            </summary>
+            <param name="match"></param>
+        </member>
+        <member name="M:Spart.Actions.ActionEventArgs.#ctor(Spart.Parsers.ParserMatch,System.Object)">
+            <summary>
+            Construct a new event argument instance
+            </summary>
+            <param name="match"></param>
+            <param name="typedValue"></param>
+        </member>
         <member name="T:Spart.Actions.ActionHandler">
             <summary>
             Action handler delegate
@@ -47,18 +47,18 @@
             Static helper class that creates actors
             </summary>
         </member>
-        <member name="M:Spart.Actions.Actor.Append(System.Collections.IList)">
+        <member name="M:Spart.Actions.Actor.Append(System.Collections.Generic.IList{System.String})">
             <summary>
             Create an actor that append the parse result to a <see cref="T:System.Collections.IList"/>.
             </summary>
             <param name="list"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Actions.Actor.Assign(System.Object)">
+        <member name="M:Spart.Actions.Actor.Assign(System.String)">
             <summary>
             Create an actor that assign the parse result to an object
             </summary>
-            <param name="o"></param>
+            <param name="value"></param>
             <returns></returns>
         </member>
         <member name="M:Spart.Actions.Actor.Throw(System.Exception)">
@@ -97,14 +97,14 @@
             NonTerminal parser abstract class
             </summary>
         </member>
-        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.#ctor">
-            <summary>
-            Default constructor
-            </summary>
-        </member>
         <member name="P:Spart.Parsers.NonTerminal.NonTerminalParser.ID">
             <summary>
             Rule ID, used for debugging
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.#ctor">
+            <summary>
+            Default constructor
             </summary>
         </member>
         <member name="E:Spart.Parsers.NonTerminal.NonTerminalParser.PreParse">
@@ -121,14 +121,14 @@
             <summary>
             Preparse event caller
             </summary>
-            <param name="scan"></param>
+            <param name="scanner"></param>
         </member>
         <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.OnPostParse(Spart.Parsers.ParserMatch,Spart.Scanners.IScanner)">
             <summary>
             Post parse event caller
             </summary>
             <param name="match"></param>
-            <param name="scan"></param>
+            <param name="scanner"></param>
         </member>
         <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.AddContext(Spart.Parsers.NonTerminal.IParserContext)">
             <summary>
@@ -277,7 +277,7 @@
             <summary>
             Outer parse method
             </summary>
-            <param name="scan"></param>
+            <param name="scanner"></param>
             <returns></returns>
         </member>
         <member name="E:Spart.Parsers.Parser.Act">

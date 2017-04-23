@@ -25,20 +25,18 @@
 
 namespace Spart.Actions.Actors
 {
-	using System;
-
-	/// <summary>
-	/// Actor interface
-	/// </summary>
-	public interface IActor
+    /// <summary>
+    /// Actor interface
+    /// </summary>
+    public interface IActor
     {
-		/// <summary>
-		/// Handler method.
-		/// <seealso cref="ActionHandler"/>
-		/// <seealso cref="ActionEventArgs"/>
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="args"></param>
-        void DoAction(Object sender, ActionEventArgs args);
+        /// <summary>
+        /// Handler method.
+        /// <seealso cref="ActionHandler"/>
+        /// <seealso cref="ActionEventArgs"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        void DoAction(object sender, ActionEventArgs args);
     }
 }

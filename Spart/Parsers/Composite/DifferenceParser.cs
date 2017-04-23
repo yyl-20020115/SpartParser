@@ -25,41 +25,47 @@
 
 namespace Spart.Parsers.Composite
 {
-	/// <summary>
-	/// Summary description for DifferenceParser.
-	/// </summary>
-	public class DifferenceParser : BinaryTerminalParser
-	{
-		public DifferenceParser(Parser left, Parser right)
-			:base(left,right)
-		{}
+    using Scanners;
+    using System;
 
-		public override ParserMatch ParseMain(Spart.Scanners.IScanner scan)
-		{
-			long offset = scan.Offset;
+    /// <summary>
+    /// Summary description for DifferenceParser.
+    /// </summary>
+    public class DifferenceParser : BinaryTerminalParser
+    {
+        public DifferenceParser(Parser left, Parser right) : base(left, right) { }
 
-			ParserMatch m = FirstParser.Parse(scan);
-			long goodOffset= scan.Offset;
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-			if (!m.Success)
-			{
-				scan.Seek(offset);
-				return scan.NoMatch;
-			}
+            long offset = scanner.Offset;
 
-			// doing difference
-			scan.Seek(offset);
-			ParserMatch d = SecondParser.Parse(scan);
-			if (d.Success)
-			{
-				scan.Seek(offset);
-				return scan.NoMatch;
-			}
+            ParserMatch m = this.FirstParser.Parse(scanner);
 
-			// ok
-			scan.Seek(goodOffset);
-			return m;
-		}
+            long goodOffset = scanner.Offset;
 
-	}
+            if (!m.Success)
+            {
+                scanner.Seek(offset);
+                return scanner.NoMatch;
+            }
+
+            // doing difference
+            scanner.Seek(offset);
+
+            ParserMatch d = this.SecondParser.Parse(scanner);
+
+            if (d.Success)
+            {
+                scanner.Seek(offset);
+                return scanner.NoMatch;
+            }
+
+            // ok
+            scanner.Seek(goodOffset);
+
+            return m;
+        }
+    }
 }

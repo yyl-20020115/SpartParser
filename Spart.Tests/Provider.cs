@@ -28,24 +28,24 @@ using System;
 
 namespace Spart.Tests
 {
-	using Spart.Scanners;
+    using Spart.Scanners;
 
-	public class Provider
-	{
-		public static String Text
-		{
-			get
-			{
-				return "hello world";
-			}
-		}
+    public class Provider
+    {
+        public static String Text
+        {
+            get
+            {
+                return "hello world";
+            }
+        }
 
-		public static IScanner Scanner
-		{
-			get
-			{
-				return new StringScanner(Text);
-			}
-		}
-	}
+        public static IScanner Scanner
+        {
+            get
+            {
+                return new StringScanner(Text);
+            }
+        }
+    }
 }

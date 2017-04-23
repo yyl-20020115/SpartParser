@@ -25,31 +25,16 @@
 
 namespace Spart.Actions.Actors
 {
-	using System;
-	public class AssignActor : IActor
+    public class AssignActor : IActor
     {
-        private Object m_Value;
-
-        public AssignActor(Object o)
+        public virtual string Value { get; set; } = null;
+        public AssignActor(string value)
         {
-            m_Value = o;
+            this.Value = value;
         }
-
-        public Object Value
+        public virtual void DoAction(object sender, ActionEventArgs args)
         {
-            get
-            {
-                return m_Value;
-            }
-            set
-            {
-                m_Value = value;
-            }
-        } 
-
-        public void DoAction(Object sender, ActionEventArgs args)
-        {
-           m_Value = args.Value;
+            this.Value = args?.Value;
         }
     }
 }

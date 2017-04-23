@@ -25,40 +25,15 @@
 
 namespace Spart.Parsers
 {
-	using System;
-	public abstract class BinaryTerminalParser : TerminalParser
-	{
-		private Parser m_FirstParser;
-		private Parser m_SecondParser;
-
-		public BinaryTerminalParser(Parser first, Parser second)
-		{
-			FirstParser = first;
-			SecondParser = second;
-		}
-
-		public Parser FirstParser
-		{
-			get
-			{
-				return m_FirstParser;
-			}
-			set
-			{
-                m_FirstParser = value ?? throw new ArgumentNullException("first parser is null");
-			}
-		}
-
-		public Parser SecondParser
-		{
-			get
-			{
-				return m_SecondParser;
-			}
-			set
-			{
-                m_SecondParser = value ?? throw new ArgumentNullException("second parser is null");
-			}
-		}	
-	}
+    using System;
+    public abstract class BinaryTerminalParser : TerminalParser
+    {
+        public virtual Parser FirstParser { get; protected set; } = null;
+        public virtual Parser SecondParser { get; protected set; } = null;
+        public BinaryTerminalParser(Parser first, Parser second)
+        {
+            FirstParser = first ?? throw new ArgumentNullException(nameof(first));
+            SecondParser = second ?? throw new ArgumentNullException(nameof(second));
+        }
+    }
 }

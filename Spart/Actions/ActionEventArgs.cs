@@ -25,79 +25,48 @@
 
 namespace Spart.Actions
 {
-	using System;
-	using Spart.Parsers;
+    using System;
+    using Spart.Parsers;
 
-	/// <summary>
-	/// Action event argument class
-	/// </summary>
-	public class ActionEventArgs : EventArgs
-	{
-		private ParserMatch m_Match;
-		private Object m_TypeValue;
-
-		/// <summary>
-		/// Construct a new event argument instance
-		/// </summary>
-		/// <param name="match"></param>
-		public ActionEventArgs(ParserMatch match)
-		{
-			if (match == null)
-				throw new ArgumentNullException("match is null");
-			if (!match.Success)
-				throw new ArgumentException("Match is not successfull");
-			m_Match = match;
-			m_TypeValue = null;
-		}
-
-		/// <summary>
-		/// Construct a new event argument instance
-		/// </summary>
-		/// <param name="match"></param>
-		/// <param name="typedValue"></param>
-		public ActionEventArgs(ParserMatch match, Object typedValue)
-		{
-			if (match == null)
-				throw new ArgumentNullException("match is null");
-			if (!match.Success)
-				throw new ArgumentException("Match is not successfull");
-			if (typedValue==null)
-				throw new ArgumentNullException("typed value");
-			m_Match = match;
-			m_TypeValue = typedValue;
-		}
- 
-		/// <summary>
-		/// The parser match
-		/// </summary>
-		public ParserMatch Match
-		{
-			get
-			{
-				return m_Match;   
-			}
-		}    
-
+    /// <summary>
+    /// Action event argument class
+    /// </summary>
+    public class ActionEventArgs : EventArgs
+    {
+        /// <summary>
+        /// The parser match
+        /// </summary>
+        public virtual ParserMatch Match { get; protected set; } = null;
         /// <summary>
         /// The parser match value
         /// </summary>
-		public String Value
-		{
-			get
-			{
-				return Match.Value;
-			}
-		}
-
-		/// <summary>
-		/// The typed parse result
-		/// </summary>
-		public Object TypeValue
-		{
-			get
-			{
-				return m_TypeValue;
-			}
-		}
-	}
+        public virtual String Value => this.Match?.Value;
+        /// <summary>
+        /// The typed parse result
+        /// </summary>
+        public virtual object TypeValue { get; protected set; } = null;
+        /// <summary>
+        /// Construct a new event argument instance
+        /// </summary>
+        /// <param name="match"></param>
+        public ActionEventArgs(ParserMatch match)
+            : this(match, null)
+        {
+        }
+        /// <summary>
+        /// Construct a new event argument instance
+        /// </summary>
+        /// <param name="match"></param>
+        /// <param name="typedValue"></param>
+        public ActionEventArgs(ParserMatch match, object typedValue)
+        {
+            this.Match = match ?? throw new ArgumentNullException(nameof(match));
+            if (!match.Success)
+            {
+                this.Match = null;
+                throw new ArgumentException(nameof(match) + " is not successfull");
+            }
+            this.TypeValue = typedValue ?? throw new ArgumentNullException(nameof(typedValue));
+        }
+    }
 }

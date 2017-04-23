@@ -25,93 +25,81 @@
 
 namespace Spart.Parsers.Composite
 {
-	using System;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
+    using System;
+    using Spart.Scanners;
 
-	public class RepetitionParser : UnaryTerminalParser
-	{
-		private uint m_LowerBound;
-		private uint m_UpperBound;
+    public class RepetitionParser : UnaryTerminalParser
+    {
+        public virtual uint LowerBound { get; protected set; } = 0;
+        public virtual uint UpperBound { get; protected set; } = 0;
+        public RepetitionParser(Parser parser, uint lowerBound, uint upperBound) : base(parser)
+        {
+            this.SetBounds(lowerBound, upperBound);
+        }
+        public virtual void SetBounds(uint lb, uint ub)
+        {
+            if (ub < lb)
+                throw new ArgumentException("lower bound must be smaller than upper bound");
+            this.LowerBound = lb;
+            this.UpperBound = ub;
+        }
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public RepetitionParser(Parser parser, uint lowerBound, uint upperBound)
-			:base(parser)
-		{                
-			SetBounds(lowerBound,upperBound);
-		}
+            // save scanner state
+            long offset = scanner.Offset;
 
-		public uint LowerBound
-		{
-			get
-			{
-				return m_LowerBound;
-			}
-		}
+            ParserMatch m = scanner.EmptyMatch, t = null;
 
-		public uint UpperBound
-		{
-			get
-			{
-				return m_UpperBound;
-			}
-		}
+            // execution bound                                
+            int count = 0;
 
-		public void SetBounds(uint lb, uint ub)
-		{
-			if (ub < lb)
-				throw new ArgumentException("lower bound must be smaller than upper bound");
-			m_LowerBound = lb;
-			m_UpperBound = ub;
-		}
+            // lower bound, minimum number of executions
+            while (count < LowerBound && !scanner.AtEnd)
+            {
+                t = Parser.Parse(scanner);
 
-		public override ParserMatch ParseMain(IScanner scanner)
-		{
-			// save scanner state
-			long offset = scanner.Offset;
+                // stop if not successful
+                if (!t.Success)
+                {
+                    break;
+                }
 
-			ParserMatch m=scanner.EmptyMatch;
-			ParserMatch m_temp=null;
+                // increment count and update full match
+                ++count;
+            }
 
-			// execution bound                                
-			int count=0;
+            if (count == LowerBound)
+            {
+                while (count < UpperBound && !scanner.AtEnd)
+                {
+                    t = Parser.Parse(scanner);
 
-			// lower bound, minimum number of executions
-			while(count < LowerBound && !scanner.AtEnd)
-			{
-				m_temp = Parser.Parse(scanner);
-				// stop if not successful
-				if (!m_temp.Success)
-					break;
-				// increment count and update full match
-				++count;
-			}
-                
-			if (count == LowerBound)
-			{
-				while(count < UpperBound && !scanner.AtEnd)
-				{
-					m_temp = Parser.Parse(scanner);
+                    // stop if not successful
+                    if (!t.Success)
+                    {
+                        break;
+                    }
+                    // increment count
+                    ++count;
+                }
+            }
+            else
+            {
+                m = scanner.NoMatch;
+            }
 
-					// stop if not successful
-					if (!m_temp.Success)
-						break;
-
-					// increment count
-					++count;
-				}
-			}
-			else
-				m=scanner.NoMatch;
-
-			if (m.Success)
-				m = scanner.CreateMatch(offset,count);
-
-			// restoring parser failed, rewind scanner
-			if (!m.Success)
-				scanner.Seek(offset);
-
-			return m;
-		}
-	}
+            if (m.Success)
+            {
+                m = scanner.CreateMatch(offset, count);
+            }
+            // restoring parser failed, rewind scanner
+            if (!m.Success)
+            {
+                scanner.Seek(offset);
+            }
+            return m;
+        }
+    }
 }

@@ -23,127 +23,128 @@
 /// 
 /// Author: Jonathan de Halleuxnamespace Spart.Parsers
 
-
 namespace Spart.Parsers
 {
-	using System;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.Composite;
-	using Spart.Parsers.NonTerminal;
+    using Spart.Scanners;
+    using Spart.Actions;
+    using Spart.Parsers.Composite;
+    using System;
 
-	/// <summary>
-	/// Abstract parser class
-	/// </summary>
-	public abstract class Parser
-	{
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public Parser()
-		{}
+    /// <summary>
+    /// Abstract parser class
+    /// </summary>
+    public abstract class Parser
+    {
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Parser() { }
 
-		/// <summary>
-		/// Inner parse method
-		/// </summary>
-		/// <param name="scan">scanner</param>
-		/// <returns>the match</returns>
-		public abstract ParserMatch ParseMain(IScanner scan);
+        /// <summary>
+        /// Inner parse method
+        /// </summary>
+        /// <param name="scan">scanner</param>
+        /// <returns>the match</returns>
+        public abstract ParserMatch ParseMain(IScanner scan);
 
-		/// <summary>
-		/// Outer parse method
-		/// </summary>
-		/// <param name="scan"></param>
-		/// <returns></returns>
-		public virtual ParserMatch Parse(IScanner scan)
-		{
-			ParserMatch m = ParseMain(scan);
-			if (m.Success)
-				OnAction(m);
-			return m;
-		}
+        /// <summary>
+        /// Outer parse method
+        /// </summary>
+        /// <param name="scanner"></param>
+        /// <returns></returns>
+        public virtual ParserMatch Parse(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		/// <summary>
-		/// Action event
-		/// </summary>
-		public event ActionHandler Act;
+            ParserMatch m = this.ParseMain(scanner);
 
-		/// <summary>
-		/// Action caller method
-		/// </summary>
-		/// <param name="m"></param>
-		public virtual void OnAction(ParserMatch m)
-		{
-			if (Act != null)
-				Act(this,new ActionEventArgs(m));
-		}
+            if (m.Success)
+            {
+                this.OnAction(m);
+            }
+            return m;
+        }
 
-		#region Operators
+        /// <summary>
+        /// Action event
+        /// </summary>
+        public virtual event ActionHandler Act;
 
-		/// <summary>
-		/// Positive operator
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		public static RepetitionParser operator +(Parser p)
-		{
-			return Ops.Positive(p);
-		}
+        /// <summary>
+        /// Action caller method
+        /// </summary>
+        /// <param name="m"></param>
+        public virtual void OnAction(ParserMatch m)
+        {
+            this.Act?.Invoke(this, new ActionEventArgs(m));
+        }
 
-		/// <summary>
-		/// Optional operator
-		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
-		public static RepetitionParser operator ! (Parser p)
-		{
-			return Ops.Optional(p);
-		}
+        #region Operators
 
-		/// <summary>
-		/// Alternative operator
-		/// </summary>
-		/// <param name="left"></param>
-		/// <param name="right"></param>
-		/// <returns></returns>
-		public static AlternativeParser operator | (Parser left, Parser right)
-		{
-			return Ops.Alternative(left, right);
-		}
+        /// <summary>
+        /// Positive operator
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static RepetitionParser operator +(Parser p)
+        {
+            return Ops.Positive(p);
+        }
 
-		/// <summary>
-		/// Intersection operator
-		/// </summary>
-		/// <param name="left"></param>
-		/// <param name="right"></param>
-		/// <returns></returns>
-		public static IntersectionParser operator & (Parser left, Parser right)
-		{
-			return Ops.Intersection(left, right);
-		}
+        /// <summary>
+        /// Optional operator
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static RepetitionParser operator !(Parser p)
+        {
+            return Ops.Optional(p);
+        }
 
-		/// <summary>
-		/// Difference operator
-		/// </summary>
-		/// <param name="left"></param>
-		/// <param name="right"></param>
-		/// <returns></returns>
-		public static DifferenceParser operator - (Parser left, Parser right)
-		{
-			return Ops.Difference(left, right);
-		}
+        /// <summary>
+        /// Alternative operator
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static AlternativeParser operator |(Parser left, Parser right)
+        {
+            return Ops.Alternative(left, right);
+        }
 
-		/// <summary>
-		/// List operator
-		/// </summary>
-		/// <param name="left"></param>
-		/// <param name="right"></param>
-		/// <returns></returns>
-		public static ListParser operator % (Parser left, Parser right)
-		{
-			return Ops.List(left,right);
-		}
+        /// <summary>
+        /// Intersection operator
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static IntersectionParser operator &(Parser left, Parser right)
+        {
+            return Ops.Intersection(left, right);
+        }
 
-		#endregion
-	}
+        /// <summary>
+        /// Difference operator
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static DifferenceParser operator -(Parser left, Parser right)
+        {
+            return Ops.Difference(left, right);
+        }
+
+        /// <summary>
+        /// List operator
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static ListParser operator %(Parser left, Parser right)
+        {
+            return Ops.List(left, right);
+        }
+
+        #endregion
+    }
 }
