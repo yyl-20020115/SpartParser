@@ -22,23 +22,38 @@ namespace Spart.Demo
 		/// </summary>
 		public Calculator()
 		{
-			// creating rules and assigning names (for debugging)
-			group = new Rule(); group.ID = "group"; 
-			term = new Rule(); term.ID ="term";
-			factor = new Rule(); factor.ID="factor";
-			expression = new Rule(); expression.ID="expression";
-			integer  = new Rule(); integer.ID="integer";
+            // creating rules and assigning names (for debugging)
+            group = new Rule()
+            {
+                ID = "group"
+            };
+            term = new Rule()
+            {
+                ID = "term"
+            };
+            factor = new Rule()
+            {
+                ID = "factor"
+            };
+            expression = new Rule()
+            {
+                ID = "expression"
+            };
+            integer = new Rule()
+            {
+                ID = "integer"
+            };
 
-			// debuggger
-			//debug = new Debugger(Console.Out);
-			//debug += factor;
-			//debug+=term;
-			//debug+=group;
-			//debug += expression;
-			//debug += integer;
+            // debuggger
+            //debug = new Debugger(Console.Out);
+            //debug += factor;
+            //debug+=term;
+            //debug+=group;
+            //debug += expression;
+            //debug += integer;
 
-			// creating sub parsers
-			Parser add = Ops.Seq('+',term);
+            // creating sub parsers
+            Parser add = Ops.Seq('+',term);
 			// attaching semantic action
 			add.Act += new ActionHandler(this.Add);
 			Parser sub = Ops.Seq('-',term);

@@ -45,9 +45,7 @@ namespace Spart.Parsers
 			}
 			set
 			{
-				if (value == null)
-					throw new ArgumentNullException("first parser is null");
-				m_FirstParser = value;
+                m_FirstParser = value ?? throw new ArgumentNullException("first parser is null");
 			}
 		}
 
@@ -59,9 +57,7 @@ namespace Spart.Parsers
 			}
 			set
 			{
-				if (value == null)
-					throw new ArgumentNullException("second parser is null");
-				m_SecondParser = value;
+                m_SecondParser = value ?? throw new ArgumentNullException("second parser is null");
 			}
 		}	
 	}
