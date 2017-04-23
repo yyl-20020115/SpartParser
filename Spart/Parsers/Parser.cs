@@ -35,24 +35,6 @@ namespace Spart.Parsers
     /// </summary>
     public abstract class Parser
     {
-        public static Parser operator +(Parser first, Parser second)
-        {
-            return Ops.Seq(first, second);
-        }
-        public static Parser operator ~(Parser p)
-        {
-            return Ops.Klenee(p);
-        }
-
-        public static implicit operator Parser(char c)
-        {
-            return Prims.Ch(c);
-        }
-        public static implicit operator Parser(string str)
-        {
-            return Prims.Str(str);
-        }
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -61,9 +43,9 @@ namespace Spart.Parsers
         /// <summary>
         /// Inner parse method
         /// </summary>
-        /// <param name="scan">scanner</param>
+        /// <param name="scanner">scanner</param>
         /// <returns>the match</returns>
-        public abstract ParserMatch ParseMain(IScanner scan);
+        public abstract ParserMatch ParseMain(IScanner scanner);
 
         /// <summary>
         /// Outer parse method
@@ -86,7 +68,7 @@ namespace Spart.Parsers
         /// <summary>
         /// Action event
         /// </summary>
-        public virtual event ActionHandler Act;
+        public virtual event ActionHandler Action;
 
         /// <summary>
         /// Action caller method
@@ -96,12 +78,29 @@ namespace Spart.Parsers
         {
             if (m == null) throw new ArgumentNullException(nameof(m));
 
-            this.Act?.Invoke(this, new ActionEventArgs(m));
+            this.Action?.Invoke(this, new ActionEventArgs(m));
 
             return m;
         }
 
         #region Operators
+        public static Parser operator +(Parser first, Parser second)
+        {
+            return Ops.Seq(first, second);
+        }
+        public static Parser operator ~(Parser p)
+        {
+            return Ops.Klenee(p);
+        }
+
+        public static implicit operator Parser(char c)
+        {
+            return Prims.Ch(c);
+        }
+        public static implicit operator Parser(string str)
+        {
+            return Prims.Str(str);
+        }
 
         /// <summary>
         /// Positive operator
@@ -110,7 +109,7 @@ namespace Spart.Parsers
         /// <returns></returns>
         public static RepetitionParser operator +(Parser p)
         {
-            return Ops.Positive(p);
+            return Ops.OnePlus(p);
         }
 
         /// <summary>

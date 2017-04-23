@@ -42,7 +42,7 @@ namespace Spart.Demo
             try
             {
                 Calculator calc = new Calculator();
-                calc.Parse("(5+2)*(4*2)");
+                calc.Parse("(53+29)*(41/20)");
             }
             catch (Exception ex)
             {

@@ -40,27 +40,81 @@ namespace Spart.Demo
             // creating sub parsers
             Parser add = '+' + term;
             // attaching semantic action
-            add.Act += new ActionHandler((o, args) => Console.WriteLine("add"));
+            add.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine("+");
+                }
+            );
 
             Parser sub = '-' + term;
-            sub.Act += new ActionHandler((o, args) => Console.WriteLine("sub"));
+            sub.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine("-");
+                }
+            );
 
             Parser mul = '*' + factor;
-            mul.Act += new ActionHandler((o, args) => Console.WriteLine("mul"));
+            mul.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine("*");
+                }
+            );
 
             Parser div = '/' + factor;
-            div.Act += new ActionHandler((o, args) => Console.WriteLine("div"));
+            div.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine("/");
+                }
+            );
 
             // assigning parsers to rules
-            integer.Parser = Prims.Digit;
+            integer.Parser = +Prims.Digit;
+            integer.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine($"integer: {args.Value}");
+                }
+            );
 
-            group.Parser = '(' + expression + ')';
+            group.Parser = '(' + (expression + ')');
+            group.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine($"group: {args.Value}");
+                }
+            );
 
             factor.Parser = group | integer;
+            factor.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine($"factor: {args.Value}");
+                }
+            );
 
             term.Parser = factor + ~(mul | div);
-
+            term.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine($"term: {args.Value}");
+                }
+            );
             expression.Parser = term + ~(add | mul);
+            expression.Action += new ActionHandler(
+                (o, args) =>
+                {
+                    Console.WriteLine($"expression: {args.Value}");
+                }
+            );
+        }
+
+        private void Integer_Act(object sender, ActionEventArgs args)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

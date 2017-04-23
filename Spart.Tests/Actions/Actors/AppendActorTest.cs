@@ -49,7 +49,7 @@ namespace Spart.Tests.Actions.Actors
             IScanner scanner = Provider.Scanner;
             StringParser parser = new StringParser(Provider.Text);
             IList<string> list = List;
-            parser.Act += Actor.Append(list);
+            parser.Action += Actor.Append(list);
             parser.Parse(scanner);
 
             Assert.AreEqual(list.Count, 1);

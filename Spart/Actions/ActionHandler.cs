@@ -24,8 +24,9 @@
 /// Author: Jonathan de Halleuxnamespace Spart.Actions
 namespace Spart.Actions
 {
+    using Parsers;
     /// <summary>
     /// Action handler delegate
     /// </summary>
-    public delegate void ActionHandler(object sender, ActionEventArgs args);
+    public delegate void ActionHandler(Parser sender, ActionEventArgs args);
 }

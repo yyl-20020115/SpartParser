@@ -216,7 +216,7 @@
             <param name="parser"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Parsers.Ops.Positive(Spart.Parsers.Parser)">
+        <member name="M:Spart.Parsers.Ops.OnePlus(Spart.Parsers.Parser)">
             <summary>
             + operator
             </summary>
@@ -276,7 +276,7 @@
             <summary>
             Inner parse method
             </summary>
-            <param name="scan">scanner</param>
+            <param name="scanner">scanner</param>
             <returns>the match</returns>
         </member>
         <member name="M:Spart.Parsers.Parser.Parse(Spart.Scanners.IScanner)">
@@ -286,7 +286,7 @@
             <param name="scanner"></param>
             <returns></returns>
         </member>
-        <member name="E:Spart.Parsers.Parser.Act">
+        <member name="E:Spart.Parsers.Parser.Action">
             <summary>
             Action event
             </summary>
