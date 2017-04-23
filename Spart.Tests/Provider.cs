@@ -32,7 +32,7 @@ namespace Spart.Tests
 
     public class Provider
     {
-        public static String Text
+        public static string Text
         {
             get
             {

@@ -32,14 +32,14 @@ namespace Spart.Parsers
 	/// <summary>
 	/// Static helper class to create primitive parsers
 	/// </summary>
-	public class Prims
+	public static class Prims
 	{
 		/// <summary>
 		/// Creates a parser that matches a single character
 		/// </summary>
 		/// <param name="c">character to match</param>
 		/// <returns></returns>
-		public static CharParser Ch(Char c)
+		public static CharParser Ch(char c)
 		{
 			return new CharParser(new LitteralCharTester(c));
 		}
@@ -49,9 +49,11 @@ namespace Spart.Parsers
 		/// </summary>
 		/// <param name="s">string to match</param>
 		/// <returns></returns>
-		public static StringParser Str(String s)
+		public static StringParser Str(string s)
 		{
-			return new StringParser(s);
+            if (s == null) throw new ArgumentNullException(nameof(s));
+
+            return new StringParser(s);
 		}
 
 		/// <summary>
@@ -60,152 +62,74 @@ namespace Spart.Parsers
 		/// <param name="first"></param>
 		/// <param name="last"></param>
 		/// <returns></returns>
-		public static CharParser Range(Char first, Char last)
+		public static CharParser Range(char first, char last)
 		{
 			return new CharParser(new RangeCharTester(first, last));
 		}
 
-		/// <summary>
-		/// Creates a parser that matches any character
-		/// </summary>
-		public static CharParser AnyChar
-		{
-			get
-			{
-				return new CharParser(new AnyCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches any character
+        /// </summary>
+        public static CharParser AnyChar => new CharParser(new AnyCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches control characters
-		/// </summary>
-		public static CharParser Control
-		{
-			get
-			{
-				return new CharParser(new ControlCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches control characters
+        /// </summary>
+        public static CharParser Control => new CharParser(new ControlCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches digit characters
-		/// </summary>
-		public static CharParser Digit
-		{
-			get
-			{
-				return new CharParser(new DigitCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches digit characters
+        /// </summary>
+        public static CharParser Digit => new CharParser(new DigitCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches letter characters
-		/// </summary>
-		public static CharParser Letter
-		{
-			get
-			{
-				return new CharParser(new LetterCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches letter characters
+        /// </summary>
+        public static CharParser Letter => new CharParser(new LetterCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches letter or digit characters
-		/// </summary>
-		public static CharParser LetterOrDigit
-		{
-			get
-			{
-				return new CharParser(new LetterOrDigitCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches letter or digit characters
+        /// </summary>
+        public static CharParser LetterOrDigit => new CharParser(new LetterOrDigitCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches lower case characters
-		/// </summary>
-		public static CharParser Lower
-		{
-			get
-			{
-				return new CharParser(new LowerCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches lower case characters
+        /// </summary>
+        public static CharParser Lower => new CharParser(new LowerCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches punctuation characters
-		/// </summary>
-		public static CharParser Punctuation
-		{
-			get
-			{
-				return new CharParser(new PunctuationCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches punctuation characters
+        /// </summary>
+        public static CharParser Punctuation => new CharParser(new PunctuationCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches separator characters
-		/// </summary>
-		public static CharParser Separator
-		{
-			get
-			{
-				return new CharParser(new SeparatorCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches separator characters
+        /// </summary>
+        public static CharParser Separator => new CharParser(new SeparatorCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches symbol characters
-		/// </summary>
-		public static CharParser Symbol
-		{
-			get
-			{
-				return new CharParser(new SymbolCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches symbol characters
+        /// </summary>
+        public static CharParser Symbol => new CharParser(new SymbolCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches upper case characters
-		/// </summary>
-		public static CharParser Upper
-		{
-			get
-			{
-				return new CharParser(new UpperCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches upper case characters
+        /// </summary>
+        public static CharParser Upper => new CharParser(new UpperCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches whitespace characters
-		/// </summary>
-		public static CharParser WhiteSpace
-		{
-			get
-			{
-				return new CharParser(new WhiteSpaceCharTester());
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches whitespace characters
+        /// </summary>
+        public static CharParser WhiteSpace => new CharParser(new WhiteSpaceCharTester());
 
-		/// <summary>
-		/// Creates a parser that matches and end of line
-		/// </summary>
-		public static EolParser Eol
-		{
-			get
-			{
-				return new EolParser();
-			}
-		}
+        /// <summary>
+        /// Creates a parser that matches and end of line
+        /// </summary>
+        public static EolParser Eol => new EolParser();
 
-		/// <summary>
-		/// Creates a parser that matches the end of the input
-		/// </summary>
-		public static EndParser End
-		{
-			get
-			{
-				return new EndParser();
-			}
-		}
-	}
+        /// <summary>
+        /// Creates a parser that matches the end of the input
+        /// </summary>
+        public static EndParser End => new EndParser();
+    }
 }

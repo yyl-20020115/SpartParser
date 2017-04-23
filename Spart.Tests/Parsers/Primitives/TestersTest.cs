@@ -24,8 +24,6 @@
 /// Author: Jonathan de Halleux
 /// 
 
-using System;
-
 namespace Spart.Tests.Parsers.Primitives
 {
     using NUnit.Framework;
@@ -33,7 +31,7 @@ namespace Spart.Tests.Parsers.Primitives
 
     public class Helper
     {
-        public static void Test(ICharTester test, Char success, Char failed)
+        public static void Test(ICharTester test, char success, char failed)
         {
             Assert.IsTrue(test.Test(success));
             Assert.IsTrue(!test.Test(failed));

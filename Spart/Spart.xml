@@ -342,14 +342,6 @@
             A parser match
             </summary>
         </member>
-        <member name="M:Spart.Parsers.ParserMatch.#ctor(Spart.Scanners.IScanner,System.Int64,System.Int32)">
-            <summary>
-            Builds a new match
-            </summary>
-            <param name="scanner"></param>
-            <param name="offset"></param>
-            <param name="length"></param>
-        </member>
         <member name="P:Spart.Parsers.ParserMatch.Scanner">
             <summary>
             Scanner
@@ -379,6 +371,14 @@
             <summary>
             True if match empty
             </summary>
+        </member>
+        <member name="M:Spart.Parsers.ParserMatch.#ctor(Spart.Scanners.IScanner,System.Int64,System.Int32)">
+            <summary>
+            Builds a new match
+            </summary>
+            <param name="scanner"></param>
+            <param name="offset"></param>
+            <param name="length"></param>
         </member>
         <member name="M:Spart.Parsers.ParserMatch.Concat(Spart.Parsers.ParserMatch)">
             <summary>

@@ -70,7 +70,7 @@ namespace Spart.Tests.Parsers.Composite
         public void PositiveSuccess1AtEnd()
         {
             RepetitionParser rp = +Parser;
-            String s = "a";
+            string s = "a";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -82,7 +82,7 @@ namespace Spart.Tests.Parsers.Composite
         public void PositiveSuccess2AtEnd()
         {
             RepetitionParser rp = +Parser;
-            String s = "aa";
+            string s = "aa";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -94,7 +94,7 @@ namespace Spart.Tests.Parsers.Composite
         public void PositiveSuccessNotAtEnd()
         {
             RepetitionParser rp = +Parser;
-            String s = "aaa ";
+            string s = "aaa ";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -106,7 +106,7 @@ namespace Spart.Tests.Parsers.Composite
         public void PositiveFailure()
         {
             RepetitionParser rp = +Parser;
-            String s = "b";
+            string s = "b";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(!m.Success);
@@ -116,7 +116,7 @@ namespace Spart.Tests.Parsers.Composite
         public void KleneeSuccess1AtEnd()
         {
             RepetitionParser rp = Ops.Klenee(Parser);
-            String s = "a";
+            string s = "a";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -128,7 +128,7 @@ namespace Spart.Tests.Parsers.Composite
         public void KleneeSuccess2AtEnd()
         {
             RepetitionParser rp = Ops.Klenee(Parser);
-            String s = "aa";
+            string s = "aa";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -140,7 +140,7 @@ namespace Spart.Tests.Parsers.Composite
         public void KleneeSuccessNotAtEnd()
         {
             RepetitionParser rp = Ops.Klenee(Parser);
-            String s = "aaa ";
+            string s = "aaa ";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -152,7 +152,7 @@ namespace Spart.Tests.Parsers.Composite
         public void KleneeSuccess0()
         {
             RepetitionParser rp = Ops.Klenee(Parser);
-            String s = "b";
+            string s = "b";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -164,7 +164,7 @@ namespace Spart.Tests.Parsers.Composite
         public void OptionalSuccess()
         {
             RepetitionParser rp = !Parser;
-            String s = "aa";
+            string s = "aa";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);
@@ -176,7 +176,7 @@ namespace Spart.Tests.Parsers.Composite
         public void OptionalSuccess0()
         {
             RepetitionParser rp = !Parser;
-            String s = "";
+            string s = "";
             StringScanner scan = new StringScanner(s);
             ParserMatch m = rp.Parse(scan);
             Assert.IsTrue(m.Success);

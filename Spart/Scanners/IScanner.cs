@@ -24,7 +24,6 @@
 /// Author: Jonathan de Halleux
 namespace Spart.Scanners
 {
-    using System;
     using Spart.Parsers;
 
     /// <summary>
@@ -61,7 +60,7 @@ namespace Spart.Scanners
         /// <param name="offset"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        String Substring(long offset, int length);
+        string Substring(long offset, int length);
         /// <summary>
         /// Sets the input filter
         /// </summary>

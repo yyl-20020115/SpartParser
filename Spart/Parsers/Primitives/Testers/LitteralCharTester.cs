@@ -28,6 +28,7 @@ namespace Spart.Parsers.Primitives.Testers
     public class LitteralCharTester : ICharTester
     {
         public virtual char Char { get; set; }
+
         public LitteralCharTester(char c)
         {
             this.Char = c;

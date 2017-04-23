@@ -36,7 +36,7 @@ namespace Spart.Tests.Parsers.Primitives
     [TestFixture]
     public class StringParserTest
     {
-        public String MatchedString
+        public string MatchedString
         {
             get
             {
@@ -44,7 +44,7 @@ namespace Spart.Tests.Parsers.Primitives
             }
         }
 
-        public String NonMatchedString
+        public string NonMatchedString
         {
             get
             {

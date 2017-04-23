@@ -25,121 +25,98 @@
 
 namespace Spart.Parsers
 {
-	using System;
-	using Spart.Scanners;
+    using System;
+    using Spart.Scanners;
 
-	/// <summary>
-	/// A parser match
-	/// </summary>
-	public class ParserMatch
-	{
-		private IScanner m_Scanner;
-		private long m_Offset;
-		private int m_Length;
+    /// <summary>
+    /// A parser match
+    /// </summary>
+    public class ParserMatch
+    {
+        /// <summary>
+        /// Scanner
+        /// </summary>
+        public virtual IScanner Scanner { get; protected set; }
 
-		/// <summary>
-		/// Builds a new match
-		/// </summary>
-		/// <param name="scanner"></param>
-		/// <param name="offset"></param>
-		/// <param name="length"></param>
-		public ParserMatch(IScanner scanner, long offset, int length)
-		{
-			if (scanner == null)
-				throw new ArgumentNullException("scanner");
+        /// <summary>
+        /// Offset
+        /// </summary>
+        public virtual long Offset { get; protected set; }
 
-			m_Scanner = scanner;
-			m_Offset = offset;
-			m_Length = length;
-		}
+        /// <summary>
+        /// Length
+        /// </summary>
+        public virtual int Length { get; protected set; }
 
-		/// <summary>
-		/// Scanner
-		/// </summary>
-		public IScanner Scanner
-		{
-			get
-			{
-				return m_Scanner;
-			}
-		}
+        /// <summary>
+        /// Extracts the match value
+        /// </summary>
+        public virtual string Value
+        {
+            get
+            {
+                if (Length < 0)
+                    throw new Exception("no match");
+                return this.Scanner.Substring(Offset, Length);
+            }
+        }
 
-		/// <summary>
-		/// Offset
-		/// </summary>
-		public long Offset
-		{
-			get
-			{
-				return m_Offset;
-			}
-		}
+        /// <summary>
+        /// True if match successfull
+        /// </summary>
+        public virtual bool Success
+        {
+            get
+            {
+                return this.Length >= 0;
+            }
+        }
 
-		/// <summary>
-		/// Length
-		/// </summary>
-		public int Length
-		{
-			get
-			{
-				return m_Length;
-			}
-		}
+        /// <summary>
+        /// True if match empty
+        /// </summary>
+        public virtual bool Empty
+        {
+            get
+            {
+                if (Length < 0)
+                    throw new Exception("no match");
+                return Length == 0;
+            }
+        }
 
-		/// <summary>
-		/// Extracts the match value
-		/// </summary>
-		public String Value
-		{
-			get
-			{
-				if (Length<0)
-					throw new Exception("no match");
-				return Scanner.Substring(Offset, Length);
-			}
-		}
+        /// <summary>
+        /// Builds a new match
+        /// </summary>
+        /// <param name="scanner"></param>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        public ParserMatch(IScanner scanner, long offset, int length)
+        {
+            this.Scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
+            this.Offset = offset;
+            this.Length = length;
+        }
 
-		/// <summary>
-		/// True if match successfull
-		/// </summary>
-		public bool Success
-		{
-			get
-			{
-				return Length >= 0;
-			}
-		}
+        /// <summary>
+        /// Concatenates match with m
+        /// </summary>
+        /// <param name="m"></param>
+        public virtual ParserMatch Concat(ParserMatch m)
+        {
+            if (m == null) throw new ArgumentNullException(nameof(m));
 
-		/// <summary>
-		/// True if match empty
-		/// </summary>
-		public bool Empty
-		{
-			get
-			{
-				if (Length<0)
-					throw new Exception("no match");
-				return Length == 0;
-			}
-		}
+            if (!m.Success) throw new ArgumentException("Trying to concatenated non successful match");
 
-		/// <summary>
-		/// Concatenates match with m
-		/// </summary>
-		/// <param name="m"></param>
-		public void Concat(ParserMatch m)
-		{
-			if(m==null)
-				throw new ArgumentNullException("Cannot concatenate null match");
-			if(!m.Success)
-				throw new ArgumentException("Trying to concatenated non successful match");
-			// if other is empty, return this
-			if(m.Empty)
-				return;
-			if (m.Offset < Offset)
-				throw new ArgumentException("match resersed ?");
-     
-			m_Length = (int)(m.Offset-Offset) + m.Length;
-		}        
-	}
+            // if other is empty, return this
+            if (!m.Empty)
+            {
+                if (m.Offset < Offset) throw new ArgumentException("match resersed ?");
+
+                this.Length = (int)(m.Offset - Offset) + m.Length;
+            }
+
+            return this;
+        }
+    }
 }

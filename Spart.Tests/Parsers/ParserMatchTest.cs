@@ -65,7 +65,7 @@ namespace Spart.Tests.Parsers
 		[Test]
 		public void NoMatchValue()
 		{
-			String o = NoMatch.Value;
+			string o = NoMatch.Value;
 		}
 
 	}

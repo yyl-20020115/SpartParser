@@ -24,18 +24,17 @@
 /// Author: Jonathan de Halleux
 /// 
 
-using System;
-
 namespace Spart.Tests.Scanners
 {
     using Spart.Scanners;
     using Spart.Parsers;
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class StringScannerTest
     {
-        public String Text
+        public string Text
         {
             get
             {

@@ -40,7 +40,7 @@ namespace Spart.Actions
         /// <summary>
         /// The parser match value
         /// </summary>
-        public virtual String Value => this.Match?.Value;
+        public virtual string Value => this.Match?.Value;
         /// <summary>
         /// The typed parse result
         /// </summary>

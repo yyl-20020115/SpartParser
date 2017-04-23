@@ -25,7 +25,7 @@
 
 namespace Spart.Parsers
 {
-	using Spart.Parsers.NonTerminal;
+    using Spart.Parsers.NonTerminal;
 
     public abstract class TerminalParser : Parser
     {

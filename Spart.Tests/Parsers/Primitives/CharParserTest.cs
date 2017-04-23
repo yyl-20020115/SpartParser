@@ -36,7 +36,7 @@ namespace Spart.Tests.Parsers.Primitives
     [TestFixture]
     public class CharParserTest
     {
-        public Char MatchedChar
+        public char MatchedChar
         {
             get
             {
@@ -44,7 +44,7 @@ namespace Spart.Tests.Parsers.Primitives
             }
         }
 
-        public Char NonMatchedChar
+        public char NonMatchedChar
         {
             get
             {

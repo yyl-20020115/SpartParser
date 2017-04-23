@@ -67,7 +67,7 @@ namespace Spart.Demo
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public ParserMatch Parse(String s)
+        public ParserMatch Parse(string s)
         {
             return expression.Parse(new StringScanner(s));
         }
