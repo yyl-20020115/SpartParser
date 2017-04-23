@@ -25,55 +25,39 @@
 
 namespace Spart.Parsers.Primitives
 {
-	using System;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
+    using System;
+    using Spart.Scanners;
 
-	public class StringParser : TerminalParser
-	{
-		private String m_MatchedString;
+    public class StringParser : TerminalParser
+    {
+        public virtual string MatchedString { get; protected set; }
+        public StringParser(string str)
+        {
+            this.MatchedString = str ?? throw new ArgumentNullException(nameof(str));
+        }
 
-		public StringParser(String str)
-		{
-			MatchedString = str;
-		}
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public String MatchedString
-		{
-			get
-			{
-				return m_MatchedString;
-			}
-			set
-			{
-				if (value == null)
-					throw new ArgumentNullException("matched string is null");
-				m_MatchedString = value;
-			}
-		}
+            long offset = scanner.Offset;
 
-		public override ParserMatch ParseMain(IScanner scanner)
-		{
-			long offset = scanner.Offset;
-			foreach(Char c in MatchedString)
-			{
-				// if input consummed return null
-				if (scanner.AtEnd || c != (Char)scanner.Peek()  )
-				{
-					scanner.Seek(offset);
-					return scanner.NoMatch;
-				}
+            foreach (char c in MatchedString)
+            {
+                // if input consummed return null
+                if (scanner.AtEnd || c != scanner.Peek())
+                {
+                    scanner.Seek(offset);
 
-				// read next characted
-				scanner.Read();
-			}
-                
-			// if we arrive at this point, we have a match                
-			ParserMatch m = scanner.CreateMatch(offset, MatchedString.Length);
+                    return scanner.NoMatch;
+                }
 
-			// return match
-			return m;
-		}
-	}
+                // read next characted
+                scanner.Read();
+            }
+
+            // if we arrive at this point, we have a match                
+            return scanner.CreateMatch(offset, MatchedString.Length);
+        }
+    }
 }

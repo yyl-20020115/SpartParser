@@ -25,37 +25,41 @@
 
 namespace Spart.Parsers.Primitives
 {
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
+    using Spart.Scanners;
+    using System;
 
-	public class EolParser : TerminalParser
-	{
-		public override ParserMatch ParseMain(IScanner scan)
-		{
-			long offset = scan.Offset;
-			int len = 0;
+    public class EolParser : TerminalParser
+    {
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-			if (!scan.AtEnd && scan.Peek() == '\r')    // CR
-			{
-				scan.Read();
-				++len;
-			}
+            long offset = scanner.Offset;
 
-			if (!scan.AtEnd && scan.Peek() == '\n')    // LF
-			{
-				scan.Read();
-				++len;
-			}
+            int len = 0;
 
-			if (len>0)
-			{
-				ParserMatch m = scan.CreateMatch(offset,len);
-				return m;
-			}
+            if (!scanner.AtEnd && scanner.Peek() == '\r')    // CR
+            {
+                scanner.Read();
 
-			scan.Seek(offset);
-			return scan.NoMatch;		
-		}
-	}
+                ++len;
+            }
+
+            if (!scanner.AtEnd && scanner.Peek() == '\n')    // LF
+            {
+                scanner.Read();
+
+                ++len;
+            }
+
+            if (len > 0)
+            {
+                return scanner.CreateMatch(offset, len);
+            }
+
+            scanner.Seek(offset);
+
+            return scanner.NoMatch;
+        }
+    }
 }

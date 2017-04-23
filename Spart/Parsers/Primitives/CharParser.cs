@@ -23,59 +23,45 @@
 /// 
 /// Author: Jonathan de Halleuxnamespace Spart.Parsers.Primitives
 
-
 namespace Spart.Parsers.Primitives
 {
-	using System;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
-	using Spart.Parsers.Primitives.Testers;
+    using System;
+    using Spart.Scanners;
+    using Spart.Parsers.Primitives.Testers;
 
-	public class CharParser : NegatableParser
-	{
-		private ICharTester m_Tester;
+    public class CharParser : NegatableParser
+    {
+        public virtual ICharTester Tester { get; protected set; }
 
-		public CharParser(ICharTester tester)
-		:base()
-		{
-			Tester = tester;
-		}
+        public CharParser(ICharTester tester) : base()
+        {
+            this.Tester = tester ?? throw new ArgumentNullException(nameof(tester));
+        }
 
-		public ICharTester Tester
-		{
-			get
-			{
-				return m_Tester;
-			}
-			set
-			{
-				if (m_Tester==value)
-					return;
-				if (value == null)
-					throw new ArgumentNullException("character tester");
-				m_Tester = value;
-			}
-		}
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-		public override ParserMatch ParseMain(IScanner scanner)
-		{
-			long offset = scanner.Offset;
+            long offset = scanner.Offset;
 
-			bool test = Tester.Test(scanner.Peek());
-			if (test && Negate || !test && !Negate)
-				return scanner.NoMatch;
-                
-			// match character
-			char c = (char)scanner.Peek();
-			// if we arrive at this point, we have a match
-			ParserMatch m = scanner.CreateMatch(offset, 1);
+            bool test = this.Tester.Test(scanner.Peek());
 
-			// updating offset
-			scanner.Read();
+            if (test && Negate || !test && !Negate)
+            {
+                return scanner.NoMatch;
+            }
 
-			// return match
-			return m;
-		}
-	}
+            // match character
+            char c = scanner.Peek();
+
+            // if we arrive at this point, we have a match
+            ParserMatch m = scanner.CreateMatch(offset, 1);
+
+            // updating offset
+            scanner.Read();
+
+            // return match
+            return m;
+        }
+    }
 }

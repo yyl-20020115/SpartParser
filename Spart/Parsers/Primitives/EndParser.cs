@@ -25,20 +25,20 @@
 
 namespace Spart.Parsers.Primitives
 {
-	using Spart.Scanners;
-	using Spart.Actions;
-	using Spart.Parsers.NonTerminal;
+    using Spart.Scanners;
+    using System;
 
-	public class EndParser : TerminalParser
-	{
-		public override ParserMatch ParseMain(IScanner scan)
-		{
-			if (scan.AtEnd)
-			{
-				ParserMatch m = scan.EmptyMatch;
-				return m;
-			}
-			return scan.NoMatch;		
-		}
-	}
+    public class EndParser : TerminalParser
+    {
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
+
+            if (scanner.AtEnd)
+            {
+                return scanner.EmptyMatch;
+            }
+            return scanner.NoMatch;
+        }
+    }
 }

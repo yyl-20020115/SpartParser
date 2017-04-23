@@ -23,22 +23,19 @@
 /// 
 /// Author: Jonathan de Halleux
 /// 
-using System;
 
 namespace Spart.Parsers.Primitives
 {
-	using Spart.Actions;
-	using Spart.Scanners;
-	using Spart.Parsers.NonTerminal;
+    using System;
+    using Spart.Scanners;
 
-	public class NothingParser : TerminalParser
-	{
-		public override ParserMatch ParseMain(IScanner scanner)
-		{
-			if (scanner == null)
-				throw new ArgumentNullException("scanner");
+    public class NothingParser : TerminalParser
+    {
+        public override ParserMatch ParseMain(IScanner scanner)
+        {
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-			return scanner.NoMatch;
-		}
-	}
+            return scanner.NoMatch;
+        }
+    }
 }
