@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>7.10.3077</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52C43CC3-4D59-4328-9713-7225D3EEE893}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon />
+    <AssemblyKeyContainerName />
+    <AssemblyName>Spart</AssemblyName>
+    <AssemblyOriginatorKeyFile />
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Spart</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject />
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>0.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile />
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>Spart.xml</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1587;1591;</NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile />
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile />
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net20\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.System.Linq, Version=0.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net20\NUnit.System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\ActionEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\ActionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\Actions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\Actors\AppendActor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\Actors\AssignActor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\Actors\IActor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Actions\Actors\ThrowActor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\BinaryTerminalParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Composite\AlternativeParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Composite\DifferenceParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Composite\IntersectionParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Composite\ListParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Composite\RepetitionParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Composite\SequenceParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NegatableParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\IParserContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\NonTerminalParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\PostParseEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\PostParseEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\PreParseEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\PreParseEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\NonTerminal\Rule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Ops.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Parser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\ParserMatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\CharParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\DoubleParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\EndParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\EolParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\NothingParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\StringParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\AnyCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\ControlCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\DigitCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\ICharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\LetterCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\LetterOrDigitCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\LitteralCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\LowerCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\PunctuationCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\RangeCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\SeparatorCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\SymbolCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\UpperCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Primitives\Testers\WhiteSpaceCharTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\Prims.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\TerminalParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsers\UnaryTerminalParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanners\IFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanners\IScanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanners\StringScanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scanners\ToLowerFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parsers\NonTerminal\Contexts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent />
+    <PostBuildEvent />
+  </PropertyGroup>
+</Project>

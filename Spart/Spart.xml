@@ -1,0 +1,671 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Spart</name>
+    </assembly>
+    <members>
+        <member name="T:Spart.Actions.ActionEventArgs">
+            <summary>
+            Action event argument class
+            </summary>
+        </member>
+        <member name="M:Spart.Actions.ActionEventArgs.#ctor(Spart.Parsers.ParserMatch)">
+            <summary>
+            Construct a new event argument instance
+            </summary>
+            <param name="match"></param>
+        </member>
+        <member name="M:Spart.Actions.ActionEventArgs.#ctor(Spart.Parsers.ParserMatch,System.Object)">
+            <summary>
+            Construct a new event argument instance
+            </summary>
+            <param name="match"></param>
+            <param name="typedValue"></param>
+        </member>
+        <member name="P:Spart.Actions.ActionEventArgs.Match">
+            <summary>
+            The parser match
+            </summary>
+        </member>
+        <member name="P:Spart.Actions.ActionEventArgs.Value">
+            <summary>
+            The parser match value
+            </summary>
+        </member>
+        <member name="P:Spart.Actions.ActionEventArgs.TypeValue">
+            <summary>
+            The typed parse result
+            </summary>
+        </member>
+        <member name="T:Spart.Actions.ActionHandler">
+            <summary>
+            Action handler delegate
+            </summary>
+        </member>
+        <member name="T:Spart.Actions.Actor">
+            <summary>
+            Static helper class that creates actors
+            </summary>
+        </member>
+        <member name="M:Spart.Actions.Actor.Append(System.Collections.IList)">
+            <summary>
+            Create an actor that append the parse result to a <see cref="T:System.Collections.IList"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Actions.Actor.Assign(System.Object)">
+            <summary>
+            Create an actor that assign the parse result to an object
+            </summary>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Actions.Actor.Throw(System.Exception)">
+            <summary>
+            Creates an actor that throws an exception
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Actions.Actors.AppendActor">
+            <summary>
+            Actor that appends parse result to <see cref="T:System.Collections.IList"/>.
+            </summary>
+        </member>
+        <member name="T:Spart.Actions.Actors.IActor">
+            <summary>
+            Actor interface
+            </summary>
+        </member>
+        <member name="M:Spart.Actions.Actors.IActor.DoAction(System.Object,Spart.Actions.ActionEventArgs)">
+            <summary>
+            Handler method.
+            <seealso cref="T:Spart.Actions.ActionHandler"/>
+            <seealso cref="T:Spart.Actions.ActionEventArgs"/>
+            </summary>
+            <param name="sender"></param>
+            <param name="args"></param>
+        </member>
+        <member name="T:Spart.Parsers.Composite.DifferenceParser">
+            <summary>
+            Summary description for DifferenceParser.
+            </summary>
+        </member>
+        <member name="T:Spart.Parsers.NonTerminal.NonTerminalParser">
+            <summary>
+            NonTerminal parser abstract class
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.NonTerminal.NonTerminalParser.ID">
+            <summary>
+            Rule ID, used for debugging
+            </summary>
+        </member>
+        <member name="E:Spart.Parsers.NonTerminal.NonTerminalParser.PreParse">
+            <summary>
+            Pre parse event
+            </summary>
+        </member>
+        <member name="E:Spart.Parsers.NonTerminal.NonTerminalParser.PostParse">
+            <summary>
+            Post parse event 
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.OnPreParse(Spart.Scanners.IScanner)">
+            <summary>
+            Preparse event caller
+            </summary>
+            <param name="scan"></param>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.OnPostParse(Spart.Parsers.ParserMatch,Spart.Scanners.IScanner)">
+            <summary>
+            Post parse event caller
+            </summary>
+            <param name="match"></param>
+            <param name="scan"></param>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.AddContext(Spart.Parsers.NonTerminal.IParserContext)">
+            <summary>
+            Adds event handlers
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.RemoveContext(Spart.Parsers.NonTerminal.IParserContext)">
+            <summary>
+            Removes event handlers
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Spart.Parsers.NonTerminal.PreParseEventArgs">
+            <summary>
+            Summary description for PostParseEventArgs.
+            </summary>
+        </member>
+        <member name="T:Spart.Parsers.NonTerminal.Rule">
+            <summary>
+            A rule is a parser holder.
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor">
+            <summary>
+            Empty rule creator
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor(Spart.Parsers.Parser)">
+            <summary>
+            Creates a rule and assign parser
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="P:Spart.Parsers.NonTerminal.Rule.Parser">
+            <summary>
+            Rule parser
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.Rule.AssignParser(Spart.Parsers.NonTerminal.Rule,Spart.Parsers.Parser)">
+            <summary>
+            Assign a parser to a rule, if r is null, a new rule is created
+            </summary>
+            <param name="r"></param>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.Rule.Parse(Spart.Scanners.IScanner)">
+            <summary>
+            Parse the input
+            </summary>
+            <param name="scanner"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.Rule.ParseMain(Spart.Scanners.IScanner)">
+            <summary>
+            Inner parse method
+            </summary>
+            <param name="scanner"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Parsers.Ops">
+            <summary>
+            Static helper class to create new parser operators
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Seq(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            &gt;&gt; operator
+            </summary>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Klenee(Spart.Parsers.Parser)">
+            <summary>
+            * operators
+            </summary>
+            <param name="parser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Positive(Spart.Parsers.Parser)">
+            <summary>
+            + operator
+            </summary>
+            <param name="parser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Optional(Spart.Parsers.Parser)">
+            <summary>
+            ! operator
+            </summary>
+            <param name="parser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Alternative(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            | operator
+            </summary>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Intersection(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            &amp; operator
+            </summary>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Difference(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            - operator
+            </summary>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.List(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            % operator
+            </summary>
+            <param name="first"></param>
+            <param name="second"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Parsers.Parser">
+            <summary>
+            Abstract parser class
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.Parser.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.Parser.ParseMain(Spart.Scanners.IScanner)">
+            <summary>
+            Inner parse method
+            </summary>
+            <param name="scan">scanner</param>
+            <returns>the match</returns>
+        </member>
+        <member name="M:Spart.Parsers.Parser.Parse(Spart.Scanners.IScanner)">
+            <summary>
+            Outer parse method
+            </summary>
+            <param name="scan"></param>
+            <returns></returns>
+        </member>
+        <member name="E:Spart.Parsers.Parser.Act">
+            <summary>
+            Action event
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.Parser.OnAction(Spart.Parsers.ParserMatch)">
+            <summary>
+            Action caller method
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="M:Spart.Parsers.Parser.op_UnaryPlus(Spart.Parsers.Parser)">
+            <summary>
+            Positive operator
+            </summary>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Parser.op_LogicalNot(Spart.Parsers.Parser)">
+            <summary>
+            Optional operator
+            </summary>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Parser.op_BitwiseOr(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            Alternative operator
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Parser.op_BitwiseAnd(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            Intersection operator
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Parser.op_Subtraction(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            Difference operator
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Parser.op_Modulus(Spart.Parsers.Parser,Spart.Parsers.Parser)">
+            <summary>
+            List operator
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Parsers.ParserMatch">
+            <summary>
+            A parser match
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.ParserMatch.#ctor(Spart.Scanners.IScanner,System.Int64,System.Int32)">
+            <summary>
+            Builds a new match
+            </summary>
+            <param name="scanner"></param>
+            <param name="offset"></param>
+            <param name="length"></param>
+        </member>
+        <member name="P:Spart.Parsers.ParserMatch.Scanner">
+            <summary>
+            Scanner
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.ParserMatch.Offset">
+            <summary>
+            Offset
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.ParserMatch.Length">
+            <summary>
+            Length
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.ParserMatch.Value">
+            <summary>
+            Extracts the match value
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.ParserMatch.Success">
+            <summary>
+            True if match successfull
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.ParserMatch.Empty">
+            <summary>
+            True if match empty
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.ParserMatch.Concat(Spart.Parsers.ParserMatch)">
+            <summary>
+            Concatenates match with m
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="T:Spart.Parsers.Prims">
+            <summary>
+            Static helper class to create primitive parsers
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.Prims.Ch(System.Char)">
+            <summary>
+            Creates a parser that matches a single character
+            </summary>
+            <param name="c">character to match</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Prims.Str(System.String)">
+            <summary>
+            Creates a parser that matches a string
+            </summary>
+            <param name="s">string to match</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Prims.Range(System.Char,System.Char)">
+            <summary>
+            Creates a parser that matches a range of character
+            </summary>
+            <param name="first"></param>
+            <param name="last"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spart.Parsers.Prims.AnyChar">
+            <summary>
+            Creates a parser that matches any character
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Control">
+            <summary>
+            Creates a parser that matches control characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Digit">
+            <summary>
+            Creates a parser that matches digit characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Letter">
+            <summary>
+            Creates a parser that matches letter characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.LetterOrDigit">
+            <summary>
+            Creates a parser that matches letter or digit characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Lower">
+            <summary>
+            Creates a parser that matches lower case characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Punctuation">
+            <summary>
+            Creates a parser that matches punctuation characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Separator">
+            <summary>
+            Creates a parser that matches separator characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Symbol">
+            <summary>
+            Creates a parser that matches symbol characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Upper">
+            <summary>
+            Creates a parser that matches upper case characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.WhiteSpace">
+            <summary>
+            Creates a parser that matches whitespace characters
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.Eol">
+            <summary>
+            Creates a parser that matches and end of line
+            </summary>
+        </member>
+        <member name="P:Spart.Parsers.Prims.End">
+            <summary>
+            Creates a parser that matches the end of the input
+            </summary>
+        </member>
+        <member name="T:Spart.Scanners.IFilter">
+            <summary>
+            Input filter interface
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.IFilter.Filter(System.String)">
+            <summary>
+            Converts s to lower string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Scanners.IFilter.Filter(System.Char)">
+            <summary>
+            Converts c to lower char
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Scanners.IScanner">
+            <summary>
+            Input scanner interface
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.IScanner.AtEnd">
+            <summary>
+            Return true if all input is consummed
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.IScanner.Read">
+            <summary>
+            Reads one character of the input
+            </summary>
+            <returns>true if not at end</returns>
+        </member>
+        <member name="M:Spart.Scanners.IScanner.Peek">
+            <summary>
+            Current character
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Spart.Scanners.IScanner.Offset">
+            <summary>
+            Scanner cursor position
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.IScanner.Seek(System.Int64)">
+            <summary>
+            Move cursor position to the offset
+            </summary>
+            <param name="offset"></param>
+        </member>
+        <member name="M:Spart.Scanners.IScanner.Substring(System.Int64,System.Int32)">
+            <summary>
+            Extracts a substring of the input
+            </summary>
+            <param name="offset"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spart.Scanners.IScanner.Filter">
+            <summary>
+            Sets the input filter
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.IScanner.NoMatch">
+            <summary>
+            Create a failure match
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.IScanner.EmptyMatch">
+            <summary>
+            Create an empty match
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.IScanner.CreateMatch(System.Int64,System.Int32)">
+            <summary>
+            Create a match out of the intput
+            </summary>
+            <param name="offset"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Scanners.StringScanner">
+            <summary>
+            Scanner acting on a string.
+            <seealso cref="T:Spart.Scanners.IScanner"/>
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.#ctor(System.String)">
+            <summary>
+            Creates a scanner on the string.
+            </summary>
+            <param name="inputString">Input string</param>
+            <exception cref="T:System.ArgumentNullException">input string is null</exception>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.#ctor(System.String,System.Int64)">
+            <summary>
+            Creates a scanner on the string at a specified offset
+            </summary>
+            <param name="inputString">Input string</param>
+            <param name="offset">Offset</param>
+            <exception cref="T:System.ArgumentNullException">input string is null</exception>
+            <exception cref="T:System.ArgumentException">offset if out of range</exception>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.InputString">
+            <summary>
+            the input string
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.Offset">
+            <summary>
+            Current offset
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.AtEnd">
+            <summary>
+            true if at the end of the string
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.Read">
+            <summary>
+            Advance the cursor once
+            </summary>
+            <returns>true if not at end</returns>
+            <exception cref="T:System.Exception">If called while AtEnd is true</exception>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.Peek">
+            <summary>
+            Current character
+            </summary>
+            <returns>character at cursor position</returns>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.Substring(System.Int64,System.Int32)">
+            <summary>
+            Extracts a substring 
+            </summary>
+            <param name="offset"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.Seek(System.Int64)">
+            <summary>
+            Moves the cursor to the offset position
+            </summary>
+            <param name="offset"></param>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.Filter">
+            <summary>
+            Current filter
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.NoMatch">
+            <summary>
+            Failure match
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.EmptyMatch">
+            <summary>
+            Empty match
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.StringScanner.CreateMatch(System.Int64,System.Int32)">
+            <summary>
+            Creates a successful match
+            </summary>
+            <param name="offset"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Spart.Scanners.ToLowerFilter">
+            <summary>
+            A to lower input filter
+            </summary>
+        </member>
+        <member name="M:Spart.Scanners.ToLowerFilter.Filter(System.String)">
+            <summary>
+            Converts s to lower string
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Scanners.ToLowerFilter.Filter(System.Char)">
+            <summary>
+            Converts i to lower i
+            </summary>
+            <param name="i"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

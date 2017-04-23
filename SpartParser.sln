@@ -1,0 +1,33 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spart", "Spart\Spart.csproj", "{52C43CC3-4D59-4328-9713-7225D3EEE893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spart.Tests", "Spart.Tests\Spart.Tests.csproj", "{149525BD-7F4F-4BC3-B1BC-6C0B82E5CBB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spart.Demo", "Spart.Demo\Spart.Demo.csproj", "{97FD588C-FEA1-4988-B48B-2E7F001B95BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52C43CC3-4D59-4328-9713-7225D3EEE893}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{52C43CC3-4D59-4328-9713-7225D3EEE893}.Debug|Default.Build.0 = Debug|Any CPU
+		{52C43CC3-4D59-4328-9713-7225D3EEE893}.Release|Default.ActiveCfg = Release|Any CPU
+		{52C43CC3-4D59-4328-9713-7225D3EEE893}.Release|Default.Build.0 = Release|Any CPU
+		{149525BD-7F4F-4BC3-B1BC-6C0B82E5CBB8}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{149525BD-7F4F-4BC3-B1BC-6C0B82E5CBB8}.Debug|Default.Build.0 = Debug|Any CPU
+		{149525BD-7F4F-4BC3-B1BC-6C0B82E5CBB8}.Release|Default.ActiveCfg = Release|Any CPU
+		{149525BD-7F4F-4BC3-B1BC-6C0B82E5CBB8}.Release|Default.Build.0 = Release|Any CPU
+		{97FD588C-FEA1-4988-B48B-2E7F001B95BC}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{97FD588C-FEA1-4988-B48B-2E7F001B95BC}.Debug|Default.Build.0 = Debug|Any CPU
+		{97FD588C-FEA1-4988-B48B-2E7F001B95BC}.Release|Default.ActiveCfg = Release|Any CPU
+		{97FD588C-FEA1-4988-B48B-2E7F001B95BC}.Release|Default.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
