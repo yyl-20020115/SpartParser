@@ -25,41 +25,19 @@
 
 namespace Spart.Parsers.NonTerminal
 {
-	using System;
-	using Spart.Scanners;
-	/// <summary>
-	/// Summary description for PostParseEventArgs.
-	/// </summary>
-	public class PreParseEventArgs : EventArgs
-	{
-		private NonTerminalParser m_Parser;
-		private IScanner m_Scanner;
-
-		public PreParseEventArgs(NonTerminalParser parser, IScanner scanner)
-		{
-			if (parser == null)
-				throw new ArgumentNullException("parser");
-			if (scanner == null)
-				throw new ArgumentNullException("scanner");
-
-			m_Parser = parser;
-			m_Scanner = scanner;
-		}
-
-		public NonTerminalParser Parser
-		{
-			get
-			{
-				return m_Parser;
-			}
-		}
-
-		public IScanner Scanner
-		{
-			get
-			{
-				return m_Scanner;
-			}
-		}
-	}
+    using System;
+    using Spart.Scanners;
+    /// <summary>
+    /// Summary description for PostParseEventArgs.
+    /// </summary>
+    public class PreParseEventArgs : EventArgs
+    {
+        public virtual NonTerminalParser Parser { get; protected set; }
+        public virtual IScanner Scanner { get; protected set; }
+        public PreParseEventArgs(NonTerminalParser parser, IScanner scanner)
+        {
+            this.Parser = parser ?? throw new ArgumentNullException(nameof(parser));
+            this.Scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
+        }
+    }
 }

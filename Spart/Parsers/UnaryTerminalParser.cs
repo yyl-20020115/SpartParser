@@ -25,31 +25,16 @@
 
 namespace Spart.Parsers
 {
-	using System;
+    using System;
 
-	public abstract class UnaryTerminalParser : TerminalParser
-	{
-		private Parser m_Parser;
+    public abstract class UnaryTerminalParser : TerminalParser
+    {
+        public virtual Parser Parser { get; protected set; }
 
-		public UnaryTerminalParser(Parser parser)
-			:base()
-		{
-			Parser = parser;
-		}
-
-
-		public Parser Parser
-		{
-			get
-			{
-				return m_Parser;
-			}
-			set
-			{
-				if (value == null)
-					throw new ArgumentNullException("parser is null");
-				m_Parser = value;
-			}
-		}	
-	}
+        public UnaryTerminalParser(Parser parser)
+            : base()
+        {
+            this.Parser = parser ?? throw new ArgumentNullException(nameof(parser));
+        }
+    }
 }

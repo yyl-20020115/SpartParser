@@ -36,13 +36,13 @@ namespace Spart.Scanners
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        string Filter(string s);
+        string DoFilter(string s);
 
         /// <summary>
         /// Converts c to lower char
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        char Filter(char c);
+        char DoFilter(char c);
     }
 }

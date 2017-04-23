@@ -33,154 +33,45 @@ namespace Spart.Scanners
     /// </summary>
     public class StringScanner : IScanner
     {
-        private String m_InputString;
-        private long m_Offset;
-        private IFilter m_Filter;
-
-        /// <summary>
-        /// Creates a scanner on the string.
-        /// </summary>
-        /// <param name="inputString">Input string</param>
-        /// <exception cref="ArgumentNullException">input string is null</exception>
-        public StringScanner(String inputString)
-        {
-            if (inputString == null)
-                throw new ArgumentNullException("inputString is null");
-            m_InputString = inputString;
-            Offset = 0;
-            Filter = null;
-        }
-
-        /// <summary>
-        /// Creates a scanner on the string at a specified offset
-        /// </summary>
-        /// <param name="inputString">Input string</param>
-        /// <param name="offset">Offset</param>
-        /// <exception cref="ArgumentNullException">input string is null</exception>
-        /// <exception cref="ArgumentException">offset if out of range</exception>
-        public StringScanner(String inputString, long offset)
-        {
-            if (inputString == null)
-                throw new ArgumentNullException("inputString is null");
-            if (offset >= inputString.Length)
-                throw new ArgumentException("offset out of bounds");
-            m_InputString = inputString;
-            Offset = offset;
-            Filter = null;
-        }
-
+        protected long offset = 0L;
         /// <summary>
         /// the input string
         /// </summary>
-        public String InputString
-        {
-            get
-            {
-                return m_InputString;
-            }
-        }
-
+        public virtual string InputString { get; protected set; }
         /// <summary>
         /// Current offset
         /// </summary>
-        public long Offset
+        public virtual long Offset
         {
-            get
-            {
-                return m_Offset;
-            }
+            get => this.offset;
             set
             {
                 if (value < 0 || value > InputString.Length)
-                    throw new ArgumentOutOfRangeException("offset out of bounds");
-                m_Offset = value;
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.offset = value;
             }
         }
-
         /// <summary>
         /// true if at the end of the string
         /// </summary>
-        public bool AtEnd
+        public virtual bool AtEnd
         {
             get
             {
-                return m_Offset == InputString.Length;
+                return this.Offset == this.InputString.Length;
             }
         }
-
-        /// <summary>
-        /// Advance the cursor once
-        /// </summary>
-        /// <returns>true if not at end</returns>
-        /// <exception cref="Exception">If called while AtEnd is true</exception>
-        public bool Read()
-        {
-            if (AtEnd)
-                throw new Exception("Scanner already at end");
-            ++m_Offset;
-
-            return !AtEnd;
-        }
-
-        /// <summary>
-        /// Current character
-        /// </summary>
-        /// <returns>character at cursor position</returns>
-        public char Peek()
-        {
-            if (Filter == null)
-                return InputString[(int)Offset];
-            else
-                return Filter.Filter(InputString[(int)Offset]);
-        }
-
-        /// <summary>
-        /// Extracts a substring 
-        /// </summary>
-        /// <param name="offset"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public String Substring(long offset, int length)
-        {
-            String s = InputString.Substring((int)offset, Math.Min(length, InputString.Length - (int)offset));
-
-            if (Filter != null)
-                s = Filter.Filter(s);
-
-            return s;
-        }
-
-        /// <summary>
-        /// Moves the cursor to the offset position
-        /// </summary>
-        /// <param name="offset"></param>
-        public void Seek(long offset)
-        {
-            if (offset < 0 || offset > InputString.Length)
-                throw new ArgumentOutOfRangeException("offset");
-
-            Offset = offset;
-        }
-
         /// <summary>
         /// Current filter
         /// </summary>
-        public IFilter Filter
-        {
-            get
-            {
-                return m_Filter;
-            }
-            set
-            {
-                m_Filter = value;
-            }
-        }
-
+        public virtual IFilter Filter { get; set; } = null;
         /// <summary>
         /// Failure match
         /// </summary>
-        public ParserMatch NoMatch
+        public virtual ParserMatch NoMatch
         {
             get
             {
@@ -191,7 +82,7 @@ namespace Spart.Scanners
         /// <summary>
         /// Empty match
         /// </summary>
-        public ParserMatch EmptyMatch
+        public virtual ParserMatch EmptyMatch
         {
             get
             {
@@ -200,12 +91,103 @@ namespace Spart.Scanners
         }
 
         /// <summary>
+        /// Creates a scanner on the string.
+        /// </summary>
+        /// <param name="inputString">Input string</param>
+        /// <exception cref="ArgumentNullException">input string is null</exception>
+        public StringScanner(string inputString)
+        {
+            this.InputString = inputString ?? throw new ArgumentNullException(nameof(inputString));
+        }
+
+        /// <summary>
+        /// Creates a scanner on the string at a specified offset
+        /// </summary>
+        /// <param name="inputString">Input string</param>
+        /// <param name="offset">Offset</param>
+        /// <exception cref="ArgumentNullException">input string is null</exception>
+        /// <exception cref="ArgumentException">offset if out of range</exception>
+        public StringScanner(string inputString, long offset)
+        {
+            this.InputString = inputString ?? throw new ArgumentNullException(nameof(inputString));
+
+            if (offset < 0 || offset >= inputString.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            }
+
+            this.Offset = offset;
+        }
+
+        /// <summary>
+        /// Advance the cursor once
+        /// </summary>
+        /// <returns>true if not at end</returns>
+        public virtual bool Read()
+        {
+            if (!this.AtEnd)
+            {
+                this.Offset++;
+
+                return !this.AtEnd;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Current character
+        /// </summary>
+        /// <returns>character at cursor position</returns>
+        public virtual char Peek()
+        {
+            return (this.Filter == null)
+                ? this.InputString[(int)Offset]
+                : this.Filter.DoFilter(this.InputString[(int)Offset]);
+        }
+
+        /// <summary>
+        /// Extracts a substring 
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public virtual string Substring(long offset, int length)
+        {
+            string substring = this.InputString.Substring((int)offset, 
+                Math.Min(length, this.InputString.Length - (int)offset));
+
+            if (this.Filter != null)
+            {
+                substring = this.Filter.DoFilter(substring);
+            }
+
+            return substring;
+        }
+
+        /// <summary>
+        /// Moves the cursor to the offset position
+        /// </summary>
+        /// <param name="offset"></param>
+        public virtual void Seek(long offset)
+        {
+            if (offset < 0 || offset > InputString.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            }
+
+            this.Offset = offset;
+        }
+
+        /// <summary>
         /// Creates a successful match
         /// </summary>
         /// <param name="offset"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public ParserMatch CreateMatch(long offset, int length)
+        public virtual ParserMatch CreateMatch(long offset, int length)
         {
             return new ParserMatch(this, offset, length);
         }

@@ -23,7 +23,6 @@
 /// 
 /// Author: Jonathan de Halleuxnamespace Spart.Parsers.NonTerminal
 
-
 namespace Spart.Parsers.NonTerminal
 {
     using System;
@@ -37,7 +36,7 @@ namespace Spart.Parsers.NonTerminal
         /// <summary>
         /// Rule ID, used for debugging
         /// </summary>
-        public string ID { get; set; }
+        public virtual string ID { get; set; }
         /// <summary>
         /// Default constructor
         /// </summary>

@@ -38,10 +38,7 @@ namespace Spart.Parsers.NonTerminal
         /// <summary>
         /// Empty rule creator
         /// </summary>
-        public Rule()
-            : this(null)
-        {
-        }
+        public Rule() : this(null) { }
 
         /// <summary>
         /// Creates a rule and assign parser

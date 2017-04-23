@@ -483,14 +483,14 @@
             Input filter interface
             </summary>
         </member>
-        <member name="M:Spart.Scanners.IFilter.Filter(System.String)">
+        <member name="M:Spart.Scanners.IFilter.DoFilter(System.String)">
             <summary>
             Converts s to lower string
             </summary>
             <param name="s"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Scanners.IFilter.Filter(System.Char)">
+        <member name="M:Spart.Scanners.IFilter.DoFilter(System.Char)">
             <summary>
             Converts c to lower char
             </summary>
@@ -567,6 +567,36 @@
             <seealso cref="T:Spart.Scanners.IScanner"/>
             </summary>
         </member>
+        <member name="P:Spart.Scanners.StringScanner.InputString">
+            <summary>
+            the input string
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.Offset">
+            <summary>
+            Current offset
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.AtEnd">
+            <summary>
+            true if at the end of the string
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.Filter">
+            <summary>
+            Current filter
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.NoMatch">
+            <summary>
+            Failure match
+            </summary>
+        </member>
+        <member name="P:Spart.Scanners.StringScanner.EmptyMatch">
+            <summary>
+            Empty match
+            </summary>
+        </member>
         <member name="M:Spart.Scanners.StringScanner.#ctor(System.String)">
             <summary>
             Creates a scanner on the string.
@@ -583,27 +613,11 @@
             <exception cref="T:System.ArgumentNullException">input string is null</exception>
             <exception cref="T:System.ArgumentException">offset if out of range</exception>
         </member>
-        <member name="P:Spart.Scanners.StringScanner.InputString">
-            <summary>
-            the input string
-            </summary>
-        </member>
-        <member name="P:Spart.Scanners.StringScanner.Offset">
-            <summary>
-            Current offset
-            </summary>
-        </member>
-        <member name="P:Spart.Scanners.StringScanner.AtEnd">
-            <summary>
-            true if at the end of the string
-            </summary>
-        </member>
         <member name="M:Spart.Scanners.StringScanner.Read">
             <summary>
             Advance the cursor once
             </summary>
             <returns>true if not at end</returns>
-            <exception cref="T:System.Exception">If called while AtEnd is true</exception>
         </member>
         <member name="M:Spart.Scanners.StringScanner.Peek">
             <summary>
@@ -625,21 +639,6 @@
             </summary>
             <param name="offset"></param>
         </member>
-        <member name="P:Spart.Scanners.StringScanner.Filter">
-            <summary>
-            Current filter
-            </summary>
-        </member>
-        <member name="P:Spart.Scanners.StringScanner.NoMatch">
-            <summary>
-            Failure match
-            </summary>
-        </member>
-        <member name="P:Spart.Scanners.StringScanner.EmptyMatch">
-            <summary>
-            Empty match
-            </summary>
-        </member>
         <member name="M:Spart.Scanners.StringScanner.CreateMatch(System.Int64,System.Int32)">
             <summary>
             Creates a successful match
@@ -653,18 +652,18 @@
             A to lower input filter
             </summary>
         </member>
-        <member name="M:Spart.Scanners.ToLowerFilter.Filter(System.String)">
+        <member name="M:Spart.Scanners.ToLowerFilter.DoFilter(System.String)">
             <summary>
             Converts s to lower string
             </summary>
             <param name="s"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Scanners.ToLowerFilter.Filter(System.Char)">
+        <member name="M:Spart.Scanners.ToLowerFilter.DoFilter(System.Char)">
             <summary>
             Converts i to lower i
             </summary>
-            <param name="i"></param>
+            <param name="c"></param>
             <returns></returns>
         </member>
     </members>

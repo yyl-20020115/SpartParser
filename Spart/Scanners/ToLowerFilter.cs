@@ -22,7 +22,6 @@
 /// 3. This notice may not be removed or altered from any source distribution.
 /// 
 /// Author: Jonathan de Halleux
-using System;
 
 namespace Spart.Scanners
 {
@@ -36,19 +35,19 @@ namespace Spart.Scanners
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public String Filter(String s)
+        public virtual string DoFilter(string s)
         {
-            return s.ToLower();
+            return s?.ToLower();
         }
 
         /// <summary>
         /// Converts i to lower i
         /// </summary>
-        /// <param name="i"></param>
+        /// <param name="c"></param>
         /// <returns></returns>
-        public Char Filter(Char i)
+        public virtual char DoFilter(char c)
         {
-            return (Convert.ToString(i).ToLower())[0];
+            return char.ToLower(c);
         }
     }
 }
