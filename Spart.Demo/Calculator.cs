@@ -15,33 +15,22 @@ namespace Spart.Demo
     /// </summary>
     public class Calculator
     {
-        protected Rule group;
-        protected Rule term;
-        protected Rule factor;
-        protected Rule expression;
-        protected Rule integer;
+        protected Rule group = new Rule(nameof(group));
+        protected Rule term = new Rule(nameof(term));
+        protected Rule factor = new Rule(nameof(factor));
+        protected Rule expression = new Rule(nameof(expression));
+        protected Rule integer = new Rule(nameof(integer));
 
         /// <summary>
         /// A very simple calculator parser
         /// </summary>
         public Calculator()
         {
-            // creating rules and assigning names
-            group = new Rule("group");
-
-            term = new Rule("term");
-
-            factor = new Rule("factor");
-
-            expression = new Rule("expression");
-
-            integer = new Rule("integer");
-
             // creating sub parsers
             Parser add = '+' + term;
             // attaching semantic action
             add.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine("+");
                 }
@@ -49,7 +38,7 @@ namespace Spart.Demo
 
             Parser sub = '-' + term;
             sub.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine("-");
                 }
@@ -57,7 +46,7 @@ namespace Spart.Demo
 
             Parser mul = '*' + factor;
             mul.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine("*");
                 }
@@ -65,7 +54,7 @@ namespace Spart.Demo
 
             Parser div = '/' + factor;
             div.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine("/");
                 }
@@ -74,15 +63,15 @@ namespace Spart.Demo
             // assigning parsers to rules
             integer.Parser = +Prims.Digit;
             integer.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine($"integer: {args.Value}");
                 }
             );
 
-            group.Parser = '(' + (expression + ')');
+            group.Parser = '(' + expression + ')';
             group.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine($"group: {args.Value}");
                 }
@@ -90,7 +79,7 @@ namespace Spart.Demo
 
             factor.Parser = group | integer;
             factor.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine($"factor: {args.Value}");
                 }
@@ -98,23 +87,18 @@ namespace Spart.Demo
 
             term.Parser = factor + ~(mul | div);
             term.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine($"term: {args.Value}");
                 }
             );
             expression.Parser = term + ~(add | mul);
             expression.Action += new ActionHandler(
-                (o, args) =>
+                (parser, args) =>
                 {
                     Console.WriteLine($"expression: {args.Value}");
                 }
             );
-        }
-
-        private void Integer_Act(object sender, ActionEventArgs args)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

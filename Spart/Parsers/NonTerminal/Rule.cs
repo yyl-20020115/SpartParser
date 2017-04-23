@@ -112,7 +112,7 @@ namespace Spart.Parsers.NonTerminal
         {
             if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            return Parser != null ? this.Parser.Parse(scanner) : scanner.NoMatch;
+            return this.Parser != null ? this.Parser.Parse(scanner) : scanner.NoMatch;
         }
     }
 }
