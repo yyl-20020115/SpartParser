@@ -40,9 +40,9 @@ namespace Spart.Parsers.NonTerminal
         /// <summary>
         /// Default constructor
         /// </summary>
-        public NonTerminalParser() : base()
+        public NonTerminalParser(string id = null) : base()
         {
-            this.ID = this.GetHashCode().ToString();
+            this.ID = id ?? this.GetHashCode().ToString();
         }
 
         /// <summary>

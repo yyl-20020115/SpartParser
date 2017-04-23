@@ -7,59 +7,60 @@ namespace Spart.Demo
     using Spart.Scanners;
     using Spart.Actions;
 
+    /// <summary>
+    /// group       ::= '(' expression ')'
+    /// factor      ::= integer | group
+    /// term        ::= factor (('*' factor) | ('/' factor))*
+    /// expression  ::= term (('+' term) | ('-' term))*
+    /// </summary>
     public class Calculator
     {
-        Rule group;
-        Rule term;
-        Rule factor;
-        Rule expression;
-        Rule integer;
+        protected Rule group;
+        protected Rule term;
+        protected Rule factor;
+        protected Rule expression;
+        protected Rule integer;
 
         /// <summary>
         /// A very simple calculator parser
         /// </summary>
         public Calculator()
         {
-            // creating rules and assigning names (for debugging)
-            group = new Rule()
-            {
-                ID = "group"
-            };
-            term = new Rule()
-            {
-                ID = "term"
-            };
-            factor = new Rule()
-            {
-                ID = "factor"
-            };
-            expression = new Rule()
-            {
-                ID = "expression"
-            };
-            integer = new Rule()
-            {
-                ID = "integer"
-            };
+            // creating rules and assigning names
+            group = new Rule("group");
+
+            term = new Rule("term");
+
+            factor = new Rule("factor");
+
+            expression = new Rule("expression");
+
+            integer = new Rule("integer");
 
             // creating sub parsers
-            Parser add = Ops.Seq('+', term);
+            Parser add = '+' + term;
             // attaching semantic action
-            add.Act += new ActionHandler(this.Add);
-            Parser sub = Ops.Seq('-', term);
-            sub.Act += new ActionHandler(this.Sub);
-            Parser mult = Ops.Seq('*', factor);
-            mult.Act += new ActionHandler(this.Mult);
-            Parser div = Ops.Seq('/', factor);
-            div.Act += new ActionHandler(this.Div);
+            add.Act += new ActionHandler((o, args) => Console.WriteLine("add"));
+
+            Parser sub = '-' + term;
+            sub.Act += new ActionHandler((o, args) => Console.WriteLine("sub"));
+
+            Parser mul = '*' + factor;
+            mul.Act += new ActionHandler((o, args) => Console.WriteLine("mul"));
+
+            Parser div = '/' + factor;
+            div.Act += new ActionHandler((o, args) => Console.WriteLine("div"));
 
             // assigning parsers to rules
             integer.Parser = Prims.Digit;
 
-            group.Parser = Ops.Seq('(', Ops.Seq(expression, ')'));
+            group.Parser = '(' + expression + ')';
+
             factor.Parser = group | integer;
-            term.Parser = Ops.Seq(factor, Ops.Klenee(mult | div));
-            expression.Parser = Ops.Seq(term, Ops.Klenee(add | mult));
+
+            term.Parser = factor + ~(mul | div);
+
+            expression.Parser = term + ~(add | mul);
         }
 
         /// <summary>
@@ -67,28 +68,9 @@ namespace Spart.Demo
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public ParserMatch Parse(string s)
+        public virtual ParserMatch Parse(string s)
         {
             return expression.Parse(new StringScanner(s));
         }
-
-        #region Semantic Actions
-        public void Add(object sender, ActionEventArgs args)
-        {
-            Console.Out.WriteLine("add");
-        }
-        public void Sub(object sender, ActionEventArgs args)
-        {
-            Console.Out.WriteLine("sub");
-        } 
-        public void Mult(object sender, ActionEventArgs args)
-        {
-            Console.Out.WriteLine("mult");
-        }
-        public void Div(object sender, ActionEventArgs args)
-        {
-            Console.Out.WriteLine("div");
-        }
-        #endregion
     }
 }

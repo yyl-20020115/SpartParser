@@ -43,11 +43,17 @@ namespace Spart.Parsers.NonTerminal
         public Rule() : this(null) { }
 
         /// <summary>
+        /// Empty rule creator
+        /// </summary>
+        public Rule(string id) : this(null, id) { }
+
+        /// <summary>
         /// Creates a rule and assign parser
         /// </summary>
         /// <param name="p"></param>
-        public Rule(Parser p)
-            : base()
+        /// <param name="id"></param>
+        public Rule(Parser p, string id = null)
+            : base(id)
         {
             this.Parser = p;
         }

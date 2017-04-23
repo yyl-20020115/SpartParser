@@ -36,7 +36,7 @@ namespace Spart.Actions
         /// <summary>
         /// The parser match
         /// </summary>
-        public virtual ParserMatch Match { get; protected set; } = null;
+        public virtual ParserMatch Match { get; protected set; }
         /// <summary>
         /// The parser match value
         /// </summary>
@@ -44,7 +44,7 @@ namespace Spart.Actions
         /// <summary>
         /// The typed parse result
         /// </summary>
-        public virtual object TypeValue { get; protected set; } = null;
+        public virtual object TypeValue { get; protected set; }
         /// <summary>
         /// Construct a new event argument instance
         /// </summary>
@@ -66,7 +66,7 @@ namespace Spart.Actions
                 this.Match = null;
                 throw new ArgumentException(nameof(match) + " is not successfull");
             }
-            this.TypeValue = typedValue ?? throw new ArgumentNullException(nameof(typedValue));
+            this.TypeValue = typedValue;
         }
     }
 }

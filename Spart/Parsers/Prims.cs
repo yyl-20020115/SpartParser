@@ -34,12 +34,20 @@ namespace Spart.Parsers
 	/// </summary>
 	public static class Prims
 	{
-		/// <summary>
-		/// Creates a parser that matches a single character
-		/// </summary>
-		/// <param name="c">character to match</param>
-		/// <returns></returns>
-		public static CharParser Ch(char c)
+        public static CharParser ToParser(this char c)
+        {
+            return Ch(c);
+        }
+        public static StringParser ToParser(this string str)
+        {
+            return Str(str);
+        }
+        /// <summary>
+        /// Creates a parser that matches a single character
+        /// </summary>
+        /// <param name="c">character to match</param>
+        /// <returns></returns>
+        public static CharParser Ch(char c)
 		{
 			return new CharParser(new LitteralCharTester(c));
 		}

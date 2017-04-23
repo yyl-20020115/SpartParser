@@ -102,7 +102,7 @@
             Rule ID, used for debugging
             </summary>
         </member>
-        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.#ctor">
+        <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.#ctor(System.String)">
             <summary>
             Default constructor
             </summary>
@@ -162,11 +162,17 @@
             Empty rule creator
             </summary>
         </member>
-        <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor(Spart.Parsers.Parser)">
+        <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor(System.String)">
+            <summary>
+            Empty rule creator
+            </summary>
+        </member>
+        <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor(Spart.Parsers.Parser,System.String)">
             <summary>
             Creates a rule and assign parser
             </summary>
             <param name="p"></param>
+            <param name="id"></param>
         </member>
         <member name="M:Spart.Parsers.NonTerminal.Rule.AssignParser(Spart.Parsers.NonTerminal.Rule,Spart.Parsers.Parser)">
             <summary>

@@ -35,6 +35,24 @@ namespace Spart.Parsers
     /// </summary>
     public abstract class Parser
     {
+        public static Parser operator +(Parser first, Parser second)
+        {
+            return Ops.Seq(first, second);
+        }
+        public static Parser operator ~(Parser p)
+        {
+            return Ops.Klenee(p);
+        }
+
+        public static implicit operator Parser(char c)
+        {
+            return Prims.Ch(c);
+        }
+        public static implicit operator Parser(string str)
+        {
+            return Prims.Str(str);
+        }
+
         /// <summary>
         /// Default constructor
         /// </summary>
