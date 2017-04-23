@@ -25,12 +25,11 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	using System;
-	public class ControlCharTester  : ICharTester
-	{
-		public bool Test(char c)
-		{
-			return Char.IsControl(c);
-		}
-	}
+    public class ControlCharTester : ICharTester
+    {
+        public virtual bool Test(char c)
+        {
+            return char.IsControl(c);
+        }
+    }
 }

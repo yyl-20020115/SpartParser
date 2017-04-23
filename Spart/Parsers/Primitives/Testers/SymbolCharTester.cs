@@ -23,15 +23,14 @@
 /// 
 /// Author: Jonathan de Halleux
 /// 
-using System;
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	public class SymbolCharTester : ICharTester
-	{
-		public bool Test(char c)
-		{
-			return Char.IsSymbol(c);
-		}
-	}
+    public class SymbolCharTester : ICharTester
+    {
+        public virtual bool Test(char c)
+        {
+            return char.IsSymbol(c);
+        }
+    }
 }

@@ -25,30 +25,16 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	public class LitteralCharTester : ICharTester
-	{
-		private char m_Ch;
-
-		public LitteralCharTester(char c)
-		{
-			m_Ch = c;
-		}
-
-		public char Ch
-		{
-			get
-			{
-				return m_Ch;
-			}
-			set
-			{
-				m_Ch = value;
-			}
-		}
-
-		public bool Test(char c)
-		{
-			return Ch == c;
-		}
-	}
+    public class LitteralCharTester : ICharTester
+    {
+        public virtual char Char { get; set; }
+        public LitteralCharTester(char c)
+        {
+            this.Char = c;
+        }
+        public virtual bool Test(char c)
+        {
+            return this.Char == c;
+        }
+    }
 }

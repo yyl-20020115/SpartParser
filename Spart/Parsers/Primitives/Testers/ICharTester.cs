@@ -25,8 +25,8 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	public interface ICharTester
-	{
-		bool Test(char c);
-	}
+    public interface ICharTester
+    {
+        bool Test(char c);
+    }
 }

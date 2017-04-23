@@ -23,15 +23,14 @@
 /// 
 /// Author: Jonathan de Halleux
 /// 
-using System;
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	public class PunctuationCharTester : ICharTester
-	{
-		public bool Test(char c)
-		{
-			return Char.IsPunctuation(c);
-		}
-	}
+    public class PunctuationCharTester : ICharTester
+    {
+        public virtual bool Test(char c)
+        {
+            return char.IsPunctuation(c);
+        }
+    }
 }

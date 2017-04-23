@@ -74,9 +74,13 @@ namespace Spart.Parsers
         /// Action caller method
         /// </summary>
         /// <param name="m"></param>
-        public virtual void OnAction(ParserMatch m)
+        public virtual ParserMatch OnAction(ParserMatch m)
         {
+            if (m == null) throw new ArgumentNullException(nameof(m));
+
             this.Act?.Invoke(this, new ActionEventArgs(m));
+
+            return m;
         }
 
         #region Operators

@@ -23,15 +23,14 @@
 /// 
 /// Author: Jonathan de Halleux
 /// 
-using System;
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	public class SeparatorCharTester : ICharTester
-	{
-		public bool Test(char c)
-		{
-			return Char.IsSeparator(c);
-		}
-	}
+    public class SeparatorCharTester : ICharTester
+    {
+        public virtual bool Test(char c)
+        {
+            return char.IsSeparator(c);
+        }
+    }
 }

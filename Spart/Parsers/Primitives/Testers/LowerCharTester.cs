@@ -25,12 +25,11 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	using System;
-	public class LowerCharTester : ICharTester
-	{
-		public bool Test(char c)
-		{
-			return Char.IsLower(c);
-		}
-	}
+    public class LowerCharTester : ICharTester
+    {
+        public virtual bool Test(char c)
+        {
+            return char.IsLower(c);
+        }
+    }
 }

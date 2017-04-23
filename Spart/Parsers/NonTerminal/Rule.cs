@@ -33,8 +33,10 @@ namespace Spart.Parsers.NonTerminal
     /// </summary>
     public class Rule : NonTerminalParser
     {
-        private Parser m_Parser;
-
+        /// <summary>
+        /// Rule parser
+        /// </summary>
+        public virtual Parser Parser { get; set; }
         /// <summary>
         /// Empty rule creator
         /// </summary>
@@ -47,23 +49,7 @@ namespace Spart.Parsers.NonTerminal
         public Rule(Parser p)
             : base()
         {
-            Parser = p;
-        }
-
-        /// <summary>
-        /// Rule parser
-        /// </summary>
-        public Parser Parser
-        {
-            get
-            {
-                return m_Parser;
-            }
-            set
-            {
-                if (m_Parser != value)
-                    m_Parser = value;
-            }
+            this.Parser = p;
         }
 
         /// <summary>
@@ -76,11 +62,14 @@ namespace Spart.Parsers.NonTerminal
         {
             if (r == null)
             {
-                r = new Rule(p);
+                return new Rule(p);
+            }
+            else
+            {
+                r.Parser = p;
+
                 return r;
             }
-            r.Parser = p;
-            return r;
         }
 
         /// <summary>
@@ -90,18 +79,22 @@ namespace Spart.Parsers.NonTerminal
         /// <returns></returns>
         public override ParserMatch Parse(IScanner scanner)
         {
-            if (scanner == null)
-                throw new ArgumentNullException("scanner");
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            OnPreParse(scanner);
-            ParserMatch match = ParseMain(scanner);
-            OnPostParse(match, scanner);
+            ParserMatch match = null;
+
+            this.OnPreParse(scanner);
+            {
+                match = this.ParseMain(scanner);
+            }
+            this.OnPostParse(match, scanner);
 
             if (!match.Success)
+            {
                 return match;
+            }
 
-            OnAction(match);
-            return match;
+            return this.OnAction(match);
         }
 
         /// <summary>
@@ -111,13 +104,9 @@ namespace Spart.Parsers.NonTerminal
         /// <returns></returns>
         public override ParserMatch ParseMain(IScanner scanner)
         {
-            if (scanner == null)
-                throw new ArgumentNullException("scanner");
+            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            if (Parser != null)
-                return Parser.Parse(scanner);
-            else
-                return scanner.NoMatch;
+            return Parser != null ? this.Parser.Parse(scanner) : scanner.NoMatch;
         }
     }
 }

@@ -152,6 +152,11 @@
             A rule is a parser holder.
             </summary>
         </member>
+        <member name="P:Spart.Parsers.NonTerminal.Rule.Parser">
+            <summary>
+            Rule parser
+            </summary>
+        </member>
         <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor">
             <summary>
             Empty rule creator
@@ -162,11 +167,6 @@
             Creates a rule and assign parser
             </summary>
             <param name="p"></param>
-        </member>
-        <member name="P:Spart.Parsers.NonTerminal.Rule.Parser">
-            <summary>
-            Rule parser
-            </summary>
         </member>
         <member name="M:Spart.Parsers.NonTerminal.Rule.AssignParser(Spart.Parsers.NonTerminal.Rule,Spart.Parsers.Parser)">
             <summary>

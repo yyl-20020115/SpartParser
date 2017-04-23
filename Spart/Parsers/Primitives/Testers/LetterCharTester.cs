@@ -25,12 +25,11 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	using System;
-	public class LetterCharTester : ICharTester
-	{
-		public bool Test(char c)
-		{
-			return Char.IsLetter(c);
-		}
-	}	
+    public class LetterCharTester : ICharTester
+    {
+        public virtual bool Test(char c)
+        {
+            return char.IsLetter(c);
+        }
+    }
 }

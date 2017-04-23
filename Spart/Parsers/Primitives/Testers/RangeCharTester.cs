@@ -25,44 +25,30 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-	using System;
-	public class RangeCharTester : ICharTester
-	{
-		private Char m_First;
-		private Char m_Last;
+    using System;
 
-		public RangeCharTester(Char first, Char last)
-		{
-			SetRange(first,last);
-		}
+    public class RangeCharTester : ICharTester
+    {
+        public virtual char First { get; protected set; }
 
-		public Char First
-		{
-			get
-			{
-				return m_First;
-			}
-		}
+        public virtual char Last { get; protected set; }
 
-		public  Char Last
-		{
-			get
-			{
-				return m_Last;
-			}
-		}
+        public RangeCharTester(char first, char last)
+        {
+            this.SetRange(first, last);
+        }
 
-		public void SetRange(Char first, Char last)
-		{
-			if (last < first)
-				throw new ArgumentException("last character < first character");
-			m_First = first;
-			m_Last = last;
-		}
+        public virtual void SetRange(char first, char last)
+        {
+            if (last < first) throw new ArgumentException("last character < first character");
 
-		public bool Test(Char c)
-		{
-			return c>=First && c <= Last;
-		}
-	}
+            this.First = first;
+            this.Last = last;
+        }
+
+        public virtual bool Test(char c)
+        {
+            return c >= First && c <= Last;
+        }
+    }
 }
