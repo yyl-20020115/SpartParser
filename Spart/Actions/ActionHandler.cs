@@ -28,5 +28,5 @@ namespace Spart.Actions
     /// <summary>
     /// Action handler delegate
     /// </summary>
-    public delegate void ActionHandler(Parser sender, ActionEventArgs args);
+    public delegate void ActionHandler(Parser parser, ActionEventArgs args);
 }

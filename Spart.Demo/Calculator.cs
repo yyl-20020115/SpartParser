@@ -61,39 +61,39 @@ namespace Spart.Demo
             );
 
             // assigning parsers to rules
-            integer.Parser = +Prims.Digit;
-            integer.Action += new ActionHandler(
+            this.integer.Parser = +Prims.Digit;
+            this.integer.Action += new ActionHandler(
                 (parser, args) =>
                 {
                     Console.WriteLine($"integer: {args.Value}");
                 }
             );
 
-            group.Parser = '(' + expression + ')';
-            group.Action += new ActionHandler(
+            this.group.Parser = '(' + expression + ')';
+            this.group.Action += new ActionHandler(
                 (parser, args) =>
                 {
                     Console.WriteLine($"group: {args.Value}");
                 }
             );
 
-            factor.Parser = group | integer;
-            factor.Action += new ActionHandler(
+            this.factor.Parser = group | integer;
+            this.factor.Action += new ActionHandler(
                 (parser, args) =>
                 {
                     Console.WriteLine($"factor: {args.Value}");
                 }
             );
 
-            term.Parser = factor + ~(mul | div);
-            term.Action += new ActionHandler(
+            this.term.Parser = factor + ~(mul | div);
+            this.term.Action += new ActionHandler(
                 (parser, args) =>
                 {
                     Console.WriteLine($"term: {args.Value}");
                 }
             );
-            expression.Parser = term + ~(add | mul);
-            expression.Action += new ActionHandler(
+            this.expression.Parser = term + ~(add | mul);
+            this.expression.Action += new ActionHandler(
                 (parser, args) =>
                 {
                     Console.WriteLine($"expression: {args.Value}");
@@ -108,7 +108,7 @@ namespace Spart.Demo
         /// <returns></returns>
         public virtual ParserMatch Parse(string s)
         {
-            return expression.Parse(new StringScanner(s));
+            return this.expression.Parse(new StringScanner(s));
         }
     }
 }
