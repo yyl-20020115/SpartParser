@@ -97,11 +97,6 @@
             NonTerminal parser abstract class
             </summary>
         </member>
-        <member name="P:Spart.Parsers.NonTerminal.NonTerminalParser.ID">
-            <summary>
-            Rule ID, used for debugging
-            </summary>
-        </member>
         <member name="M:Spart.Parsers.NonTerminal.NonTerminalParser.#ctor(System.String)">
             <summary>
             Default constructor
@@ -157,11 +152,6 @@
             Rule parser
             </summary>
         </member>
-        <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor">
-            <summary>
-            Empty rule creator
-            </summary>
-        </member>
         <member name="M:Spart.Parsers.NonTerminal.Rule.#ctor(System.String)">
             <summary>
             Empty rule creator
@@ -172,14 +162,14 @@
             Creates a rule and assign parser
             </summary>
             <param name="p"></param>
-            <param name="id"></param>
+            <param name="name"></param>
         </member>
         <member name="M:Spart.Parsers.NonTerminal.Rule.AssignParser(Spart.Parsers.NonTerminal.Rule,Spart.Parsers.Parser)">
             <summary>
             Assign a parser to a rule, if r is null, a new rule is created
             </summary>
-            <param name="r"></param>
-            <param name="p"></param>
+            <param name="rule"></param>
+            <param name="parser"></param>
             <returns></returns>
         </member>
         <member name="M:Spart.Parsers.NonTerminal.Rule.Parse(Spart.Scanners.IScanner)">

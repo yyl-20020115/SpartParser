@@ -39,7 +39,13 @@ namespace Spart.Parsers
 		/// <summary>
 		/// Default constructor
 		/// </summary>
-		public Parser(string name = "") { this.Name = name; }
+		public Parser(string name = "")
+		{
+			if(string.IsNullOrEmpty(this.Name = name))
+			{
+				this.Name = this.GetType().Name + string.Format("_{0:X8}", this.GetHashCode());
+			}
+		}
 
 		/// <summary>
 		/// Inner parse method

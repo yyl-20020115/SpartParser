@@ -25,83 +25,76 @@
 
 namespace Spart.Parsers.NonTerminal
 {
-    using System;
-    using Spart.Scanners;
+	using System;
+	using Spart.Scanners;
 
-    /// <summary>
-    /// NonTerminal parser abstract class
-    /// </summary>
-    public abstract class NonTerminalParser : Parser
-    {
-        /// <summary>
-        /// Rule ID, used for debugging
-        /// </summary>
-        public virtual string ID { get; set; }
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public NonTerminalParser(string id = null) : base()
-        {
-            this.ID = id ?? this.GetHashCode().ToString();
-        }
+	/// <summary>
+	/// NonTerminal parser abstract class
+	/// </summary>
+	public abstract class NonTerminalParser : Parser
+	{
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		public NonTerminalParser(string name = "") : base(name) { }
 
-        /// <summary>
-        /// Pre parse event
-        /// </summary>
-        public virtual event PreParseEventHandler PreParse;
+		/// <summary>
+		/// Pre parse event
+		/// </summary>
+		public virtual event PreParseEventHandler PreParse;
 
-        /// <summary>
-        /// Post parse event 
-        /// </summary>
-        public virtual event PostParseEventHandler PostParse;
+		/// <summary>
+		/// Post parse event 
+		/// </summary>
+		public virtual event PostParseEventHandler PostParse;
 
-        /// <summary>
-        /// Preparse event caller
-        /// </summary>
-        /// <param name="scanner"></param>
-        public virtual void OnPreParse(IScanner scanner)
-        {
-            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
+		/// <summary>
+		/// Preparse event caller
+		/// </summary>
+		/// <param name="scanner"></param>
+		public virtual void OnPreParse(IScanner scanner)
+		{
+			if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            this.PreParse?.Invoke(this, new PreParseEventArgs(this, scanner));
-        }
+			this.PreParse?.Invoke(this, new PreParseEventArgs(this, scanner));
+		}
 
-        /// <summary>
-        /// Post parse event caller
-        /// </summary>
-        /// <param name="match"></param>
-        /// <param name="scanner"></param>
-        public virtual void OnPostParse(ParserMatch match, IScanner scanner)
-        {
-            if (match == null) throw new ArgumentNullException(nameof(match));
+		/// <summary>
+		/// Post parse event caller
+		/// </summary>
+		/// <param name="match"></param>
+		/// <param name="scanner"></param>
+		public virtual void OnPostParse(ParserMatch match, IScanner scanner)
+		{
+			if (match == null) throw new ArgumentNullException(nameof(match));
 
-            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
+			if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            this.PostParse?.Invoke(this, new PostParseEventArgs(match, this, scanner));
-        }
+			this.PostParse?.Invoke(this, new PostParseEventArgs(match, this, scanner));
+		}
 
-        /// <summary>
-        /// Adds event handlers
-        /// </summary>
-        /// <param name="context"></param>
-        public virtual void AddContext(IParserContext context)
-        {
-            if (context == null) throw new ArgumentNullException(nameof(context));
+		/// <summary>
+		/// Adds event handlers
+		/// </summary>
+		/// <param name="context"></param>
+		public virtual void AddContext(IParserContext context)
+		{
+			if (context == null) throw new ArgumentNullException(nameof(context));
 
-            this.PreParse += new PreParseEventHandler(context.PreParse);
-            this.PostParse += new PostParseEventHandler(context.PostParse);
-        }
+			this.PreParse += new PreParseEventHandler(context.PreParse);
+			this.PostParse += new PostParseEventHandler(context.PostParse);
+		}
 
-        /// <summary>
-        /// Removes event handlers
-        /// </summary>
-        /// <param name="context"></param>
-        public virtual void RemoveContext(IParserContext context)
-        {
-            if (context == null) throw new ArgumentNullException(nameof(context));
+		/// <summary>
+		/// Removes event handlers
+		/// </summary>
+		/// <param name="context"></param>
+		public virtual void RemoveContext(IParserContext context)
+		{
+			if (context == null) throw new ArgumentNullException(nameof(context));
 
-            this.PreParse -= new PreParseEventHandler(context.PreParse);
-            this.PostParse -= new PostParseEventHandler(context.PostParse);
-        }
-    }
+			this.PreParse -= new PreParseEventHandler(context.PreParse);
+			this.PostParse -= new PostParseEventHandler(context.PostParse);
+		}
+	}
 }
