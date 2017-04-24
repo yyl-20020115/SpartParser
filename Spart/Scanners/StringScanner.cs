@@ -22,6 +22,7 @@
 /// 3. This notice may not be removed or altered from any source distribution.
 /// 
 /// Author: Jonathan de Halleux
+
 namespace Spart.Scanners
 {
     using System;
@@ -95,10 +96,7 @@ namespace Spart.Scanners
         /// </summary>
         /// <param name="inputString">Input string</param>
         /// <exception cref="ArgumentNullException">input string is null</exception>
-        public StringScanner(string inputString)
-        {
-            this.InputString = inputString ?? throw new ArgumentNullException(nameof(inputString));
-        }
+        public StringScanner(string inputString) : this(inputString, 0) { }
 
         /// <summary>
         /// Creates a scanner on the string at a specified offset
@@ -143,8 +141,8 @@ namespace Spart.Scanners
         /// <returns>character at cursor position</returns>
         public virtual int Peek()
         {
-            return this.AtEnd 
-                ? -1 
+            return this.AtEnd
+                ? -1
                 : (this.Filter == null)
                     ? this.InputString[(int)Offset]
                     : this.Filter.DoFilter(this.InputString[(int)Offset]);
@@ -158,7 +156,12 @@ namespace Spart.Scanners
         /// <returns></returns>
         public virtual string Substring(long offset, int length)
         {
-            string substring = this.InputString.Substring((int)offset, 
+            if (offset < 0L || offset >= this.InputString.Length) throw new ArgumentOutOfRangeException(nameof(offset));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+
+            if ((offset + length) > this.InputString.Length) throw new ArgumentOutOfRangeException(nameof(offset) + "+" + nameof(length));
+
+            string substring = this.InputString.Substring((int)offset,
                 Math.Min(length, this.InputString.Length - (int)offset));
 
             if (this.Filter != null)
@@ -175,7 +178,7 @@ namespace Spart.Scanners
         /// <param name="offset"></param>
         public virtual void Seek(long offset)
         {
-            if (offset < 0 || offset > InputString.Length)
+            if (offset < 0L || offset > this.InputString.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(offset));
             }
