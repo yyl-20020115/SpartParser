@@ -36,20 +36,28 @@ namespace Spart.Parsers
 	{
         public static CharParser ToParser(this char c)
         {
-            return Ch(c);
+            return CharOf(c);
         }
         public static StringParser ToParser(this string str)
         {
-            return Str(str);
+            return StringOf(str);
         }
-        /// <summary>
-        /// Creates a parser that matches a single character
-        /// </summary>
-        /// <param name="c">character to match</param>
-        /// <returns></returns>
-        public static CharParser Ch(char c)
+		/// <summary>
+		/// Creates a parser that matches a single character
+		/// </summary>
+		/// <param name="c">character to match</param>
+		/// <returns></returns>
+		public static CharParser CharOf(char c)
 		{
-			return new CharParser(new LitteralCharTester(c));
+			return new CharParser(new LitteralCharTester(c), c.ToString());
+		}        /// <summary>
+				 /// Creates a parser that matches a single character
+				 /// </summary>
+				 /// <param name="c">character to match</param>
+				 /// <returns></returns>
+		public static CharParser CharOf(int c)
+		{
+			return new CharParser(new LitteralCharTester(c), c.ToString());
 		}
 
 		/// <summary>
@@ -57,7 +65,7 @@ namespace Spart.Parsers
 		/// </summary>
 		/// <param name="s">string to match</param>
 		/// <returns></returns>
-		public static StringParser Str(string s)
+		public static StringParser StringOf(string s)	
 		{
             if (s == null) throw new ArgumentNullException(nameof(s));
 

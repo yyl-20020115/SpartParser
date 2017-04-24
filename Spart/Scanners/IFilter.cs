@@ -43,6 +43,6 @@ namespace Spart.Scanners
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        char DoFilter(char c);
+        int DoFilter(int c);
     }
 }

@@ -25,30 +25,46 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-    using System;
+	using System;
 
-    public class RangeCharTester : ICharTester
-    {
-        public virtual char First { get; protected set; }
+	public class RangeCharTester : ICharTester
+	{
+		public virtual int First { get; protected set; }
 
-        public virtual char Last { get; protected set; }
+		public virtual int Last { get; protected set; }
 
-        public RangeCharTester(char first, char last)
-        {
-            this.SetRange(first, last);
-        }
+		public RangeCharTester(int first, int last)
+		{
+			this.SetRange(first, last);
+		}
 
-        public virtual void SetRange(char first, char last)
-        {
-            if (last < first) throw new ArgumentException("last character < first character");
+		public virtual void SetRange(int first, int last)
+		{
+			if (first < 0) throw new ArgumentOutOfRangeException(nameof(first));
+			if (last < 0) throw new ArgumentOutOfRangeException(nameof(last));
 
-            this.First = first;
-            this.Last = last;
-        }
+			if (last < first) throw new ArgumentException("last character < first character");
 
-        public virtual bool Test(char c)
-        {
-            return c >= First && c <= Last;
-        }
-    }
+			this.First = first;
+			this.Last = last;
+		}
+
+		public virtual bool Test(char c)
+		{
+			return c >= First && c <= Last;
+		}
+
+		public virtual bool Test(int c)
+		{
+			return c >= First && c <= Last;
+		}
+
+		public virtual bool Test(string s, int i)
+		{
+			if (s == null) throw new ArgumentNullException(nameof(s));
+			if (i < 0 || i >= s.Length) throw new ArgumentOutOfRangeException(nameof(i));
+
+			return this.Test(char.ConvertToUtf32(s, i));
+		}
+	}
 }

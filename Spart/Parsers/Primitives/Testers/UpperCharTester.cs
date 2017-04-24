@@ -22,15 +22,29 @@
 /// 3. This notice may not be removed or altered from any source distribution.
 /// 
 /// Author: Jonathan de Halleux
-/// 
 
 namespace Spart.Parsers.Primitives.Testers
 {
-    public class UpperCharTester : ICharTester
-    {
-        public virtual bool Test(char c)
-        {
-            return char.IsUpper(c);
-        }
-    }
+	using System;
+
+	public class UpperCharTester : ICharTester
+	{
+		public virtual bool Test(char c)
+		{
+			return char.IsUpper(c);
+		}
+
+		public virtual bool Test(int c)
+		{
+			return char.IsUpper(char.ConvertFromUtf32(c), 0);
+		}
+
+		public virtual bool Test(string s, int i)
+		{
+			if (s == null) throw new ArgumentNullException(nameof(s));
+			if (i < 0 || i >= s.Length) throw new ArgumentOutOfRangeException(nameof(i));
+
+			return char.IsUpper(s, i);
+		}
+	}
 }

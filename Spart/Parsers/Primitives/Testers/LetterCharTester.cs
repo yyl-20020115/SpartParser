@@ -25,11 +25,26 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-    public class LetterCharTester : ICharTester
-    {
-        public virtual bool Test(char c)
-        {
-            return char.IsLetter(c);
-        }
-    }
+	using System;
+
+	public class LetterCharTester : ICharTester
+	{
+		public virtual bool Test(char c)
+		{
+			return char.IsLetter(c);
+		}
+
+		public virtual bool Test(int c)
+		{
+			return char.IsLetter(char.ConvertFromUtf32(c), 0);
+		}
+
+		public virtual bool Test(string s, int i)
+		{
+			if (s == null) throw new ArgumentNullException(nameof(s));
+			if (i < 0 || i >= s.Length) throw new ArgumentOutOfRangeException(nameof(i));
+
+			return char.IsLetter(s, i);
+		}
+	}
 }

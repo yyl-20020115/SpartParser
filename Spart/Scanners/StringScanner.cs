@@ -141,11 +141,37 @@ namespace Spart.Scanners
         /// <returns>character at cursor position</returns>
         public virtual int Peek()
         {
-            return this.AtEnd
-                ? -1
-                : (this.Filter == null)
-                    ? this.InputString[(int)Offset]
-                    : this.Filter.DoFilter(this.InputString[(int)Offset]);
+			if (this.AtEnd)
+			{
+				return -1;
+			}
+			else
+			{
+				int x = this.InputString[(int)this.Offset];
+				int z = x;
+
+				if (char.IsHighSurrogate((char)x))
+				{
+					this.Offset++;
+
+					if (this.AtEnd)
+					{
+						return -1;
+					}
+					else
+					{
+						int y = this.InputString[(int)this.Offset];
+
+						if (char.IsLowSurrogate((char)y))
+						{
+							z = char.ConvertToUtf32((char)x, (char)y);
+						}
+					}
+				}
+
+				return this.Filter != null ? this.Filter.DoFilter(z) : z;
+
+			}
         }
 
         /// <summary>

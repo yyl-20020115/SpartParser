@@ -40,7 +40,7 @@ namespace Spart.Tests.Parsers.Composite
         {
             get
             {
-                return Prims.Ch('a');
+                return Prims.CharOf('a');
             }
         }
 

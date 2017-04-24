@@ -1,3 +1,5 @@
+
+using System;
 /// Spart License (zlib/png)
 /// 
 /// 
@@ -25,17 +27,40 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-    public class LitteralCharTester : ICharTester
-    {
-        public virtual char Char { get; set; }
+	using System;
 
-        public LitteralCharTester(char c)
-        {
-            this.Char = c;
-        }
-        public virtual bool Test(char c)
-        {
-            return this.Char == c;
-        }
-    }
+	public class LitteralCharTester : ICharTester
+	{
+		public virtual int Char { get; protected set; }
+
+		public LitteralCharTester(char c)
+		{
+			this.Char = c;
+		}
+
+		public LitteralCharTester(int c)
+		{
+			this.Char = c;
+		}
+
+		public virtual bool Test(char c)
+		{
+			return this.Char == c;
+		}
+
+		public virtual bool Test(int c)
+		{
+			return this.Char == c;
+		}
+
+		public virtual bool Test(string s, int i)
+		{
+			if (s == null) throw new ArgumentNullException(nameof(s));
+			if (i < 0 || i >= s.Length) throw new ArgumentOutOfRangeException(nameof(i));
+
+			string u = char.ConvertFromUtf32(this.Char);
+
+			return (i + u.Length> s.Length) ? false : (u == s.Substring(i, u.Length));
+		}
+	}
 }

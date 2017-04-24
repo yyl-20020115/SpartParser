@@ -25,11 +25,26 @@
 
 namespace Spart.Parsers.Primitives.Testers
 {
-    public class DigitCharTester : ICharTester
-    {
-        public virtual bool Test(char c)
-        {
-            return char.IsDigit(c);
-        }
-    }
+	using System;
+
+	public class DigitCharTester : ICharTester
+	{
+		public virtual bool Test(char c)
+		{
+			return char.IsDigit(c);
+		}
+
+		public virtual bool Test(int c)
+		{
+			return char.IsDigit(char.ConvertFromUtf32(c), 0);
+		}
+
+		public virtual bool Test(string s, int i)
+		{
+			if (s == null) throw new ArgumentNullException(nameof(s));
+			if (i < 0 || i >= s.Length) throw new ArgumentOutOfRangeException(nameof(i));
+
+			return char.IsDigit(s, i);
+		}
+	}
 }

@@ -19,7 +19,7 @@
             The parser match value
             </summary>
         </member>
-        <member name="P:Spart.Actions.ActionEventArgs.TypeValue">
+        <member name="P:Spart.Actions.ActionEventArgs.Result">
             <summary>
             The typed parse result
             </summary>
@@ -35,7 +35,7 @@
             Construct a new event argument instance
             </summary>
             <param name="match"></param>
-            <param name="typedValue"></param>
+            <param name="result"></param>
         </member>
         <member name="T:Spart.Actions.ActionHandler">
             <summary>
@@ -267,7 +267,7 @@
             Abstract parser class
             </summary>
         </member>
-        <member name="M:Spart.Parsers.Parser.#ctor">
+        <member name="M:Spart.Parsers.Parser.#ctor(System.String)">
             <summary>
             Default constructor
             </summary>
@@ -397,14 +397,21 @@
             Static helper class to create primitive parsers
             </summary>
         </member>
-        <member name="M:Spart.Parsers.Prims.Ch(System.Char)">
+        <member name="M:Spart.Parsers.Prims.CharOf(System.Char)">
             <summary>
             Creates a parser that matches a single character
             </summary>
             <param name="c">character to match</param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Parsers.Prims.Str(System.String)">
+        <member name="M:Spart.Parsers.Prims.CharOf(System.Int32)">
+            <summary>
+            Creates a parser that matches a single character
+            </summary>
+            <param name="c">character to match</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Prims.StringOf(System.String)">
             <summary>
             Creates a parser that matches a string
             </summary>
@@ -496,7 +503,7 @@
             <param name="s"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Scanners.IFilter.DoFilter(System.Char)">
+        <member name="M:Spart.Scanners.IFilter.DoFilter(System.Int32)">
             <summary>
             Converts c to lower char
             </summary>
@@ -665,7 +672,7 @@
             <param name="s"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Scanners.ToLowerFilter.DoFilter(System.Char)">
+        <member name="M:Spart.Scanners.ToLowerFilter.DoFilter(System.Int32)">
             <summary>
             Converts i to lower i
             </summary>

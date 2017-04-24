@@ -38,5 +38,8 @@ namespace Spart.Parsers
 
             return p;
         }
-    }
+
+		public NegatableParser(string name = "") : base(name) { }
+
+	}
 }

@@ -22,14 +22,28 @@
 /// 3. This notice may not be removed or altered from any source distribution.
 /// 
 /// Author: Jonathan de Halleuxusing System;
-
 namespace Spart.Parsers.Primitives.Testers
 {
-    public class AnyCharTester : ICharTester
-    {
-        public virtual bool Test(char c)
-        {
-            return true;
-        }
-    }
+	using System;
+
+	public class AnyCharTester : ICharTester
+	{
+		public virtual bool Test(char c)
+		{
+			return true;
+		}
+
+		public virtual bool Test(int c)
+		{
+			return true;
+		}
+
+		public virtual bool Test(string s, int i)
+		{
+			if (s == null) throw new ArgumentNullException(nameof(s));
+			if (i < 0 || i >= s.Length) throw new ArgumentOutOfRangeException(nameof(i));
+
+			return true;
+		}
+	}
 }

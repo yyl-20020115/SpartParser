@@ -27,8 +27,7 @@ namespace Spart.Demo
         protected Rule expression = new Rule(nameof(expression));
         protected Rule integer = new Rule(nameof(integer));
 
-        protected Stack<double> CalculationStack = new Stack<double>();
-        protected Stack<Experssion> ExpressionStack = new Stack<Experssion>();
+        protected Stack<(Experssion E, double N)> Stack = new Stack<(Experssion, double)>();
 
         /// <summary>
         /// A very simple calculator parser
@@ -38,18 +37,17 @@ namespace Spart.Demo
             this.integer.Parser = (+Prims.Digit).WithAction(
 				(parser, args) =>
 				{
-					this.ExpressionStack.Push(
-						new Experssion
-						{
-							Value = args.Value,
-						}
-						);
-
-					if (!double.TryParse(args.Value, out double v))
+					if (!double.TryParse(args.Value, out double N))
 					{
-						v = double.NaN;
+						N = double.NaN;
 					}
-					this.CalculationStack.Push(v);
+					this.Stack.Push(
+						(new Experssion
+							{
+								Value = args.Value,
+							}
+						,N)
+						);
 				}
 			);
 
@@ -57,105 +55,56 @@ namespace Spart.Demo
 
 			this.factor.Parser = this.group | this.integer;
 
-            this.term.Parser = this.factor + ~(
-				('*' + factor).WithAction(
-					(parser, args) =>
-					{
-						if (this.ExpressionStack.Count >= 2)
-						{
-							this.ExpressionStack.Push(
-								new Experssion
-								{
-									Right = this.ExpressionStack.Pop(),
-									Left = this.ExpressionStack.Pop(),
-									Operation = "*"
-								}
-								);
-						}
+			void MathFunction(string op)
+			{
+				if (this.Stack.Count >= 2 && !string.IsNullOrEmpty(op))
+				{
+					var Y = this.Stack.Pop();
+					var X = this.Stack.Pop();
 
-						if (this.CalculationStack.Count >= 2)
-						{
-							double y = this.CalculationStack.Pop();
-							double x = this.CalculationStack.Pop();
-							double z = x * y;
-							this.CalculationStack.Push(z);
-						}
+					double x = X.N;
+					double y = Y.N;
+					double z = double.NaN;
+
+					switch (op)
+					{
+						case "+":
+							z = x + y;
+							break;
+						case "-":
+							z = x - y;
+							break;
+						case "*":
+							z = x * y;
+							break;
+						case "/":
+							z = x / y;
+							break;
 					}
-				)
+
+					this.Stack.Push(
+						(
+							new Experssion
+							{
+								Left = X.E,
+								Right = Y.E,
+								Operation = op
+							},
+							z
+						)
+						);
+				}
+			}
+
+			this.term.Parser = this.factor + ~(
+				('*' + factor).WithAction((parser, args) => MathFunction("*"))
 				|
-				('/' + factor).WithAction(
-					(parser, args) =>
-					{
-						if (this.ExpressionStack.Count >= 2)
-						{
-							this.ExpressionStack.Push(
-								new Experssion
-								{
-									Right = this.ExpressionStack.Pop(),
-									Left = this.ExpressionStack.Pop(),
-									Operation = "/"
-								}
-								);
-						}
-
-						if (this.CalculationStack.Count >= 2)
-						{
-							double y = this.CalculationStack.Pop();
-							double x = this.CalculationStack.Pop();
-							double z = x / y;
-							this.CalculationStack.Push(z);
-						}
-					}
-				)
+				('/' + factor).WithAction((parser, args) => MathFunction("/"))
 			);
             this.expression.Parser = this.term + ~(
-				('+' + term).WithAction(
-					(parser, args) =>
-					{
-						if (this.ExpressionStack.Count >= 2)
-						{
-							this.ExpressionStack.Push(
-								new Experssion
-								{
-									Right = this.ExpressionStack.Pop(),
-									Left = this.ExpressionStack.Pop(),
-									Operation = "+"
-								}
-								);
-						}
-						if (this.CalculationStack.Count >= 2)
-						{
-							double y = this.CalculationStack.Pop();
-							double x = this.CalculationStack.Pop();
-							double z = x + y;
-							this.CalculationStack.Push(z);
-						}
-					}
-				) 
+				('+' + term).WithAction((parser, args) => MathFunction("+"))
 				|
-				('-' + term).WithAction(
-					(parser, args) =>
-					{
-						if (this.ExpressionStack.Count >= 2)
-						{
-							this.ExpressionStack.Push(
-								new Experssion
-								{
-									Right = this.ExpressionStack.Pop(),
-									Left = this.ExpressionStack.Pop(),
-									Operation = "-"
-								}
-								);
-						}
-						if (this.CalculationStack.Count >= 2)
-						{
-							double y = this.CalculationStack.Pop();
-							double x = this.CalculationStack.Pop();
-							double z = x - y;
-							this.CalculationStack.Push(z);
-						}
-					}
-				)
+				('-' + term).WithAction((parser, args) => MathFunction("-"))
 			);
         }
 
@@ -168,30 +117,24 @@ namespace Spart.Demo
         {
             return this.expression.Parse(new StringScanner(text));
         }
-        public virtual (double n, Experssion e) Calculate(string text)
+        public virtual (Experssion E, double N) Calculate(string text)
         {
-            double n = double.NaN;
+			(Experssion E, double N) result = (null, double.NaN);
 
-            Experssion e = null;
-
-            if (!string.IsNullOrEmpty(text))
+			if (!string.IsNullOrEmpty(text))
             {
                 ParserMatch m = this.InternalParse(text);
 
                 if (m.Success)
                 {
-                    if (this.CalculationStack.Count >= 1)
+				
+                    if (this.Stack.Count >= 1)
                     {
-                        n = this.CalculationStack.Pop();
+						result = this.Stack.Pop();
                     }
-                    if (this.ExpressionStack.Count >= 1)
-                    {
-                        e = this.ExpressionStack.Pop();
-                    }
-
                 }
             }
-            return (n,e);
+            return result;
         }
     }
 }

@@ -25,29 +25,29 @@
 
 namespace Spart.Scanners
 {
-    /// <summary>
-    /// A to lower input filter
-    /// </summary>
-    public class ToLowerFilter : IFilter
-    {
-        /// <summary>
-        /// Converts s to lower string
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public virtual string DoFilter(string s)
-        {
-            return s?.ToLower();
-        }
+	/// <summary>
+	/// A to lower input filter
+	/// </summary>
+	public class ToLowerFilter : IFilter
+	{
+		/// <summary>
+		/// Converts s to lower string
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public virtual string DoFilter(string s)
+		{
+			return s?.ToLower();
+		}
 
-        /// <summary>
-        /// Converts i to lower i
-        /// </summary>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        public virtual char DoFilter(char c)
-        {
-            return char.ToLower(c);
-        }
-    }
+		/// <summary>
+		/// Converts i to lower i
+		/// </summary>
+		/// <param name="c"></param>
+		/// <returns></returns>
+		public virtual int DoFilter(int c)
+		{
+			return (c >= char.MinValue && c <= char.MaxValue) ? char.ToLower((char)c) : c;
+		}
+	}
 }

@@ -31,7 +31,7 @@ namespace Spart.Parsers.Primitives
     public class StringParser : TerminalParser
     {
         public virtual string MatchedString { get; protected set; }
-        public StringParser(string str)
+        public StringParser(string str) : base(str)
         {
             this.MatchedString = str ?? throw new ArgumentNullException(nameof(str));
         }

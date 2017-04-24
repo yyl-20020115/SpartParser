@@ -35,17 +35,18 @@ namespace Spart.Parsers
     /// </summary>
     public abstract class Parser
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public Parser() { }
+		public virtual string Name { get; set; }
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		public Parser(string name = "") { this.Name = name; }
 
-        /// <summary>
-        /// Inner parse method
-        /// </summary>
-        /// <param name="scanner">scanner</param>
-        /// <returns>the match</returns>
-        public abstract ParserMatch ParseMain(IScanner scanner);
+		/// <summary>
+		/// Inner parse method
+		/// </summary>
+		/// <param name="scanner">scanner</param>
+		/// <returns>the match</returns>
+		public abstract ParserMatch ParseMain(IScanner scanner);
 
         /// <summary>
         /// Outer parse method
@@ -101,13 +102,17 @@ namespace Spart.Parsers
             return Ops.Klenee(p);
         }
 
-        public static implicit operator Parser(char c)
+		public static implicit operator Parser(char c)
+		{
+			return Prims.CharOf(c);
+		}
+		public static implicit operator Parser(int c)
+		{
+			return Prims.CharOf(c);
+		}
+		public static implicit operator Parser(string str)
         {
-            return Prims.Ch(c);
-        }
-        public static implicit operator Parser(string str)
-        {
-            return Prims.Str(str);
+            return Prims.StringOf(str);
         }
 
         /// <summary>

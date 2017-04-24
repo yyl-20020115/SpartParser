@@ -29,7 +29,9 @@ namespace Spart.Parsers
 
     public abstract class TerminalParser : Parser
     {
-        public static implicit operator Rule(TerminalParser p)
+		public TerminalParser(string name = "") : base(name) { }
+
+		public static implicit operator Rule(TerminalParser p)
         {
             return new Rule(p);
         }

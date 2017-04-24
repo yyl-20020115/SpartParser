@@ -25,48 +25,48 @@
 
 namespace Spart.Parsers.Primitives
 {
-    using System;
-    using Spart.Scanners;
-    using Spart.Parsers.Primitives.Testers;
+	using System;
+	using Spart.Scanners;
+	using Spart.Parsers.Primitives.Testers;
 
-    public class CharParser : NegatableParser
-    {
-        public virtual ICharTester Tester { get; protected set; }
+	public class CharParser : NegatableParser
+	{
+		public virtual ICharTester Tester { get; protected set; }
 
-        public CharParser(ICharTester tester) : base()
-        {
-            this.Tester = tester ?? throw new ArgumentNullException(nameof(tester));
-        }
+		public CharParser(ICharTester tester, string name = "") : base(name)
+		{
+			this.Tester = tester ?? throw new ArgumentNullException(nameof(tester));
+		}
 
-        public override ParserMatch ParseMain(IScanner scanner)
-        {
-            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
+		public override ParserMatch ParseMain(IScanner scanner)
+		{
+			if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            long offset = scanner.Offset;
+			long offset = scanner.Offset;
 
-            int x = scanner.Peek();
+			int c = scanner.Peek();
 
-            if (x < 0)
-            {
-                return scanner.NoMatch;
-            }
+			if (c < 0)
+			{
+				return scanner.NoMatch;
+			}
 
-            bool test = this.Tester.Test((char)x);
+			bool test = this.Tester.Test(c);
 
-            if (test && Negate || !test && !Negate)
-            {
-                return scanner.NoMatch;
-            }
+			if (test && Negate || !test && !Negate)
+			{
+				return scanner.NoMatch;
+			}
 
-            // match character
-            // if we arrive at this point, we have a match
-            ParserMatch m = scanner.CreateMatch(offset, 1);
+			// match character
+			// if we arrive at this point, we have a match
+			ParserMatch m = scanner.CreateMatch(offset, 1);
 
-            // updating offset
-            scanner.Read();
+			// updating offset
+			scanner.Read();
 
-            // return match
-            return m;
-        }
-    }
+			// return match
+			return m;
+		}
+	}
 }

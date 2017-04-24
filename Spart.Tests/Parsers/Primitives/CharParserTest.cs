@@ -56,7 +56,7 @@ namespace Spart.Tests.Parsers.Primitives
         public void SuccessParse()
         {
             IScanner scanner = Provider.Scanner;
-            CharParser parser = Prims.Ch(MatchedChar);
+            CharParser parser = Prims.CharOf(MatchedChar);
 
             ParserMatch m = parser.Parse(scanner);
             Assert.IsTrue(m.Success);
@@ -69,7 +69,7 @@ namespace Spart.Tests.Parsers.Primitives
         public void FailParse()
         {
             IScanner scanner = Provider.Scanner;
-            CharParser parser = Prims.Ch(NonMatchedChar);
+            CharParser parser = Prims.CharOf(NonMatchedChar);
 
             ParserMatch m = parser.Parse(scanner);
             Assert.IsTrue(!m.Success);
@@ -81,7 +81,7 @@ namespace Spart.Tests.Parsers.Primitives
         public void NegateSuccessParse()
         {
             IScanner scanner = Provider.Scanner;
-            NegatableParser parser = ~Prims.Ch(NonMatchedChar);
+            NegatableParser parser = ~Prims.CharOf(NonMatchedChar);
 
             ParserMatch m = parser.Parse(scanner);
             Assert.IsTrue(m.Success);
@@ -94,7 +94,7 @@ namespace Spart.Tests.Parsers.Primitives
         public void NegateFailParse()
         {
             IScanner scanner = Provider.Scanner;
-            NegatableParser parser = ~Prims.Ch(MatchedChar);
+            NegatableParser parser = ~Prims.CharOf(MatchedChar);
 
             ParserMatch m = parser.Parse(scanner);
             Assert.IsTrue(!m.Success);
