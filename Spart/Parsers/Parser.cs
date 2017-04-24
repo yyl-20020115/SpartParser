@@ -70,6 +70,14 @@ namespace Spart.Parsers
         /// </summary>
         public virtual event ActionHandler Action;
 
+		public virtual Parser WithAction(Action<Parser, ActionEventArgs> action)
+		{
+			if (action != null)
+			{
+				this.Action += new ActionHandler(action);
+			}
+			return this;
+		}
         /// <summary>
         /// Action caller method
         /// </summary>

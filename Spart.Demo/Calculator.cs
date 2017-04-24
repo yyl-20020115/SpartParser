@@ -3,7 +3,6 @@ namespace Spart.Demo
     using Spart.Parsers.NonTerminal;
     using Spart.Parsers;
     using Spart.Scanners;
-    using Spart.Actions;
     using System.Collections.Generic;
 
     /// <summary>
@@ -28,12 +27,6 @@ namespace Spart.Demo
         protected Rule expression = new Rule(nameof(expression));
         protected Rule integer = new Rule(nameof(integer));
 
-        protected Parser add = null;
-        protected Parser sub = null;
-        protected Parser mul = null;
-        protected Parser div = null;
-        protected Parser digits = null;
-
         protected Stack<double> CalculationStack = new Stack<double>();
         protected Stack<Experssion> ExpressionStack = new Stack<Experssion>();
 
@@ -42,127 +35,128 @@ namespace Spart.Demo
         /// </summary>
         public Calculator()
         {
-            (this.add = '+' + term).Action += new ActionHandler(
-                (parser, args) =>
-                {
-                    if (this.ExpressionStack.Count >= 2)
-                    {
-                        this.ExpressionStack.Push(
-                            new Experssion
-                            {
-                                Right = this.ExpressionStack.Pop(),
-                                Left = this.ExpressionStack.Pop(),
-                                Operation = "+"
-                            }
-                            );
-                    }
-                    if (this.CalculationStack.Count >= 2)
-                    {
-                        double y = this.CalculationStack.Pop();
-                        double x = this.CalculationStack.Pop();
-                        double z = x + y;
-                        this.CalculationStack.Push(z);
-                    }
-                }
-            );
+            this.integer.Parser = (+Prims.Digit).WithAction(
+				(parser, args) =>
+				{
+					this.ExpressionStack.Push(
+						new Experssion
+						{
+							Value = args.Value,
+						}
+						);
 
-            (this.sub = '-' + term).Action += new ActionHandler(
-                (parser, args) =>
-                {
-                    if (this.ExpressionStack.Count >= 2)
-                    {
-                        this.ExpressionStack.Push(
-                            new Experssion
-                            {
-                                Right = this.ExpressionStack.Pop(),
-                                Left = this.ExpressionStack.Pop(),
-                                Operation = "-"
-                            }
-                            );
-                    }
-                    if (this.CalculationStack.Count >= 2)
-                    {
-                        double y = this.CalculationStack.Pop();
-                        double x = this.CalculationStack.Pop();
-                        double z = x - y;
-                        this.CalculationStack.Push(z);
-                    }
-                }
-            );
+					if (!double.TryParse(args.Value, out double v))
+					{
+						v = double.NaN;
+					}
+					this.CalculationStack.Push(v);
+				}
+			);
 
-            (this.mul = '*' + factor).Action += new ActionHandler(
-                (parser, args) =>
-                {
-                    if (this.ExpressionStack.Count >= 2)
-                    {
-                        this.ExpressionStack.Push(
-                            new Experssion
-                            {
-                                Right = this.ExpressionStack.Pop(),
-                                Left = this.ExpressionStack.Pop(),
-                                Operation = "*"
-                            }
-                            );
-                    }
+			this.group.Parser = '(' + this.expression + ')';
 
-                    if (this.CalculationStack.Count >= 2)
-                    {
-                        double y = this.CalculationStack.Pop();
-                        double x = this.CalculationStack.Pop();
-                        double z = x * y;
-                        this.CalculationStack.Push(z);
-                    }
-                }
-            );
+			this.factor.Parser = this.group | this.integer;
 
-            (this.div = '/' + factor).Action += new ActionHandler(
-                (parser, args) =>
-                {
-                    if (this.ExpressionStack.Count >= 2)
-                    {
-                        this.ExpressionStack.Push(
-                            new Experssion
-                            {
-                                Right = this.ExpressionStack.Pop(),
-                                Left = this.ExpressionStack.Pop(),
-                                Operation = "/"
-                            }
-                            );
-                    }
+            this.term.Parser = this.factor + ~(
+				('*' + factor).WithAction(
+					(parser, args) =>
+					{
+						if (this.ExpressionStack.Count >= 2)
+						{
+							this.ExpressionStack.Push(
+								new Experssion
+								{
+									Right = this.ExpressionStack.Pop(),
+									Left = this.ExpressionStack.Pop(),
+									Operation = "*"
+								}
+								);
+						}
 
-                    if (this.CalculationStack.Count >= 2)
-                    {
-                        double y = this.CalculationStack.Pop();
-                        double x = this.CalculationStack.Pop();
-                        double z = x / y;
-                        this.CalculationStack.Push(z);
-                    }
-                }
-            );
+						if (this.CalculationStack.Count >= 2)
+						{
+							double y = this.CalculationStack.Pop();
+							double x = this.CalculationStack.Pop();
+							double z = x * y;
+							this.CalculationStack.Push(z);
+						}
+					}
+				)
+				|
+				('/' + factor).WithAction(
+					(parser, args) =>
+					{
+						if (this.ExpressionStack.Count >= 2)
+						{
+							this.ExpressionStack.Push(
+								new Experssion
+								{
+									Right = this.ExpressionStack.Pop(),
+									Left = this.ExpressionStack.Pop(),
+									Operation = "/"
+								}
+								);
+						}
 
-            (this.digits = +Prims.Digit).Action += new ActionHandler(
-                (parser, args) =>
-                {
-                    this.ExpressionStack.Push(
-                        new Experssion
-                        {
-                            Value = args.Value,
-                        }
-                        );
-
-                    if(!double.TryParse(args.Value, out double v))
-                    {
-                        v = double.NaN;
-                    }
-                    this.CalculationStack.Push(v);
-                }
-            );
-
-            this.integer.Parser = digits;
-            this.group.Parser = '(' + this.expression + ')';
-            this.factor.Parser = this.group | this.integer;
-            this.term.Parser = this.factor + ~(this.mul | this.div);
-            this.expression.Parser = this.term + ~(this.add | this.mul);
+						if (this.CalculationStack.Count >= 2)
+						{
+							double y = this.CalculationStack.Pop();
+							double x = this.CalculationStack.Pop();
+							double z = x / y;
+							this.CalculationStack.Push(z);
+						}
+					}
+				)
+			);
+            this.expression.Parser = this.term + ~(
+				('+' + term).WithAction(
+					(parser, args) =>
+					{
+						if (this.ExpressionStack.Count >= 2)
+						{
+							this.ExpressionStack.Push(
+								new Experssion
+								{
+									Right = this.ExpressionStack.Pop(),
+									Left = this.ExpressionStack.Pop(),
+									Operation = "+"
+								}
+								);
+						}
+						if (this.CalculationStack.Count >= 2)
+						{
+							double y = this.CalculationStack.Pop();
+							double x = this.CalculationStack.Pop();
+							double z = x + y;
+							this.CalculationStack.Push(z);
+						}
+					}
+				) 
+				|
+				('-' + term).WithAction(
+					(parser, args) =>
+					{
+						if (this.ExpressionStack.Count >= 2)
+						{
+							this.ExpressionStack.Push(
+								new Experssion
+								{
+									Right = this.ExpressionStack.Pop(),
+									Left = this.ExpressionStack.Pop(),
+									Operation = "-"
+								}
+								);
+						}
+						if (this.CalculationStack.Count >= 2)
+						{
+							double y = this.CalculationStack.Pop();
+							double x = this.CalculationStack.Pop();
+							double z = x - y;
+							this.CalculationStack.Push(z);
+						}
+					}
+				)
+			);
         }
 
         /// <summary>
