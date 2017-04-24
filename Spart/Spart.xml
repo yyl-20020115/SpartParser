@@ -610,13 +610,6 @@
             Empty match
             </summary>
         </member>
-        <member name="M:Spart.Scanners.StringScanner.#ctor(System.String)">
-            <summary>
-            Creates a scanner on the string.
-            </summary>
-            <param name="inputString">Input string</param>
-            <exception cref="T:System.ArgumentNullException">input string is null</exception>
-        </member>
         <member name="M:Spart.Scanners.StringScanner.#ctor(System.String,System.Int64)">
             <summary>
             Creates a scanner on the string at a specified offset

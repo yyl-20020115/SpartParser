@@ -53,9 +53,7 @@ namespace Spart.Demo
                     }
                     else
                     {
-                        var result = calculator.Calculate(line);
-
-                        Console.WriteLine($"= {result.N}");
+                        Console.WriteLine($"= {calculator.Calculate(line).N}");
                     }
                 }
                 //calc.Parse("(53+29)*(41/20)");

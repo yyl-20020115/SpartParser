@@ -91,9 +91,12 @@ namespace Spart.Parsers
 
             return m;
         }
-
-        #region Operators
-        public static Parser operator +(Parser first, Parser second)
+		public override string ToString()
+		{
+			return this.Name;
+		}
+		#region Operators
+		public static Parser operator +(Parser first, Parser second)
         {
             return Ops.Seq(first, second);
         }

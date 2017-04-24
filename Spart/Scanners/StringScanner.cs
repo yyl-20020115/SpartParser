@@ -92,20 +92,13 @@ namespace Spart.Scanners
         }
 
         /// <summary>
-        /// Creates a scanner on the string.
-        /// </summary>
-        /// <param name="inputString">Input string</param>
-        /// <exception cref="ArgumentNullException">input string is null</exception>
-        public StringScanner(string inputString) : this(inputString, 0) { }
-
-        /// <summary>
         /// Creates a scanner on the string at a specified offset
         /// </summary>
         /// <param name="inputString">Input string</param>
         /// <param name="offset">Offset</param>
         /// <exception cref="ArgumentNullException">input string is null</exception>
         /// <exception cref="ArgumentException">offset if out of range</exception>
-        public StringScanner(string inputString, long offset)
+        public StringScanner(string inputString, long offset = 0L)
         {
             this.InputString = inputString ?? throw new ArgumentNullException(nameof(inputString));
 

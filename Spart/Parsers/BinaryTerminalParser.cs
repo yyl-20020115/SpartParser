@@ -28,8 +28,8 @@ namespace Spart.Parsers
     using System;
     public abstract class BinaryTerminalParser : TerminalParser
     {
-        public virtual Parser FirstParser { get; protected set; } = null;
-        public virtual Parser SecondParser { get; protected set; } = null;
+        public virtual Parser FirstParser { get; protected set; }
+        public virtual Parser SecondParser { get; protected set; }
         public BinaryTerminalParser(Parser first, Parser second)
         {
             FirstParser = first ?? throw new ArgumentNullException(nameof(first));
