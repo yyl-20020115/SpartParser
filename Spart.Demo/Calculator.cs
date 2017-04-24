@@ -174,9 +174,11 @@ namespace Spart.Demo
         {
             return this.expression.Parse(new StringScanner(text));
         }
-        public virtual double Calculate(string text)
+        public virtual (double n, Experssion e) Calculate(string text)
         {
-            double result = double.NaN;
+            double n = double.NaN;
+
+            Experssion e = null;
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -186,29 +188,16 @@ namespace Spart.Demo
                 {
                     if (this.CalculationStack.Count >= 1)
                     {
-                        result = this.CalculationStack.Pop();
+                        n = this.CalculationStack.Pop();
                     }
-                }
-            }
-            return result;
-        }
-        public virtual Experssion Parse(string text)
-        {
-            Experssion result = null;
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                ParserMatch m = this.InternalParse(text);
-
-                if (m.Success)
-                {
                     if (this.ExpressionStack.Count >= 1)
                     {
-                        result = this.ExpressionStack.Pop();
+                        e = this.ExpressionStack.Pop();
                     }
+
                 }
             }
-            return result;
+            return (n,e);
         }
     }
 }
