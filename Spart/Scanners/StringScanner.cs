@@ -86,7 +86,7 @@ namespace Spart.Scanners
         {
             get
             {
-                return new ParserMatch(this, 0, 0);
+                return new ParserMatch(this, this.Offset, 0);
             }
         }
 
