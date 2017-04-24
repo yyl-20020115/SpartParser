@@ -1,5 +1,3 @@
-using System;
-
 namespace Spart.Demo
 {
     using Spart.Parsers.NonTerminal;
@@ -16,6 +14,14 @@ namespace Spart.Demo
     /// </summary>
     public class Calculator
     {
+        public class Experssion
+        {
+            public string Value = null;
+            public string Operation = null;
+            public Experssion Left = null;
+            public Experssion Right = null;
+        }
+
         protected Rule group = new Rule(nameof(group));
         protected Rule term = new Rule(nameof(term));
         protected Rule factor = new Rule(nameof(factor));
@@ -28,7 +34,8 @@ namespace Spart.Demo
         protected Parser div = null;
         protected Parser digits = null;
 
-        protected Stack<double> Stack = new Stack<double>();
+        protected Stack<double> CalculationStack = new Stack<double>();
+        protected Stack<Experssion> ExpressionStack = new Stack<Experssion>();
 
         /// <summary>
         /// A very simple calculator parser
@@ -38,12 +45,23 @@ namespace Spart.Demo
             (this.add = '+' + term).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    if (this.Stack.Count >= 2)
+                    if (this.ExpressionStack.Count >= 2)
                     {
-                        double y = this.Stack.Pop();
-                        double x = this.Stack.Pop();
+                        this.ExpressionStack.Push(
+                            new Experssion
+                            {
+                                Right = this.ExpressionStack.Pop(),
+                                Left = this.ExpressionStack.Pop(),
+                                Operation = "+"
+                            }
+                            );
+                    }
+                    if (this.CalculationStack.Count >= 2)
+                    {
+                        double y = this.CalculationStack.Pop();
+                        double x = this.CalculationStack.Pop();
                         double z = x + y;
-                        this.Stack.Push(z);
+                        this.CalculationStack.Push(z);
                     }
                 }
             );
@@ -51,12 +69,23 @@ namespace Spart.Demo
             (this.sub = '-' + term).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    if (this.Stack.Count >= 2)
+                    if (this.ExpressionStack.Count >= 2)
                     {
-                        double y = this.Stack.Pop();
-                        double x = this.Stack.Pop();
+                        this.ExpressionStack.Push(
+                            new Experssion
+                            {
+                                Right = this.ExpressionStack.Pop(),
+                                Left = this.ExpressionStack.Pop(),
+                                Operation = "-"
+                            }
+                            );
+                    }
+                    if (this.CalculationStack.Count >= 2)
+                    {
+                        double y = this.CalculationStack.Pop();
+                        double x = this.CalculationStack.Pop();
                         double z = x - y;
-                        this.Stack.Push(z);
+                        this.CalculationStack.Push(z);
                     }
                 }
             );
@@ -64,12 +93,24 @@ namespace Spart.Demo
             (this.mul = '*' + factor).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    if (this.Stack.Count >= 2)
+                    if (this.ExpressionStack.Count >= 2)
                     {
-                        double y = this.Stack.Pop();
-                        double x = this.Stack.Pop();
+                        this.ExpressionStack.Push(
+                            new Experssion
+                            {
+                                Right = this.ExpressionStack.Pop(),
+                                Left = this.ExpressionStack.Pop(),
+                                Operation = "*"
+                            }
+                            );
+                    }
+
+                    if (this.CalculationStack.Count >= 2)
+                    {
+                        double y = this.CalculationStack.Pop();
+                        double x = this.CalculationStack.Pop();
                         double z = x * y;
-                        this.Stack.Push(z);
+                        this.CalculationStack.Push(z);
                     }
                 }
             );
@@ -77,12 +118,24 @@ namespace Spart.Demo
             (this.div = '/' + factor).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    if (this.Stack.Count >= 2)
+                    if (this.ExpressionStack.Count >= 2)
                     {
-                        double y = this.Stack.Pop();
-                        double x = this.Stack.Pop();
+                        this.ExpressionStack.Push(
+                            new Experssion
+                            {
+                                Right = this.ExpressionStack.Pop(),
+                                Left = this.ExpressionStack.Pop(),
+                                Operation = "/"
+                            }
+                            );
+                    }
+
+                    if (this.CalculationStack.Count >= 2)
+                    {
+                        double y = this.CalculationStack.Pop();
+                        double x = this.CalculationStack.Pop();
                         double z = x / y;
-                        this.Stack.Push(z);
+                        this.CalculationStack.Push(z);
                     }
                 }
             );
@@ -90,10 +143,18 @@ namespace Spart.Demo
             (this.digits = +Prims.Digit).Action += new ActionHandler(
                 (parser, args) =>
                 {
-                    if(double.TryParse(args.Value, out double v))
+                    this.ExpressionStack.Push(
+                        new Experssion
+                        {
+                            Value = args.Value,
+                        }
+                        );
+
+                    if(!double.TryParse(args.Value, out double v))
                     {
-                        this.Stack.Push(v);
+                        v = double.NaN;
                     }
+                    this.CalculationStack.Push(v);
                 }
             );
 
@@ -109,21 +170,42 @@ namespace Spart.Demo
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        protected virtual ParserMatch Parse(string e)
+        protected virtual ParserMatch InternalParse(string text)
         {
-            return this.expression.Parse(new StringScanner(e));
+            return this.expression.Parse(new StringScanner(text));
         }
-        public virtual double Calculate(string e)
+        public virtual double Calculate(string text)
         {
             double result = double.NaN;
 
-            ParserMatch m = this.Parse(e);
-
-            if (m.Success)
+            if (!string.IsNullOrEmpty(text))
             {
-                if (this.Stack.Count >= 1)
+                ParserMatch m = this.InternalParse(text);
+
+                if (m.Success)
                 {
-                    result = this.Stack.Pop();
+                    if (this.CalculationStack.Count >= 1)
+                    {
+                        result = this.CalculationStack.Pop();
+                    }
+                }
+            }
+            return result;
+        }
+        public virtual Experssion Parse(string text)
+        {
+            Experssion result = null;
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                ParserMatch m = this.InternalParse(text);
+
+                if (m.Success)
+                {
+                    if (this.ExpressionStack.Count >= 1)
+                    {
+                        result = this.ExpressionStack.Pop();
+                    }
                 }
             }
             return result;
