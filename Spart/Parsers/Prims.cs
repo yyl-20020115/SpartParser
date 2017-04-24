@@ -42,6 +42,7 @@ namespace Spart.Parsers
         {
             return StringOf(str);
         }
+
 		/// <summary>
 		/// Creates a parser that matches a single character
 		/// </summary>
@@ -78,7 +79,7 @@ namespace Spart.Parsers
 		/// <param name="first"></param>
 		/// <param name="last"></param>
 		/// <returns></returns>
-		public static CharParser Range(char first, char last)
+		public static CharParser Range(int first, int last)
 		{
 			return new CharParser(new RangeCharTester(first, last));
 		}
@@ -93,15 +94,21 @@ namespace Spart.Parsers
         /// </summary>
         public static CharParser Control => new CharParser(new ControlCharTester());
 
-        /// <summary>
-        /// Creates a parser that matches digit characters
-        /// </summary>
-        public static CharParser Digit => new CharParser(new DigitCharTester());
+		public static CharParser BinDigit = ('0', '1');
 
-        /// <summary>
-        /// Creates a parser that matches letter characters
-        /// </summary>
-        public static CharParser Letter => new CharParser(new LetterCharTester());
+		public static CharParser OctDigit = ('0', '7');
+
+		public static Parser HexDigit = Digit | (CharParser)('a', 'f') | (CharParser)('A', 'F');
+		/// <summary>
+		/// Creates a parser that matches digit characters
+		/// </summary>
+		public static CharParser Digit => new CharParser(new DigitCharTester());
+
+
+		/// <summary>
+		/// Creates a parser that matches letter characters
+		/// </summary>
+		public static CharParser Letter => new CharParser(new LetterCharTester());
 
         /// <summary>
         /// Creates a parser that matches letter or digit characters

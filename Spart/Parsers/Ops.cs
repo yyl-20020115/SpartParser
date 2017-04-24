@@ -27,18 +27,32 @@ namespace Spart.Parsers
 {
     using System;
     using Spart.Parsers.Composite;
+	using Spart.Actions;
 
-    /// <summary>
-    /// Static helper class to create new parser operators
-    /// </summary>
-    public static class Ops
+	/// <summary>
+	/// Static helper class to create new parser operators
+	/// </summary>
+	public static class Ops
     {
-        /// <summary>
-        /// &gt;&gt; operator
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <returns></returns>
+		public static Parser With(this char c, Action<Parser, ActionEventArgs> action)
+		{
+			return ((Parser)c).With(action);
+		}
+		public static Parser With(this int c, Action<Parser, ActionEventArgs> action)
+		{
+			return ((Parser)c).With(action);
+		}
+		public static Parser With(this string s, Action<Parser, ActionEventArgs> action)
+		{
+			return ((Parser)s).With(action);
+		}
+
+		/// <summary>
+		/// &gt;&gt; operator
+		/// </summary>
+		/// <param name="first"></param>
+		/// <param name="second"></param>
+		/// <returns></returns>
 		public static SequenceParser Seq(Parser first, Parser second)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
@@ -54,42 +68,40 @@ namespace Spart.Parsers
         /// <returns></returns>
         public static RepetitionParser Klenee(Parser parser)
         {
-            if (parser == null) throw new ArgumentNullException(nameof(parser));
+			return Repeat(parser, 0);
+		}
 
-            return new RepetitionParser(parser, 0, uint.MaxValue);
-        }
-
-        /// <summary>
-        /// + operator
-        /// </summary>
-        /// <param name="parser"></param>
-        /// <returns></returns>
-        public static RepetitionParser OnePlus(Parser parser)
+		/// <summary>
+		/// ! operator
+		/// </summary>
+		/// <param name="parser"></param>
+		/// <returns></returns>
+		public static RepetitionParser Optional(Parser parser)
         {
-            if (parser == null) throw new ArgumentNullException(nameof(parser));
-
-            return new RepetitionParser(parser, 1, uint.MaxValue);
+			return Repeat(parser, 0, 1);
         }
 
-        /// <summary>
-        /// ! operator
-        /// </summary>
-        /// <param name="parser"></param>
-        /// <returns></returns>
-        public static RepetitionParser Optional(Parser parser)
-        {
-            if (parser == null) throw new ArgumentNullException(nameof(parser));
+		/// <summary>
+		/// + operator
+		/// </summary>
+		/// <param name="parser"></param>
+		/// <param name="mintimes"></param>
+		/// <param name="maxtimes"></param>
+		/// <returns></returns>
+		public static RepetitionParser Repeat(Parser parser, uint mintimes = 1, uint maxtimes = uint.MaxValue)
+		{
+			if (parser == null) throw new ArgumentNullException(nameof(parser));
 
-            return new RepetitionParser(parser, 0, 1);
-        }
+			return new RepetitionParser(parser, mintimes, maxtimes);
+		}
 
-        /// <summary>
-        /// | operator
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <returns></returns>
-        public static AlternativeParser Alternative(Parser first, Parser second)
+		/// <summary>
+		/// | operator
+		/// </summary>
+		/// <param name="first"></param>
+		/// <param name="second"></param>
+		/// <returns></returns>
+		public static AlternativeParser Alternative(Parser first, Parser second)
         {
             if (first == null) throw new ArgumentNullException(nameof(first));
             if (second == null) throw new ArgumentNullException(nameof(second));

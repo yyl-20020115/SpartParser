@@ -5,6 +5,7 @@ namespace Spart.Demo
 	using Spart.Scanners;
 	using Spart.Actions;
 	using System.Collections.Generic;
+	using Spart.Parsers.Primitives;
 
 	/// <summary>
 	/// group       ::= '(' expression ')'
@@ -35,15 +36,17 @@ namespace Spart.Demo
 		/// </summary>
 		public Calculator()
 		{
-			this.integer.Parser = (+Prims.Digit).WithAction(
+			this.integer.Parser = (+Prims.Digit).With(
 				(parser, args) =>
 				{
+					string value = args?.Value;
+
 					this.Stack.Push(
 						(new Experssion
 						{
-							Value = args.Value,
+							Value = value
 						}
-						, double.TryParse(args.Value, out double N) ? N : double.NaN
+						, double.TryParse(value, out double N) ? N : double.NaN
 						)
 					);
 				}
@@ -97,15 +100,15 @@ namespace Spart.Demo
 			}
 
 			this.term.Parser = this.factor + ~(
-				('*' + factor).WithAction(DoMath)
+				('*' + factor).With(DoMath)
 				|
-				('/' + factor).WithAction(DoMath)
+				('/' + factor).With(DoMath)
 			);
 
 			this.expression.Parser = this.term + ~(
-				('+' + term).WithAction(DoMath)
+				('+' + term).With(DoMath)
 				|
-				('-' + term).WithAction(DoMath)
+				('-' + term).With(DoMath)
 			);
 		}
 

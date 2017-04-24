@@ -206,18 +206,20 @@
             <param name="parser"></param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Parsers.Ops.OnePlus(Spart.Parsers.Parser)">
-            <summary>
-            + operator
-            </summary>
-            <param name="parser"></param>
-            <returns></returns>
-        </member>
         <member name="M:Spart.Parsers.Ops.Optional(Spart.Parsers.Parser)">
             <summary>
             ! operator
             </summary>
             <param name="parser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spart.Parsers.Ops.Repeat(Spart.Parsers.Parser,System.UInt32,System.UInt32)">
+            <summary>
+            + operator
+            </summary>
+            <param name="parser"></param>
+            <param name="mintimes"></param>
+            <param name="maxtimes"></param>
             <returns></returns>
         </member>
         <member name="M:Spart.Parsers.Ops.Alternative(Spart.Parsers.Parser,Spart.Parsers.Parser)">
@@ -408,7 +410,7 @@
             <param name="s">string to match</param>
             <returns></returns>
         </member>
-        <member name="M:Spart.Parsers.Prims.Range(System.Char,System.Char)">
+        <member name="M:Spart.Parsers.Prims.Range(System.Int32,System.Int32)">
             <summary>
             Creates a parser that matches a range of character
             </summary>

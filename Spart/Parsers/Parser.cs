@@ -25,23 +25,23 @@
 
 namespace Spart.Parsers
 {
-    using Spart.Scanners;
-    using Spart.Actions;
-    using Spart.Parsers.Composite;
-    using System;
+	using Spart.Scanners;
+	using Spart.Actions;
+	using Spart.Parsers.Composite;
+	using System;
 
-    /// <summary>
-    /// Abstract parser class
-    /// </summary>
-    public abstract class Parser
-    {
+	/// <summary>
+	/// Abstract parser class
+	/// </summary>
+	public abstract class Parser
+	{
 		public virtual string Name { get; set; }
 		/// <summary>
 		/// Default constructor
 		/// </summary>
 		public Parser(string name = "")
 		{
-			if(string.IsNullOrEmpty(this.Name = name))
+			if (string.IsNullOrEmpty(this.Name = name))
 			{
 				this.Name = this.GetType().Name + string.Format("_{0:X8}", this.GetHashCode());
 			}
@@ -54,30 +54,30 @@ namespace Spart.Parsers
 		/// <returns>the match</returns>
 		public abstract ParserMatch ParseMain(IScanner scanner);
 
-        /// <summary>
-        /// Outer parse method
-        /// </summary>
-        /// <param name="scanner"></param>
-        /// <returns></returns>
-        public virtual ParserMatch Parse(IScanner scanner)
-        {
-            if (scanner == null) throw new ArgumentNullException(nameof(scanner));
+		/// <summary>
+		/// Outer parse method
+		/// </summary>
+		/// <param name="scanner"></param>
+		/// <returns></returns>
+		public virtual ParserMatch Parse(IScanner scanner)
+		{
+			if (scanner == null) throw new ArgumentNullException(nameof(scanner));
 
-            ParserMatch m = this.ParseMain(scanner);
+			ParserMatch m = this.ParseMain(scanner);
 
-            if (m.Success)
-            {
-                this.OnAction(m);
-            }
-            return m;
-        }
+			if (m.Success)
+			{
+				this.OnAction(m);
+			}
+			return m;
+		}
 
-        /// <summary>
-        /// Action event
-        /// </summary>
-        public virtual event ActionHandler Action;
+		/// <summary>
+		/// Action event
+		/// </summary>
+		public virtual event ActionHandler Action;
 
-		public virtual Parser WithAction(Action<Parser, ActionEventArgs> action)
+		public virtual Parser With(Action<Parser, ActionEventArgs> action)
 		{
 			if (action != null)
 			{
@@ -85,31 +85,32 @@ namespace Spart.Parsers
 			}
 			return this;
 		}
-        /// <summary>
-        /// Action caller method
-        /// </summary>
-        /// <param name="m"></param>
-        public virtual ParserMatch OnAction(ParserMatch m)
-        {
-            if (m == null) throw new ArgumentNullException(nameof(m));
+		/// <summary>
+		/// Action caller method
+		/// </summary>
+		/// <param name="m"></param>
+		public virtual ParserMatch OnAction(ParserMatch m)
+		{
+			if (m == null) throw new ArgumentNullException(nameof(m));
 
-            this.Action?.Invoke(this, new ActionEventArgs(m));
+			this.Action?.Invoke(this, new ActionEventArgs(m));
 
-            return m;
-        }
+			return m;
+		}
 		public override string ToString()
 		{
 			return this.Name;
 		}
 		#region Operators
 		public static Parser operator +(Parser first, Parser second)
-        {
-            return Ops.Seq(first, second);
-        }
-        public static Parser operator ~(Parser p)
-        {
-            return Ops.Klenee(p);
-        }
+		{
+			return Ops.Seq(first, second);
+		}
+
+		public static Parser operator ~(Parser p)
+		{
+			return Ops.Klenee(p);
+		}
 
 		public static implicit operator Parser(char c)
 		{
@@ -120,74 +121,84 @@ namespace Spart.Parsers
 			return Prims.CharOf(c);
 		}
 		public static implicit operator Parser(string str)
-        {
-            return Prims.StringOf(str);
-        }
+		{
+			return Prims.StringOf(str);
+		}
 
-        /// <summary>
-        /// Positive operator
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public static RepetitionParser operator +(Parser p)
-        {
-            return Ops.OnePlus(p);
-        }
+		public static RepetitionParser operator *(Parser p, uint times)
+		{
+			return Ops.Repeat(p, times, times);
+		}
 
-        /// <summary>
-        /// Optional operator
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public static RepetitionParser operator !(Parser p)
-        {
-            return Ops.Optional(p);
-        }
+		public static RepetitionParser operator *(Parser p, (uint lower, uint upper) range)
+		{
+			return Ops.Repeat(p, range.lower, range.upper);
+		}
 
-        /// <summary>
-        /// Alternative operator
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static AlternativeParser operator |(Parser left, Parser right)
-        {
-            return Ops.Alternative(left, right);
-        }
+		/// <summary>
+		/// Positive operator
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		public static RepetitionParser operator +(Parser p)
+		{
+			return Ops.Repeat(p);
+		}
 
-        /// <summary>
-        /// Intersection operator
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static IntersectionParser operator &(Parser left, Parser right)
-        {
-            return Ops.Intersection(left, right);
-        }
+		/// <summary>
+		/// Optional operator
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		public static RepetitionParser operator !(Parser p)
+		{
+			return Ops.Optional(p);
+		}
 
-        /// <summary>
-        /// Difference operator
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static DifferenceParser operator -(Parser left, Parser right)
-        {
-            return Ops.Difference(left, right);
-        }
+		/// <summary>
+		/// Alternative operator
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		/// <returns></returns>
+		public static AlternativeParser operator |(Parser left, Parser right)
+		{
+			return Ops.Alternative(left, right);
+		}
 
-        /// <summary>
-        /// List operator
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static ListParser operator %(Parser left, Parser right)
-        {
-            return Ops.List(left, right);
-        }
+		/// <summary>
+		/// Intersection operator
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		/// <returns></returns>
+		public static IntersectionParser operator &(Parser left, Parser right)
+		{
+			return Ops.Intersection(left, right);
+		}
 
-        #endregion
-    }
+		/// <summary>
+		/// Difference operator
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		/// <returns></returns>
+		public static DifferenceParser operator -(Parser left, Parser right)
+		{
+			return Ops.Difference(left, right);
+		}
+
+		/// <summary>
+		/// List operator
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		/// <returns></returns>
+		public static ListParser operator %(Parser left, Parser right)
+		{
+			return Ops.List(left, right);
+		}
+
+		#endregion
+	}
 }

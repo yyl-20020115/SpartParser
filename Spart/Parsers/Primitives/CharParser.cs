@@ -31,6 +31,15 @@ namespace Spart.Parsers.Primitives
 
 	public class CharParser : NegatableParser
 	{
+		public static implicit operator CharParser((int s, int e) range)
+		{
+			return Prims.Range(range.s, range.e);
+		}
+		public static implicit operator CharParser((char s, char e) range)
+		{
+			return Prims.Range(range.s, range.e);
+		}
+
 		public virtual ICharTester Tester { get; protected set; }
 
 		public CharParser(ICharTester tester, string name = "") : base(name)
