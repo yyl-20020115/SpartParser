@@ -1,4 +1,4 @@
-or# SpartParser
+NEW SpartParser
 
 Refectored version of SpartParser (C#7.0, .NET FRAMEWORK 4.5)
 
