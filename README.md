@@ -11,17 +11,6 @@ original writer: Jonathan de Halleux
 
 refectored by: Yilin Yang
 
-
-//Calculator.cs
-
-namespace Spart.Demo
-{
-	using Spart.Parsers.NonTerminal;
-	using Spart.Parsers;
-	using Spart.Scanners;
-	using Spart.Actions;
-	using System.Collections.Generic;
-
 	/// <summary>
 	/// group       ::= '(' expression ')'
 	/// factor      ::= integer | group
@@ -154,4 +143,3 @@ namespace Spart.Demo
 			return result;
 		}
 	}
-}
