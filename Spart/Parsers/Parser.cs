@@ -36,6 +36,7 @@ namespace Spart.Parsers
 	public abstract class Parser
 	{
 		public virtual string Name { get; set; }
+
 		/// <summary>
 		/// Default constructor
 		/// </summary>
@@ -85,6 +86,7 @@ namespace Spart.Parsers
 			}
 			return this;
 		}
+
 		/// <summary>
 		/// Action caller method
 		/// </summary>
@@ -97,10 +99,12 @@ namespace Spart.Parsers
 
 			return m;
 		}
+
 		public override string ToString()
 		{
 			return this.Name;
 		}
+
 		#region Operators
 		public static Parser operator +(Parser first, Parser second)
 		{

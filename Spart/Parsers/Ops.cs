@@ -38,10 +38,16 @@ namespace Spart.Parsers
 		{
 			return ((Parser)c).With(action);
 		}
+		public static Parser With(this (char h, char l) c, Action<Parser, ActionEventArgs> action)
+		{
+			return With(char.ConvertToUtf32(c.h,c.l),action);
+		}
+
 		public static Parser With(this int c, Action<Parser, ActionEventArgs> action)
 		{
 			return ((Parser)c).With(action);
 		}
+
 		public static Parser With(this string s, Action<Parser, ActionEventArgs> action)
 		{
 			return ((Parser)s).With(action);

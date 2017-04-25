@@ -25,19 +25,19 @@
 
 namespace Spart.Parsers
 {
-    public abstract class NegatableParser : TerminalParser
-    {
-        public virtual bool Negate { get; set; }
+	public abstract class NegatableParser : TerminalParser
+	{
+		public virtual bool Negate { get; set; }
 
-        public static NegatableParser operator -(NegatableParser p)
-        {
-            if(p!=null)
-            {
-                p.Negate = !p.Negate;
-            }
+		public static NegatableParser operator -(NegatableParser p)
+		{
+			if (p != null)
+			{
+				p.Negate = !p.Negate;
+			}
 
-            return p;
-        }
+			return p;
+		}
 
 		public NegatableParser(string name = "") : base(name) { }
 
