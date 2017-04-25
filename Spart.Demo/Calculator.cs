@@ -17,10 +17,21 @@ namespace Spart.Demo
 	{
 		public class Experssion
 		{
-			public string Value = null;
-			public string Operation = null;
-			public Experssion Left = null;
-			public Experssion Right = null;
+			public virtual string Text { get; protected set; } = string.Empty;
+			public virtual string Operation { get; protected set; } = string.Empty;
+			protected List<Experssion> expressions = null;
+			public virtual List<Experssion> Expressions => this.expressions ?? (this.expressions = new List<Experssion>());
+
+			public Experssion(string Operation = "", string Text = "", params Experssion[] Expressions)
+			{
+				this.Operation = Operation;
+				this.Text = Text;
+
+				if (Expressions != null)
+				{
+					this.Expressions.AddRange(Expressions);
+				}
+			}
 		}
 
 		protected Rule group = new Rule(nameof(group));
@@ -36,23 +47,53 @@ namespace Spart.Demo
 		/// </summary>
 		public Calculator()
 		{
-			this.integer.Parser = (+Prims.Digit).With(
+			this.integer.Parser = (+Prims.Digit)[
 				(parser, args) =>
 				{
-					string value = args?.Value;
+					string text = args?.Value;
 
 					this.Stack.Push(
-						(new Experssion
-						{
-							Value = value
-						}
-						, double.TryParse(value, out double N) ? N : double.NaN
+						(
+							new Experssion(Text: text)
+							,
+							double.TryParse(text, out double N) ? N : double.NaN
 						)
 					);
 				}
-			);
+			];
 
-			this.group.Parser = '(' + this.expression + ')';
+			this.group.Parser
+				= ((Parser)'(')[(parser, args) =>
+				{
+
+					string op = (parser as CharParser).Name;
+
+					if (op == "(")
+					{
+						this.Stack.Push((new Experssion(Operation: op), double.NaN));
+					}
+				}
+			]
+				+ this.expression
+				+ ((Parser)')')[(parser, args) =>
+				{
+
+					string op = (parser as CharParser).Name;
+
+					if (op == ")" && this.Stack.Count >= 2)
+					{
+						var Center = this.Stack.Pop();
+						var Left = this.Stack.Peek();
+
+						if (Left.E.Operation == "(")
+						{
+							this.Stack.Pop();
+						}
+
+						this.Stack.Push(Center);
+					}
+				}
+			];
 
 			this.factor.Parser = this.group | this.integer;
 
@@ -85,30 +126,20 @@ namespace Spart.Demo
 							break;
 					}
 
-					this.Stack.Push(
-					(
-						new Experssion
-						{
-							Left = X.E,
-							Right = Y.E,
-							Operation = op
-						},
-						z
-						)
-					);
+					this.Stack.Push((new Experssion(op, string.Empty, X.E, Y.E), z));
 				}
 			}
 
 			this.term.Parser = this.factor + ~(
-				('*' + factor).With(DoMath)
+				('*' + factor)[DoMath]
 				|
-				('/' + factor).With(DoMath)
+				('/' + factor)[DoMath]
 			);
 
 			this.expression.Parser = this.term + ~(
-				('+' + term).With(DoMath)
+				('+' + term)[DoMath]
 				|
-				('-' + term).With(DoMath)
+				('-' + term)[DoMath]
 			);
 		}
 
@@ -131,7 +162,6 @@ namespace Spart.Demo
 
 				if (m.Success)
 				{
-
 					if (this.Stack.Count >= 1)
 					{
 						result = this.Stack.Pop();

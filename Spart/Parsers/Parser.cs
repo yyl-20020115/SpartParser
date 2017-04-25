@@ -87,6 +87,14 @@ namespace Spart.Parsers
 			return this;
 		}
 
+		public virtual Parser this[Action<Parser, ActionEventArgs> action]
+		{
+			get
+			{
+				return this.With(action);
+			}
+		}
+
 		/// <summary>
 		/// Action caller method
 		/// </summary>
