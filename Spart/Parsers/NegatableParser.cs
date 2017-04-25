@@ -29,7 +29,7 @@ namespace Spart.Parsers
     {
         public virtual bool Negate { get; set; }
 
-        public static NegatableParser operator ~(NegatableParser p)
+        public static NegatableParser operator -(NegatableParser p)
         {
             if(p!=null)
             {
