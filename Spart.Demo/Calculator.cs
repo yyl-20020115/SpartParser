@@ -17,11 +17,18 @@ namespace Spart.Demo
 	{
 		public class Experssion
 		{
-			public virtual string Text { get; protected set; } = string.Empty;
-			public virtual string Operation { get; protected set; } = string.Empty;
 			protected List<Experssion> expressions = null;
-			public virtual List<Experssion> Expressions => this.expressions ?? (this.expressions = new List<Experssion>());
 
+			public virtual string Text { get; protected set; } = string.Empty;
+
+			public virtual string Operation { get; protected set; } = string.Empty;
+
+			public virtual List<Experssion> Expressions => this.expressions ?? (this.expressions = new List<Experssion>());
+			public Experssion(string Operation = "", params Experssion[] Expressions)
+				: this(Operation, string.Empty, Expressions)
+			{
+
+			}
 			public Experssion(string Operation = "", string Text = "", params Experssion[] Expressions)
 			{
 				this.Operation = Operation;
@@ -31,6 +38,10 @@ namespace Spart.Demo
 				{
 					this.Expressions.AddRange(Expressions);
 				}
+			}
+			public override string ToString()
+			{
+				return $"Operation=\"{this.Operation}\", Text=\"{this.Text}\"";
 			}
 		}
 
@@ -65,7 +76,6 @@ namespace Spart.Demo
 			this.group.Parser
 				= ((Parser)'(')[(parser, args) =>
 				{
-
 					string op = (parser as CharParser).Name;
 
 					if (op == "(")
@@ -77,20 +87,40 @@ namespace Spart.Demo
 				+ this.expression
 				+ ((Parser)')')[(parser, args) =>
 				{
-
 					string op = (parser as CharParser).Name;
 
 					if (op == ")" && this.Stack.Count >= 2)
 					{
 						var Center = this.Stack.Pop();
-						var Left = this.Stack.Peek();
 
-						if (Left.E.Operation == "(")
+						if (Center.E.Operation == "(")
 						{
-							this.Stack.Pop();
+							this.Stack.Push(
+								(new Experssion(
+									nameof(group),
+									Center.E,
+									new Experssion(op)
+									), double.NaN)
+								);
 						}
+						else
+						{
+							var Left = this.Stack.Peek();
 
-						this.Stack.Push(Center);
+							if (Left.E.Operation == "(")
+							{
+								this.Stack.Pop();
+
+								this.Stack.Push(
+									(new Experssion(
+										nameof(group),
+										Left.E,
+										Center.E,
+										new Experssion(op)
+										), double.NaN)
+									);
+							}
+						}
 					}
 				}
 			];
