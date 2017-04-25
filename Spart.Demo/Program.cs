@@ -22,16 +22,15 @@
 /// 3. This notice may not be removed or altered from any source distribution.
 /// 
 /// Author: Jonathan de Halleux
-/// 
-
-using System;
 
 namespace Spart.Demo
 {
-    /// <summary>
-    /// Summary description for Program.
-    /// </summary>
-    static class Program
+	using System;
+
+	/// <summary>
+	/// Summary description for Program.
+	/// </summary>
+	static class Program
     {
         /// <summary>
         /// The main entry point for the application.
@@ -56,7 +55,6 @@ namespace Spart.Demo
                         Console.WriteLine($"= {calculator.Calculate(line).N}");
                     }
                 }
-                //calc.Parse("(53+29)*(41/20)");
             }
             catch (Exception ex)
             {
