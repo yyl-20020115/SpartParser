@@ -35,6 +35,7 @@ namespace Spart.Parsers.Primitives
 		{
 			return Prims.Range(range.s, range.e);
 		}
+
 		public static implicit operator CharParser((char s, char e) range)
 		{
 			return Prims.Range(range.s, range.e);
