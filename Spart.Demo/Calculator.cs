@@ -65,7 +65,7 @@ namespace Spart.Demo
 
 					this.Stack.Push(
 						(
-							new Experssion(Text: text)
+							new Experssion(this.integer.Name, text)
 							,
 							double.TryParse(text, out double N) ? N : double.NaN
 						)
@@ -80,10 +80,9 @@ namespace Spart.Demo
 
 					if (op == "(")
 					{
-						this.Stack.Push((new Experssion(Operation: op), double.NaN));
+						this.Stack.Push((new Experssion(op), double.NaN));
 					}
-				}
-			]
+				}]
 				+ this.expression
 				+ ((Parser)')')[(parser, args) =>
 				{
@@ -122,8 +121,7 @@ namespace Spart.Demo
 							}
 						}
 					}
-				}
-			];
+				}];
 
 			this.factor.Parser = this.group | this.integer;
 
@@ -156,7 +154,7 @@ namespace Spart.Demo
 							break;
 					}
 
-					this.Stack.Push((new Experssion(op, string.Empty, X.E, Y.E), z));
+					this.Stack.Push((new Experssion(op, X.E, Y.E), z));
 				}
 			}
 
