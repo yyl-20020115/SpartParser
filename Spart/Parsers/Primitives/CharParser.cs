@@ -47,6 +47,11 @@ namespace Spart.Parsers.Primitives
 			this.Tester = tester ?? throw new ArgumentNullException(nameof(tester));
 		}
 
+		public virtual int CharLength(int c)
+		{
+			return c >= char.MinValue && c <= char.MaxValue ?  1 : 2;
+		}
+
 		public override ParserMatch ParseMain(IScanner scanner)
 		{
 			if (scanner == null) throw new ArgumentNullException(nameof(scanner));
@@ -60,7 +65,9 @@ namespace Spart.Parsers.Primitives
 				return scanner.NoMatch;
 			}
 
-			bool test = this.Tester.Test(c);
+			bool test = this.CharLength(c) == 1
+				? this.Tester.Test((char)c)
+				: this.Tester.Test(c);
 
 			if (test && Negate || !test && !Negate)
 			{
@@ -69,7 +76,7 @@ namespace Spart.Parsers.Primitives
 
 			// match character
 			// if we arrive at this point, we have a match
-			ParserMatch m = scanner.CreateMatch(offset, 1);
+			ParserMatch m = scanner.CreateMatch(offset, this.CharLength(c));
 
 			// updating offset
 			scanner.Read();
